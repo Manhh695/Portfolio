@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Case Study - Pham Duc Manh Portfolio</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Simple Project Case Study by Pham Duc Manh. Motion Designer, Graphic Designer, and UI UX Designer.">
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="case-study-body">
+
+  <!-- Header / Navigation Bar -->
+  <header class="header">
+    <a href="index.html" class="status-badge" id="status-badge" style="color: #FFFFFF;">
+      <span class="dot"></span>
+      Available for works
+    </a>
+
+    <nav class="nav-bar" id="main-nav">
+      <a href="index.html#about" class="nav-link">About me</a>
+      <a href="index.html#services" class="nav-link">Services</a>
+      <a href="index.html#portfolio" class="nav-link">Portfolio</a>
+    </nav>
+
+    <a href="index.html#contact" class="btn-contact" id="btn-contact">
+      <svg class="phone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path
+          d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+      </svg>
+      Contact me
+    </a>
+
+    <!-- Hamburger Menu Toggle Button -->
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu" id="mobile-menu">
+    <button class="mobile-close" id="mobile-close" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <nav class="mobile-nav">
+      <a href="index.html#about" class="mobile-link">About me</a>
+      <a href="index.html#services" class="mobile-link">Services</a>
+      <a href="index.html#portfolio" class="mobile-link">Portfolio</a>
+      <a href="index.html#contact" class="mobile-link mobile-btn-contact">
+        <svg class="phone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+        </svg>
+        Contact me
+      </a>
+    </nav>
+  </div>
+
+  <!-- Back to Home Button -->
+  <div class="back-btn-container">
+    <a href="projects.html" class="back-home-link" id="back-gallery-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to Works
+    </a>
+  </div>
+
+  <!-- Main Case Study Hero -->
+  <main class="cs-hero" style="padding-bottom: 2rem;">
+    <span class="cs-subtitle" id="project-subtitle">Category</span>
+    <h1 class="cs-title" id="project-title">Project Title</h1>
+    
+    <div class="cs-hero-tags" id="project-tags">
+      <!-- Dynamic Tags go here -->
+    </div>
+  </main>
+
+  <!-- Simple Two-column Narrative & Visual Gallery Grid -->
+  <section class="cs-content-section" style="margin-top: 2rem; margin-bottom: 6rem;">
+    <!-- Left Column: Story and Meta details stacked -->
+    <div class="cs-section-left" style="display: flex; flex-direction: column; gap: 3rem;">
+      <div style="display: flex; flex-direction: column; gap: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1.5rem;">
+        <div>
+          <div class="cs-meta-label">Client</div>
+          <div class="cs-meta-value" id="project-client" style="font-size: 1.1rem; font-weight: 600;">Client Name</div>
+        </div>
+        <div>
+          <div class="cs-meta-label">Role</div>
+          <div class="cs-meta-value" id="project-role" style="font-size: 1.1rem; font-weight: 600;">Designer Role</div>
+        </div>
+        <div>
+          <div class="cs-meta-label">Date</div>
+          <div class="cs-meta-value" id="project-date" style="font-size: 1.1rem; font-weight: 600;">Project Date</div>
+        </div>
+      </div>
+      
+      <div>
+        <h3 style="font-family: var(--font-primary); font-size: 1.6rem; font-weight: 700; margin-bottom: 1.2rem; color: #FFFFFF;">
+          The Project Story
+        </h3>
+        <div class="cs-section-right" style="padding: 0; max-width: 100%;">
+          <p id="project-desc" style="font-size: 1.05rem; line-height: 1.7; color: var(--color-text-muted);">Description text goes here.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right Column: Styled Image Containers representing mockup visual placeholders -->
+    <div class="cs-section-right" style="display: flex; flex-direction: column; gap: 1.8rem; padding: 0; max-width: 100%;">
+      <h3 style="font-family: var(--font-primary); font-size: 1.6rem; font-weight: 700; color: #FFFFFF;">
+        Visual Showcase
+      </h3>
+      <div style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%;" id="project-gallery">
+        <!-- Dynamic Mockup Visual Containers go here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Next Project CTA Section -->
+  <section class="cs-next-project">
+    <div class="cs-next-container">
+      <span class="cs-subtitle">Next Project</span>
+      <a href="#" class="cs-next-link" id="project-next-link">Next Project Title</a>
+    </div>
+  </section>
+
+  <!-- Footer Watermark & Copyright -->
+  <footer class="site-footer">
+    <div class="footer-watermark">PHAM MANH DESIGNER</div>
+    <div class="footer-bottom">
+      Copyright © 2026
+    </div>
+  </footer>
+
+  <!-- External JavaScript Logic -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="script.js" defer></script>
+
+  <!-- Dynamic Router & Mini-CMS Database Script -->
+  <script type="module">
+    import { getProject } from './db.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 2. PARSE URL QUERY PARAMETER
+      const urlParams = new URLSearchParams(window.location.search);
+      let projectKey = urlParams.get('project');
+
+      // Fallback: If no query parameter or invalid key, load the first project 'acme'
+      if (!projectKey) {
+        projectKey = 'acme';
+      }
+
+      const data = await getProject(projectKey);
+
+      // Fallback if key not found in DB
+      if (!data) {
+        const fallbackData = await getProject('acme');
+        if (fallbackData) {
+          renderProject(fallbackData, 'acme');
+        }
+        return;
+      }
+
+      renderProject(data, projectKey);
+
+      function renderProject(data, key) {
+        // 3. POPULATE DOM CONTENT
+        document.getElementById('project-title').innerText = data.title;
+        document.getElementById('project-subtitle').innerText = data.subtitle;
+        document.getElementById('project-client').innerText = data.client || 'N/A';
+        document.getElementById('project-role').innerText = data.role || 'N/A';
+        document.getElementById('project-date').innerText = data.date || 'N/A';
+        document.getElementById('project-desc').innerHTML = data.desc;
+
+        // Populate Tags
+        const tagsContainer = document.getElementById('project-tags');
+        tagsContainer.innerHTML = '';
+        if (data.tags && Array.isArray(data.tags)) {
+          data.tags.forEach(tag => {
+            const span = document.createElement('span');
+            span.className = 'cs-tag';
+            span.innerText = tag;
+            tagsContainer.appendChild(span);
+          });
+        }
+
+        // Populate Visual Gallery Grid (with styled gradient visual panels)
+        const galleryContainer = document.getElementById('project-gallery');
+        galleryContainer.innerHTML = '';
+        if (data.images && Array.isArray(data.images)) {
+          data.images.forEach(imgTitle => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = `cs-gallery-item ${data.themeClass || 'bg-gradient-4'}`;
+            itemDiv.style.aspectRatio = '16 / 10';
+            itemDiv.style.width = '100%';
+            
+            const textDiv = document.createElement('div');
+            textDiv.className = 'cs-gallery-img';
+            
+            // Check if imgTitle is a URL or base64 data
+            if (imgTitle.startsWith('http://') || imgTitle.startsWith('https://') || imgTitle.startsWith('data:image/')) {
+              const imgElement = document.createElement('img');
+              imgElement.src = imgTitle;
+              imgElement.style.width = '100%';
+              imgElement.style.height = '100%';
+              imgElement.style.objectFit = 'cover';
+              imgElement.alt = data.title;
+              textDiv.appendChild(imgElement);
+            } else {
+              textDiv.innerText = imgTitle;
+            }
+            
+            itemDiv.appendChild(textDiv);
+            galleryContainer.appendChild(itemDiv);
+          });
+        }
+
+        // Update Next Project CTA
+        const nextLink = document.getElementById('project-next-link');
+        nextLink.setAttribute('href', `project-simple.html?project=${data.nextProject || 'acme'}`);
+        nextLink.innerText = data.nextTitle || 'Next Project';
+
+        // Update Back Button target depending on where we came from
+        const backLink = document.getElementById('back-gallery-link');
+        if (key.includes('-video')) {
+          backLink.setAttribute('href', 'index.html#multimedia');
+          backLink.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Home
+          `;
+        } else {
+          backLink.setAttribute('href', 'projects.html');
+          backLink.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Works
+          `;
+        }
+        
+        // 4. Force Lenis scroll engine to resize to capture dynamic layout adjustments
+        setTimeout(() => {
+          if (typeof lenis !== 'undefined' && lenis) {
+            lenis.resize();
+          }
+        }, 100);
+      }
+    });
+  </script>
+
+</body>
+
+</html>

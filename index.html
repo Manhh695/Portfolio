@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pham Duc Manh - Portfolio</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="Pham Duc Manh - Personal Portfolio. Motion Designer, Graphic Designer, and UI UX Designer.">
+
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Header / Navigation Bar -->
+  <header class="header">
+    <div class="status-badge" id="status-badge">
+      <span class="dot"></span>
+      Available for works
+    </div>
+
+    <nav class="nav-bar" id="main-nav">
+      <a href="#about" class="nav-link active">About me</a>
+      <a href="#services" class="nav-link">Services</a>
+      <a href="#portfolio" class="nav-link">Portfolio</a>
+    </nav>
+
+    <a href="#contact" class="btn-contact" id="btn-contact">
+      <svg class="phone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path
+          d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+      </svg>
+      Contact me
+    </a>
+
+    <!-- Hamburger Menu Toggle Button -->
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu" id="mobile-menu">
+    <!-- Close Button -->
+    <button class="mobile-close" id="mobile-close" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <nav class="mobile-nav">
+      <a href="#about" class="mobile-link">About me</a>
+      <a href="#services" class="mobile-link">Services</a>
+      <a href="#portfolio" class="mobile-link">Portfolio</a>
+      <a href="#contact" class="mobile-link mobile-btn-contact">
+        <svg class="phone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+        </svg>
+        Contact me
+      </a>
+    </nav>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="hero">
+
+    <!-- Animated Wave Canvas -->
+    <canvas id="hero-canvas" class="hero-bg-canvas"></canvas>
+
+    <!-- Left Sidebar: Scrolldown -->
+    <div class="scrolldown-container">
+      <div class="scrolldown" id="scrolldown">
+        <span class="arrow">←</span>
+        Scrolldown
+      </div>
+    </div>
+
+    <!-- Main Giant Typography -->
+    <div class="hero-main">
+      <div class="hero-typography">
+        <h1 class="hero-title">
+          <span class="word-1">PORT</span>
+          <span class="word-2">FOLIO</span>
+        </h1>
+        <div class="hero-name" id="hero-name">
+          <span class="first-name">PHAM</span>
+          <span class="last-name">DUC MANH</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Footer -->
+    <div class="hero-footer">
+      <div class="footer-item">Motion Designer</div>
+      <div class="footer-item">Graphic Designer</div>
+      <div class="footer-item">UI UX Designer</div>
+    </div>
+
+  </section>
+
+  <!-- About & Sticky Timeline Section -->
+  <section class="about-section" id="about">
+    <div class="sticky-container">
+
+      <!-- Section Header -->
+      <div class="about-header">
+        <span class="section-subtitle">About me</span>
+        <h2 class="about-intro">
+          Designer with 6+ years of experience and 1+ year in Digital Product Design, specializing in product thinking,
+          visual systems, and UX optimization.
+        </h2>
+      </div>
+
+      <!-- Horizontal Timeline Container -->
+      <div class="timeline-container">
+        <div class="timeline-track" id="timeline-track">
+          <!-- The continuous horizontal line -->
+          <div class="timeline-line"></div>
+
+          <!-- Timeline Item 1 -->
+          <div class="timeline-item">
+            <div class="timeline-year">2018 - 2019</div>
+            <div class="timeline-node"></div>
+            <div class="timeline-content">
+              <h3 class="company-name">Entaid International</h3>
+              <h4 class="company-role">Multimedia Designer</h4>
+              <p class="company-desc">Thiết kế các ấn phẩm truyền thông Marketing (Keyvisual, Social media post, POSM,
+                leaflets, Motion Graphic Explaining Video), thiết kế Packaging sản phẩm khăn lau đa năng.</p>
+            </div>
+          </div>
+
+          <!-- Timeline Item 2 -->
+          <div class="timeline-item">
+            <div class="timeline-year">2019 - 2021</div>
+            <div class="timeline-node"></div>
+            <div class="timeline-content">
+              <h3 class="company-name">Nexus Creative Studio</h3>
+              <h4 class="company-role">Senior Graphic Designer</h4>
+              <p class="company-desc">Chịu trách nhiệm thiết kế bộ nhận diện thương hiệu, định hướng mỹ thuật cho các dự
+                án Web/App, phối hợp xây dựng hệ thống hình ảnh nhất quán và thiết kế bao bì quảng cáo.</p>
+            </div>
+          </div>
+
+          <!-- Timeline Item 3 -->
+          <div class="timeline-item">
+            <div class="timeline-year">2021 - 2024</div>
+            <div class="timeline-node"></div>
+            <div class="timeline-content">
+              <h3 class="company-name">Vortex Tech Group</h3>
+              <h4 class="company-role">Product Designer</h4>
+              <p class="company-desc">Thiết kế giao diện người dùng (UI), xây dựng hệ thống Design System đa nền tảng,
+                nghiên cứu và tối ưu hóa trải nghiệm người dùng (UX) cho các sản phẩm công nghệ cao.</p>
+            </div>
+          </div>
+
+          <!-- Timeline Item 4 -->
+          <div class="timeline-item">
+            <div class="timeline-year">2024 - Present</div>
+            <div class="timeline-node"></div>
+            <div class="timeline-content">
+              <h3 class="company-name">Aura Digital Consult</h3>
+              <h4 class="company-role">UI UX & Motion Consultant</h4>
+              <p class="company-desc">Tư vấn và thực hiện thiết kế UI/UX kết hợp Motion Design cho các công ty khởi
+                nghiệp và doanh nghiệp số quốc tế, tối ưu tỷ lệ chuyển đổi và tăng tương tác sản phẩm.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services-section" id="services">
+    <!-- Architectural background grid guides -->
+    <div class="grid-guides">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <div class="services-container">
+
+      <!-- Section Title -->
+      <h2 class="services-title">Services</h2>
+
+      <!-- Services List -->
+      <div class="services-list">
+
+        <!-- Service 001 -->
+        <div class="service-row">
+          <div class="service-num">(001)</div>
+          <div class="service-main">
+            <div class="service-pill">Graphic Design</div>
+          </div>
+          <div class="service-details">
+            <p class="service-desc">Thiết kế các ấn phẩm truyền thông Marketing đa kênh nhằm truyền tải thông điệp
+              thương hiệu mạnh mẽ, thu hút và nhất quán.</p>
+            <div class="service-tags">
+              <span class="tag">Catalogue Layout</span>
+              <span class="tag">Banner/Poster</span>
+              <span class="tag">Event - Key Visual</span>
+              <span class="tag">Brand Identity</span>
+              <span class="tag">Info-graphics</span>
+              <span class="tag">Presentation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 002 -->
+        <div class="service-row">
+          <div class="service-num">(002)</div>
+          <div class="service-main">
+            <div class="service-pill">Compositing</div>
+          </div>
+          <div class="service-details">
+            <p class="service-desc">Dựng phim, xử lý hậu kỳ và kết hợp chuyển động đồ họa (motion graphics) chuyên
+              nghiệp để tạo ra các video lôi cuốn người xem.</p>
+            <div class="service-tags">
+              <span class="tag">Intro / Outro Video</span>
+              <span class="tag">Editing Video</span>
+              <span class="tag">Motion Graphic</span>
+              <span class="tag">Logo Animation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 003 -->
+        <div class="service-row">
+          <div class="service-num">(003)</div>
+          <div class="service-main">
+            <div class="service-pill">Product Design</div>
+          </div>
+          <div class="service-details">
+            <p class="service-desc">Kiến tạo sản phẩm kỹ thuật số đột phá, tối ưu hóa trải nghiệm người dùng (UX), xây
+              dựng Design System và giao diện ứng dụng hiện đại.</p>
+            <div class="service-tags">
+              <span class="tag">Landing Page Design</span>
+              <span class="tag">Web Design</span>
+              <span class="tag">Design System</span>
+              <span class="tag">App Design</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects-section" id="portfolio">
+    <!-- Architectural background grid guides -->
+    <div class=" grid-guides">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    </div>
+
+    <div class="projects-container">
+
+      <!-- Section Title -->
+      <div class="projects-header">
+        <span class="section-subtitle">Projects</span>
+        <h2 class="projects-title">Social media Design</h2>
+      </div>
+
+      <!-- Infinite Marquee Rows -->
+      <!-- Infinite Marquee Rows -->
+      <div class="marquee-container" id="marquee-container">
+        <!-- Row 1: Right to Left (Từ phải sang trái) -->
+        <div class="marquee-row marquee-left">
+          <div class="marquee-track" id="marquee-track-1">
+            <!-- Dynamic project cards rendered and cloned here -->
+          </div>
+        </div>
+
+        <!-- Row 2: Left to Right (Từ trái sang phải) -->
+        <div class="marquee-row marquee-right">
+          <div class="marquee-track" id="marquee-track-2">
+            <!-- Dynamic project cards rendered and cloned here -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Multimedia Works Section -->
+  <section class="multimedia-section" id="multimedia">
+    <!-- Architectural background grid guides -->
+    <div class="grid-guides">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <div class="multimedia-container">
+      
+      <!-- Section Title -->
+      <h2 class="multimedia-title">Multimedia Works</h2>
+      
+      <!-- Multimedia Grid -->
+      <div class="multimedia-grid">
+        
+        <!-- Video 1 -->
+        <div class="multimedia-card">
+          <a href="project-simple.html?project=ssi-video" style="text-decoration: none; color: inherit;">
+            <div class="media-preview preview-1">
+              <div class="play-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="media-title">SSI Corporate Video 2024</h3>
+          </a>
+        </div>
+
+        <!-- Video 2 -->
+        <div class="multimedia-card">
+          <a href="project-simple.html?project=shark-video" style="text-decoration: none; color: inherit;">
+            <div class="media-preview preview-2">
+              <div class="play-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="media-title">Shark Binh Viral Promo</h3>
+          </a>
+        </div>
+
+        <!-- Video 3 -->
+        <div class="multimedia-card">
+          <a href="project-simple.html?project=nganluong-video" style="text-decoration: none; color: inherit;">
+            <div class="media-preview preview-3">
+              <div class="play-btn">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="media-title">Ngan Luong Explainer Clip</h3>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Footer Button -->
+      <div class="multimedia-footer">
+        <a href="projects.html" class="see-all-link">
+          See all works
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"/>
+            <polyline points="7 7 17 7 17 17"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Selected Works Section -->
+  <section class="selected-works-section" id="selected-works">
+    <!-- Architectural grid guides -->
+    <div class="grid-guides">
+      <div></div><div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div><div></div>
+    </div>
+    
+    <div class="works-sticky-container">
+      <div class="works-container">
+        <!-- Title -->
+        <h2 class="works-title">Selected works</h2>
+        
+        <div class="work-cards-list">
+          <!-- Card 1 -->
+          <div class="work-card" id="work-card-1">
+            <a href="project-ssi.html" class="work-card-inner" style="text-decoration: none; color: inherit;">
+              <div class="work-card-left">
+                <div class="work-card-num">01</div>
+                <h3 class="work-card-title">SSI Keyvisual</h3>
+                <p class="work-card-desc">Thiết kế các ấn phẩm truyền thông Marketing (Keyvisual, Social media post ,POSM, leaflets, Motion Graphic Explaining Video) cho NgânLượng.vn, hỗ trợ truyền thông xây dựng hình ảnh cho fanpage Shark Nguyễn Hòa Bình (quotes, infographics, viral video...)</p>
+                <div class="work-card-tags">
+                  <span class="work-card-tag">Graphic Design</span>
+                  <span class="work-card-tag">Key Visual</span>
+                </div>
+              </div>
+              <div class="work-card-right">
+                <div class="work-preview work-preview-1">
+                  <!-- Premium geometric details using CSS lines -->
+                  <div class="preview-pattern"></div>
+                </div>
+              </div>
+            </a>
+          </div>
+          
+          <!-- Card 2 -->
+          <div class="work-card" id="work-card-2">
+            <a href="project-mineverse.html" class="work-card-inner" style="text-decoration: none; color: inherit;">
+              <div class="work-card-left">
+                <div class="work-card-num">02</div>
+                <h3 class="work-card-title">Mineverse Website</h3>
+                <p class="work-card-desc">Thiết kế các ấn phẩm truyền thông Marketing (Keyvisual, Social media post ,POSM, leaflets, Motion Graphic Explaining Video) cho NgânLượng.vn, hỗ trợ truyền thông xây dựng hình ảnh cho fanpage Shark Nguyễn Hòa Bình (quotes, infographics, viral video...)</p>
+                <div class="work-card-tags">
+                  <span class="work-card-tag">Web Design</span>
+                  <span class="work-card-tag">Branding</span>
+                </div>
+              </div>
+              <div class="work-card-right">
+                <div class="work-preview work-preview-2">
+                  <div class="preview-pattern"></div>
+                </div>
+              </div>
+            </a>
+          </div>
+          
+          <!-- Card 3 -->
+          <div class="work-card" id="work-card-3">
+            <a href="project-vietnam-airline.html" class="work-card-inner" style="text-decoration: none; color: inherit;">
+              <div class="work-card-left">
+                <div class="work-card-num">03</div>
+                <h3 class="work-card-title">Vietnam Airline Keyvisual</h3>
+                <p class="work-card-desc">Thiết kế các ấn phẩm truyền thông Marketing (Keyvisual, Social media post ,POSM, leaflets</p>
+                <div class="work-card-tags">
+                  <span class="work-card-tag">Web Design</span>
+                  <span class="work-card-tag">Branding</span>
+                </div>
+              </div>
+              <div class="work-card-right">
+                <div class="work-preview work-preview-3">
+                  <div class="preview-pattern"></div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Footer / See all link -->
+        <div class="works-footer">
+          <a href="projects.html" class="see-all-link">
+            See all works
+            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="7" y1="17" x2="17" y2="7"/>
+              <polyline points="7 7 17 7 17 17"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Contact & Footer Section -->
+  <section class="contact-section" id="contact">
+    <div class="contact-container">
+
+      <!-- Top Row: Title and Socials Description -->
+      <div class="contact-header">
+        <h2 class="contact-title">Contact<br>me</h2>
+        <div class="contact-info">
+          <p class="contact-desc">Please leave your company information here or reach out to me directly via my social
+            media channels.</p>
+          <div class="social-links">
+            <a href="#" class="social-icon" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+            </a>
+            <a href="#" class="social-icon" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+            <a href="#" class="social-icon" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a href="#" class="social-icon" aria-label="Behance">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M9 12H5V8h4a2 2 0 0 1 0 4zM10 16H5v-4h5a2 2 0 0 1 0 4z" />
+                <path
+                  d="M19 20a4 4 0 0 0 4-4v-4a4 4 0 0 0-8 0v4a4 4 0 0 0 4 4zm0-8a2 2 0 0 1 2 2v1h-4v-1a2 2 0 0 1 2-2zM15 8h8" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <form class="contact-form" id="contact-form"
+        onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã gửi yêu cầu!');">
+        <div class="form-group">
+          <input type="text" id="form-name" name="name" placeholder="Name" required>
+        </div>
+        <div class="form-group">
+          <input type="text" id="form-business" name="business" placeholder="Your Business">
+        </div>
+        <div class="form-row">
+          <div class="form-group half-width">
+            <input type="email" id="form-email" name="email" placeholder="Email" required>
+          </div>
+          <div class="form-group half-width">
+            <input type="tel" id="form-phone" name="phone" placeholder="Phone">
+          </div>
+        </div>
+        <div class="form-group">
+          <textarea id="form-request" name="request" placeholder="Your Request" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Schedule a call</button>
+      </form>
+
+    </div>
+
+    <!-- Giant Watermark Text & Copyright Footer -->
+    <footer class="site-footer">
+      <div class="footer-watermark">PHAM MANH DESIGNER</div>
+      <div class="footer-bottom">
+        Copyright © 2026
+      </div>
+    </footer>
+  </section>
+
+  <!-- Video Lightbox Modal Overlay -->
+  <div class="video-modal" id="video-modal" aria-hidden="true">
+    <button class="modal-close-btn" id="modal-close-btn" aria-label="Close video player">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <div class="modal-content">
+      <div class="video-wrapper">
+        <video id="modal-video" controls playsinline>
+          <source src="" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- External JavaScript Logic -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="script.js" defer></script>
+
+  <!-- Dynamic Marquee Render Script -->
+  <script type="module">
+    import { getAllMarqueeCards } from './db.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const track1 = document.getElementById('marquee-track-1');
+      const track2 = document.getElementById('marquee-track-2');
+      if (!track1 || !track2) return;
+
+      try {
+        const cards = await getAllMarqueeCards();
+        const cardArray = Object.values(cards);
+
+        // Filter cards by row
+        const row1Cards = cardArray.filter(card => Number(card.row) === 1);
+        const row2Cards = cardArray.filter(card => Number(card.row) === 2);
+
+        // Render Row 1
+        renderTrack(track1, row1Cards);
+        // Render Row 2
+        renderTrack(track2, row2Cards);
+
+        function renderTrack(trackElement, cardsList) {
+          trackElement.innerHTML = ''; // clear
+
+          if (cardsList.length === 0) {
+            trackElement.innerHTML = '<div style="color: rgba(255,255,255,0.3); padding: 1rem;">No items</div>';
+            return;
+          }
+
+          // Render main elements
+          const cardElements = cardsList.map(card => {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'project-card';
+            
+            let bgStyle = '';
+            if (card.imageUrl) {
+              bgStyle = `style="background-image: url('${card.imageUrl}'); background-size: cover; background-position: center;"`;
+            }
+
+            cardDiv.innerHTML = `
+              <div class="card-inner">
+                <div class="card-header">${card.title}</div>
+                <div class="card-image-wrapper">
+                  <div class="card-image ${card.imageUrl ? '' : card.imageClass}" ${bgStyle}></div>
+                </div>
+              </div>
+            `;
+            return cardDiv;
+          });
+
+          // Append main elements
+          cardElements.forEach(el => trackElement.appendChild(el));
+
+          // Duplicate elements for seamless infinite loop scroll
+          cardElements.forEach(el => {
+            trackElement.appendChild(el.cloneNode(true));
+          });
+        }
+      } catch (err) {
+        console.error('Failed to render dynamic marquee:', err);
+      }
+    });
+  </script>
+</body>
+
+</html>

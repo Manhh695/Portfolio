@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMS Dashboard - Pham Duc Manh Portfolio</title>
+  <!-- Modern Typographies -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <!-- Core Design CSS -->
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    /* CMS Custom Style System (Ensuring High-Fidelity Glassmorphic Theme Specific to Admin Panel) */
+    body {
+      background-color: #121010;
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #hero-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    /* PASSCODE GATE SYSTEM */
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(10, 8, 8, 0.95);
+      backdrop-filter: blur(25px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .login-card {
+      background: rgba(22, 18, 18, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 3rem;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      backdrop-filter: blur(15px);
+      z-index: 1005;
+      transform: translateY(0);
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .login-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin: 0 0 0.5rem 0;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      background: linear-gradient(135deg, #FFFFFF 30%, #ef9311 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .login-subtitle {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.95rem;
+      margin: 0 0 2.5rem 0;
+    }
+
+    .login-error {
+      color: #ff4444;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    /* CMS DASHBOARD LAYOUT */
+    .admin-container {
+      position: relative;
+      display: flex;
+      min-height: 100vh;
+      z-index: 10;
+    }
+
+    .admin-sidebar {
+      width: 280px;
+      background: rgba(18, 14, 14, 0.85);
+      backdrop-filter: blur(25px);
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-direction: column;
+      padding: 2.5rem 1.8rem;
+      z-index: 20;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .sidebar-header .dot {
+      width: 10px;
+      height: 10px;
+      background-color: #ef9311;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(239, 147, 17, 0.8);
+    }
+
+    .sidebar-header h3 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      flex-grow: 1;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1rem 1.2rem;
+      background: none;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, 0.6);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .sidebar-link svg {
+      transition: stroke 0.25s ease;
+    }
+
+    .sidebar-link:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .sidebar-link.active {
+      color: #ef9311;
+      background: rgba(239, 147, 17, 0.06);
+      border-color: rgba(239, 147, 17, 0.15);
+      box-shadow: 0 4px 15px rgba(239, 147, 17, 0.04);
+    }
+
+    .sidebar-link.active svg {
+      stroke: #ef9311;
+    }
+
+    .btn-logout {
+      width: 100%;
+      padding: 0.9rem;
+      background: rgba(255, 68, 68, 0.08);
+      border: 1px solid rgba(255, 68, 68, 0.2);
+      color: #ff4444;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-logout:hover {
+      background: #ff4444;
+      color: #FFFFFF;
+    }
+
+    /* MAIN CONTENT VIEW */
+    .admin-main {
+      flex-grow: 1;
+      padding: 3.5rem 4.5rem;
+      max-height: 100vh;
+      overflow-y: auto;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 1.5rem;
+    }
+
+    .tab-header h2 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    /* BUTTON STYLING */
+    .btn-primary {
+      padding: 0.9rem 1.6rem;
+      background-color: #ef9311;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(239, 147, 17, 0.25);
+    }
+
+    .btn-primary:hover {
+      background-color: #d67d0a;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      padding: 0.9rem 1.6rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #FFFFFF;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* DATA TABLE STYLING */
+    .projects-list-container {
+      background: rgba(20, 16, 16, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .projects-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .projects-table th,
+    .projects-table td {
+      padding: 1.2rem 1.8rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .projects-table th {
+      background: rgba(255, 255, 255, 0.02);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .projects-table td {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .projects-table tbody tr {
+      transition: background 0.2s ease;
+    }
+
+    .projects-table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .projects-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .badge-simple {
+      background: rgba(51, 153, 255, 0.1);
+      color: #3399ff;
+      border: 1px solid rgba(51, 153, 255, 0.2);
+    }
+
+    .badge-selected {
+      background: rgba(239, 147, 17, 0.1);
+      color: #ef9311;
+      border: 1px solid rgba(239, 147, 17, 0.2);
+    }
+
+    .tag-bubble {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.78rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-right: 0.3rem;
+      margin-bottom: 0.3rem;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .btn-action-edit,
+    .btn-action-delete {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.4rem;
+      border-radius: 6px;
+      transition: background 0.2s ease;
+      margin-left: 0.3rem;
+    }
+
+    .btn-action-edit {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .btn-action-edit:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #FFFFFF;
+    }
+
+    .btn-action-delete {
+      color: rgba(255, 68, 68, 0.4);
+    }
+
+    .btn-action-delete:hover {
+      background: rgba(255, 68, 68, 0.1);
+      color: #ff4444;
+    }
+
+    /* MODAL FORM SYSTEM */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(10, 8, 8, 0.85);
+      backdrop-filter: blur(15px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-box {
+      background: rgba(20, 16, 16, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 1200px;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(25px);
+      padding: 2.5rem;
+      z-index: 105;
+    }
+
+    .modal-inner-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .modal-form-col {
+      min-width: 0;
+    }
+
+    .modal-preview-col {
+      position: sticky;
+      top: 0;
+    }
+
+    .preview-panel {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .preview-panel-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.2rem;
+      background: rgba(239, 147, 17, 0.08);
+      border-bottom: 1px solid rgba(239, 147, 17, 0.15);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #ef9311;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .preview-card-visual {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview-card-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
+    }
+
+    .preview-card-content {
+      padding: 1.2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .preview-project-subtitle {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #ef9311;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.3rem;
+    }
+
+    .preview-project-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 0.8rem;
+      line-height: 1.3;
+    }
+
+    .preview-project-desc {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .preview-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .preview-tag {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(239,147,17,0.12);
+      color: #ef9311;
+      border: 1px solid rgba(239,147,17,0.25);
+      font-weight: 500;
+    }
+
+    .preview-type-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      padding: 0.18rem 0.5rem;
+      border-radius: 3px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.6rem;
+    }
+
+    @media (max-width: 900px) {
+      .modal-inner-layout {
+        grid-template-columns: 1fr;
+      }
+      .modal-preview-col {
+        position: static;
+        order: -1;
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .modal-header h3 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: #ff4444;
+    }
+
+    /* FORM STYLING */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.75);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    .form-group.half { width: 50%; }
+    .form-group.third { width: 33.33%; }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #ef9311;
+      box-shadow: 0 0 10px rgba(239, 147, 17, 0.25);
+      background: rgba(0, 0, 0, 0.55);
+    }
+
+    .form-group select option {
+      background-color: #1a1616;
+      color: #FFFFFF;
+    }
+
+    /* SETTINGS INTERFACES */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.2rem;
+    }
+
+    .settings-card {
+      background: rgba(20, 16, 16, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 2.5rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .settings-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin: 0 0 0.8rem 0;
+    }
+
+    .settings-desc {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin: 0 0 2rem 0;
+    }
+
+    /* Switch toggle slider */
+    .form-toggle {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: #FFFFFF;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: #ef9311;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+    .status-msg {
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-top: 1rem;
+      transition: color 0.3s;
+    }
+    
+    .status-msg.success { color: #2ecc71; }
+    .status-msg.error { color: #e74c3c; }
+    .status-msg.info { color: #3498db; }
+  </style>
+</head>
+
+<body class="case-study-body">
+
+  <!-- Background Animated Canvas -->
+  <canvas id="hero-canvas"></canvas>
+
+  <!-- CORS file:// Protocol Warning Banner -->
+  <div id="cors-warning-banner" style="display: none; position: fixed; top: 2rem; left: 50%; transform: translateX(-50%); z-index: 9999; background: rgba(235, 77, 75, 0.15); border: 1px solid rgba(235, 77, 75, 0.4); backdrop-filter: blur(20px); border-radius: 12px; padding: 1.5rem 2rem; width: 90%; max-width: 600px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); font-family: 'Inter', sans-serif;">
+    <div style="display: flex; gap: 1rem; align-items: flex-start;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#eb4d4b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+        <line x1="12" y1="9" x2="12" y2="13"></line>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+      <div>
+        <h4 style="margin: 0 0 0.5rem 0; color: #eb4d4b; font-family: 'Outfit'; font-size: 1.1rem; font-weight: 600;">Cảnh báo bảo mật trình duyệt (CORS Policy)</h4>
+        <p style="margin: 0; color: rgba(255,255,255,0.8); font-size: 0.9rem; line-height: 1.6;">
+          Bạn đang mở file trực tiếp từ thư mục máy tính (giao thức <strong>file://</strong>). Trình duyệt của bạn chặn chạy mã JavaScript Module do chính sách bảo mật CORS.
+        </p>
+        <p style="margin: 0.8rem 0 0 0; color: #ef9311; font-size: 0.9rem; font-weight: 600;">
+          👉 Cách khắc phục: Hãy mở trình duyệt và truy cập: <a href="http://localhost:8081/admin.html" target="_blank" style="color: #ef9311; text-decoration: underline;">http://localhost:8081/admin.html</a> (Server chúng tôi đã khởi chạy sẵn cho bạn).
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Administration Panel Container -->
+  <div class="admin-container" id="admin-container">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <span class="dot"></span>
+        <h3>Pham Duc Manh</h3>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <button class="sidebar-link active" data-tab="projects-tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <rect x="3" y="3" width="7" height="9"></rect>
+            <rect x="14" y="3" width="7" height="5"></rect>
+            <rect x="14" y="12" width="7" height="9"></rect>
+            <rect x="3" y="16" width="7" height="5"></rect>
+          </svg>
+          Manage Projects
+        </button>
+        <button class="sidebar-link" data-tab="marquee-tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="21" y1="12" x2="3" y2="12"></line>
+            <line x1="12" y1="3" x2="12" y2="21"></line>
+          </svg>
+          Manage Marquee
+        </button>
+        <button class="sidebar-link" data-tab="settings-tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2 2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          Database & Sync
+        </button>
+        <a href="index.html" class="sidebar-link" style="margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 2rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          Go Back to Site
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="admin-main">
+      
+      <!-- Tab: Projects Management -->
+      <section id="projects-tab" class="tab-content active">
+        <div class="tab-header">
+          <h2>Project List</h2>
+          <button class="btn-primary" id="add-project-btn">Add New Project</button>
+        </div>
+        
+        <div class="projects-list-container">
+          <table class="projects-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Tags</th>
+                <th style="width: 120px; text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="projects-tbody">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Tab: Database & Settings -->
+      <section id="settings-tab" class="tab-content">
+        <div class="tab-header">
+          <h2>Database & Settings</h2>
+        </div>
+
+        <div class="settings-grid">
+          <!-- Firebase Sync Settings -->
+          <div class="settings-card">
+            <h3>Firebase Firestore Integration</h3>
+            <p class="settings-desc">Đồng bộ cơ sở dữ liệu lên đám mây trực tuyến bằng Firebase. Nhập cấu hình JSON của ứng dụng web và bật đồng bộ.</p>
+            
+            <div class="form-toggle">
+              <label class="switch">
+                <input type="checkbox" id="fb-sync-toggle">
+                <span class="slider round"></span>
+              </label>
+              <span>Enable Firebase Sync</span>
+            </div>
+
+            <div id="fb-config-fields" style="display: none; margin-top: 1.8rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.5rem;">
+              <div class="form-group">
+                <label>Firebase Web Config JSON</label>
+                <textarea id="fb-config-input" rows="7" style="font-family: monospace; font-size: 0.85rem;" placeholder='{
+  "apiKey": "YOUR_API_KEY",
+  "authDomain": "PROJECT_ID.firebaseapp.com",
+  "projectId": "PROJECT_ID",
+  "storageBucket": "PROJECT_ID.appspot.com",
+  "messagingSenderId": "...",
+  "appId": "..."
+}'></textarea>
+              </div>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1.2rem;">
+                <button class="btn-primary" id="save-fb-settings-btn">Save & Initialize Connection</button>
+                <button class="btn-secondary" id="sync-local-btn" style="display: none;">Upload Local Storage to Firestore</button>
+              </div>
+              <p id="fb-status-message" class="status-msg"></p>
+            </div>
+          </div>
+
+          <!-- Import / Export Raw JSON Data -->
+          <div class="settings-card">
+            <h3>Backup / Restore Raw Database</h3>
+            <p class="settings-desc">Sao lưu và phục hồi dữ liệu thô dạng JSON. Bạn có thể sao chép chuỗi JSON này để lưu trữ bên ngoài hoặc dán đè dữ liệu mới.</p>
+            
+            <div class="form-group">
+              <label>Database JSON String</label>
+              <textarea id="raw-json-data" rows="8" style="font-family: monospace; font-size: 0.8rem;"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 0.8rem; margin-top: 1.2rem;">
+              <button class="btn-secondary" id="export-btn">Refresh JSON</button>
+              <button class="btn-primary" id="import-btn" style="box-shadow: none;">Overwrite with JSON</button>
+            </div>
+            <p id="import-status-message" class="status-msg"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab: Marquee Management -->
+      <section id="marquee-tab" class="tab-content">
+        <div class="tab-header">
+          <h2>Manage Social Media Marquee</h2>
+          <button class="btn-primary" id="add-marquee-btn">Add Marquee Item</button>
+        </div>
+        
+        <div class="projects-list-container">
+          <table class="projects-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Row</th>
+                <th>Theme / Background</th>
+                <th style="width: 120px; text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="marquee-tbody">
+              <!-- Dynamically populated rows for marquee cards -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+      
+    </main>
+  </div>
+
+  <!-- Form Modal Overlay (Add & Edit Project) -->
+  <div class="modal-overlay" id="project-modal" style="display: none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modal-form-title">Add New Project</h3>
+        <button class="modal-close" id="modal-form-close-btn">&times;</button>
+      </div>
+      <div class="modal-inner-layout">
+        <div class="modal-form-col">
+      
+      <form id="project-form" onsubmit="event.preventDefault();">
+        <input type="hidden" id="form-mode" value="add"> <!-- 'add' or 'edit' -->
+        
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Unique ID (Slug / Key, e.g. acme)</label>
+            <input type="text" id="p-id" required placeholder="e.g. acme" pattern="^[a-zA-Z0-9-_]+$" title="Only alphanumeric, dashes, and underscores allowed">
+          </div>
+          <div class="form-group half">
+            <label>Project Type</label>
+            <select id="p-type" required>
+              <option value="simple">Simple Work (Dynamic page template)</option>
+              <option value="selected">Selected Work (Custom HTML Page)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Title</label>
+            <input type="text" id="p-title" required placeholder="Acme Identity Showcase">
+          </div>
+          <div class="form-group half">
+            <label>Subtitle / Domain</label>
+            <input type="text" id="p-subtitle" required placeholder="Graphic Design">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Category Filter Tags</label>
+            <div class="category-checkbox-group" style="display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: 0.5rem; padding: 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px;">
+              <label class="checkbox-container" style="display: flex; align-items: center; gap: 0.5rem; color: #FFFFFF; font-size: 0.9rem; cursor: pointer;">
+                <input type="checkbox" name="p-category-cb" value="graphic" style="accent-color: #ef9311; width: 16px; height: 16px; cursor: pointer;">
+                Graphic Design
+              </label>
+              <label class="checkbox-container" style="display: flex; align-items: center; gap: 0.5rem; color: #FFFFFF; font-size: 0.9rem; cursor: pointer;">
+                <input type="checkbox" name="p-category-cb" value="compositing" style="accent-color: #ef9311; width: 16px; height: 16px; cursor: pointer;">
+                Compositing
+              </label>
+              <label class="checkbox-container" style="display: flex; align-items: center; gap: 0.5rem; color: #FFFFFF; font-size: 0.9rem; cursor: pointer;">
+                <input type="checkbox" name="p-category-cb" value="product" style="accent-color: #ef9311; width: 16px; height: 16px; cursor: pointer;">
+                Product Design
+              </label>
+            </div>
+          </div>
+          <div class="form-group half">
+            <label>Gradient Theme Class (bg-gradient-1 to bg-gradient-9)</label>
+            <select id="p-themeClass" required>
+              <option value="bg-gradient-1">Theme 1 (SSI orange/gray)</option>
+              <option value="bg-gradient-2">Theme 2 (Mineverse purple/cyan)</option>
+              <option value="bg-gradient-3">Theme 3 (Airline royal blue/gray)</option>
+              <option value="bg-gradient-4">Theme 4 (Acme warm orange/gray)</option>
+              <option value="bg-gradient-5">Theme 5 (Cyberpunk dynamic mesh)</option>
+              <option value="bg-gradient-6">Theme 6 (Fintech light amber/dark)</option>
+              <option value="bg-gradient-7">Theme 7 (SaaS deep charcoal/gold)</option>
+              <option value="bg-gradient-8">Theme 8 (E-Commerce amber gradient)</option>
+              <option value="bg-gradient-9">Theme 9 (Vlog rich gold/black)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Tags (Select from services listed in index.html)</label>
+          <div class="tags-selection-container" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 0.5rem; padding: 1.2rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px;">
+            <div>
+              <div style="font-family: Outfit; font-weight: 500; font-size: 0.85rem; color: #ef9311; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Graphic Design</div>
+              <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Catalogue Layout" style="accent-color: #ef9311; cursor: pointer;">
+                  Catalogue Layout
+                </label>
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Banner/Poster" style="accent-color: #ef9311; cursor: pointer;">
+                  Banner/Poster
+                </label>
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Event - Key Visual" style="accent-color: #ef9311; cursor: pointer;">
+                  Event - Key Visual
+                </label>
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Brand Identity" style="accent-color: #ef9311; cursor: pointer;">
+                  Brand Identity
+                </label>
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Info-graphics" style="accent-color: #ef9311; cursor: pointer;">
+                  Info-graphics
+                </label>
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Presentation" style="accent-color: #ef9311; cursor: pointer;">
+                  Presentation
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-family: Outfit; font-weight: 500; font-size: 0.85rem; color: #ef9311; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Compositing</div>
+              <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Intro / Outro Video" style="accent-color: #ef9311; cursor: pointer;">
+                  Intro / Outro Video
+                </label>
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Editing Video" style="accent-color: #ef9311; cursor: pointer;">
+                  Editing Video
+                </label>
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Motion Graphic" style="accent-color: #ef9311; cursor: pointer;">
+                  Motion Graphic
+                </label>
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Logo Animation" style="accent-color: #ef9311; cursor: pointer;">
+                  Logo Animation
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-family: Outfit; font-weight: 500; font-size: 0.85rem; color: #ef9311; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Product Design</div>
+              <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Landing Page Design" style="accent-color: #ef9311; cursor: pointer;">
+                  Landing Page Design
+                </label>
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Web Design" style="accent-color: #ef9311; cursor: pointer;">
+                  Web Design
+                </label>
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="Design System" style="accent-color: #ef9311; cursor: pointer;">
+                  Design System
+                </label>
+                <label class="tag-checkbox-label" style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: rgba(255,255,255,0.8); cursor: pointer; padding: 0.3rem 0.6rem; background: rgba(255,255,255,0.04); border-radius: 4px; border: 1px solid rgba(255,255,255,0.08); transition: background 0.2s;">
+                  <input type="checkbox" name="p-tags-cb" value="App Design" style="accent-color: #ef9311; cursor: pointer;">
+                  App Design
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Description (HTML supported)</label>
+          <textarea id="p-desc" rows="4" required placeholder="Chi tiết câu chuyện giới thiệu dự án..."></textarea>
+        </div>
+
+        <!-- Dynamic detail block specifically for Dynamic Simple Page templates -->
+        <div id="simple-only-fields" style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.5rem; margin-top: 1.5rem;">
+          <h4 style="margin: 0 0 1.2rem 0; font-family: Outfit; font-weight: 500; font-size: 1.1rem; color: #ef9311;">Dynamic Showcase Fields</h4>
+          
+          <div class="form-row">
+            <div class="form-group third">
+              <label>Client</label>
+              <input type="text" id="p-client" placeholder="Acme Corporation">
+            </div>
+            <div class="form-group third">
+              <label>Role</label>
+              <input type="text" id="p-role" placeholder="Graphic Designer">
+            </div>
+            <div class="form-group third">
+              <label>Date</label>
+              <input type="text" id="p-date" placeholder="Q3 2025">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Showcase Images (Comma separated list of titles/URLs)</label>
+            <input type="text" id="p-images" placeholder="Grid Presentation Layout, Corporate stationery mockup">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
+              <button type="button" class="btn-secondary" id="btn-upload-images" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Images</button>
+              <input type="file" id="p-images-file" accept="image/*" multiple style="display: none;">
+              <span id="p-images-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Next Project Slug</label>
+              <input type="text" id="p-nextProject" placeholder="cyberpunk">
+            </div>
+            <div class="form-group half">
+              <label>Next Project CTA Title</label>
+              <input type="text" id="p-nextTitle" placeholder="Cyberpunk Game Intro">
+            </div>
+          </div>
+
+          <div class="form-group" id="p-video-upload-group" style="margin-top: 1.5rem; display: none;">
+            <label>Project Video URL (Optional - For Video Lightbox/Viewer)</label>
+            <input type="text" id="p-videoUrl" placeholder="e.g. https://assets.mixkit.co/... or upload a video">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
+              <button type="button" class="btn-secondary" id="btn-upload-video" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Video</button>
+              <input type="file" id="p-video-file" accept="video/*" style="display: none;">
+              <span id="p-video-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="save-project-btn" style="width: 100%; padding: 1.1rem; border-radius: 8px; margin-top: 1rem;">Save Project Data</button>
+      </form>
+    </div>
+
+    <!-- Live Preview Column -->
+    <div class="modal-preview-col">
+      <div class="preview-panel">
+        <div class="preview-panel-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          Live Preview
+        </div>
+
+        <!-- Visual Hero Card -->
+        <div class="preview-card-visual bg-gradient-4" id="preview-visual">
+        </div>
+
+        <div class="preview-card-content">
+
+          <div class="preview-project-subtitle" id="preview-subtitle">Category · Subtitle</div>
+          <div class="preview-project-title" id="preview-title">Project Title</div>
+          <div class="preview-project-desc" id="preview-desc">Project description will appear here...</div>
+          <div class="preview-tags" id="preview-tags">
+            <span class="preview-tag">Tag 1</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Portfolio card preview -->
+      <div style="margin-top: 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden;">
+        <div style="padding: 0.7rem 1rem; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">Portfolio Card</div>
+        <div style="padding: 1rem;">
+          <div class="preview-card-visual bg-gradient-4" id="preview-pf-visual" style="border-radius: 8px; aspect-ratio: 4/3; margin-bottom: 0.8rem;"></div>
+          <div style="font-family: Outfit; font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.3rem;" id="preview-pf-title">Project Title</div>
+          <div style="font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-bottom: 0.6rem;" id="preview-pf-desc">Description...</div>
+          <div id="preview-pf-tags" style="display: flex; flex-wrap: wrap; gap: 0.3rem;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end modal-inner-layout -->
+    </div>
+  </div>
+
+  <!-- Form Modal Overlay (Add & Edit Marquee Card) -->
+  <div class="modal-overlay" id="marquee-modal" style="display: none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="marquee-modal-form-title">Add Marquee Card</h3>
+        <button class="modal-close" id="marquee-modal-form-close-btn">&times;</button>
+      </div>
+      
+      <form id="marquee-form" onsubmit="event.preventDefault();">
+        <input type="hidden" id="marquee-form-mode" value="add">
+        
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Card ID (e.g. card-9)</label>
+            <input type="text" id="m-id" required placeholder="e.g. card-9" pattern="^[a-zA-Z0-9-_]+$" title="Only alphanumeric, dashes, and underscores allowed">
+          </div>
+          <div class="form-group half">
+            <label>Row Position</label>
+            <select id="m-row" required>
+              <option value="1">Row 1 (Right to Left)</option>
+              <option value="2">Row 2 (Left to Right)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label>Display Title</label>
+            <input type="text" id="m-title" required placeholder="Social Media Design">
+          </div>
+          <div class="form-group half">
+            <label>Abstract Style Theme (If no Custom Image)</label>
+            <select id="m-imageClass" required>
+              <option value="img-1">Theme 1 (SSI orange/gray)</option>
+              <option value="img-2">Theme 2 (Mineverse purple/cyan)</option>
+              <option value="img-3">Theme 3 (Airline royal blue/gray)</option>
+              <option value="img-4">Theme 4 (Acme warm orange/gray)</option>
+              <option value="img-5">Theme 5 (Cyberpunk dynamic mesh)</option>
+              <option value="img-6">Theme 6 (Fintech light amber/dark)</option>
+              <option value="img-7">Theme 7 (SaaS deep charcoal/gold)</option>
+              <option value="img-8">Theme 8 (E-Commerce amber gradient)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Custom Image URL (Optional - Overrides Abstract Theme)</label>
+          <input type="text" id="m-imageUrl" placeholder="e.g. images/my-design.jpg or https://...">
+          <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
+            <button type="button" class="btn-secondary" id="btn-upload-marquee" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Image</button>
+            <input type="file" id="m-image-file" accept="image/*" style="display: none;">
+            <span id="m-image-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="save-marquee-btn" style="width: 100%; padding: 1.1rem; border-radius: 8px; margin-top: 1rem;">Save Marquee Item</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" style="display: none; position: fixed; inset: 0; background: rgba(10,8,8,0.7); backdrop-filter: blur(10px); z-index: 500; align-items: center; justify-content: center; color: #FFFFFF; font-weight: 600; gap: 0.8rem; flex-direction: column;">
+    <div class="sidebar-header"><span class="dot"></span></div>
+    <span>Processing database operations...</span>
+  </div>
+
+  <!-- Core Database Operations module script -->
+  <script type="module">
+    import * as db from './db.js';
+
+    // Cache elements
+    const adminContainer = document.getElementById('admin-container');
+
+    const sidebarLinks = document.querySelectorAll('.sidebar-link[data-tab]');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    // Projects Grid Elements
+    const projectsTbody = document.getElementById('projects-tbody');
+    const addProjectBtn = document.getElementById('add-project-btn');
+    const modal = document.getElementById('project-modal');
+    const modalFormCloseBtn = document.getElementById('modal-form-close-btn');
+    const modalTitle = document.getElementById('modal-form-title');
+    const projectForm = document.getElementById('project-form');
+    const formMode = document.getElementById('form-mode');
+    const pIdInput = document.getElementById('p-id');
+    const pTypeSelect = document.getElementById('p-type');
+    const simpleOnlyFields = document.getElementById('simple-only-fields');
+
+    // Marquee Grid Elements
+    const marqueeTbody = document.getElementById('marquee-tbody');
+    const addMarqueeBtn = document.getElementById('add-marquee-btn');
+    const marqueeModal = document.getElementById('marquee-modal');
+    const marqueeModalCloseBtn = document.getElementById('marquee-modal-form-close-btn');
+    const marqueeModalTitle = document.getElementById('marquee-modal-form-title');
+    const marqueeForm = document.getElementById('marquee-form');
+    const marqueeFormMode = document.getElementById('marquee-form-mode');
+    const mIdInput = document.getElementById('m-id');
+
+    // Upload Elements
+    const pImagesFileInput = document.getElementById('p-images-file');
+    const pImagesUploadStatus = document.getElementById('p-images-upload-status');
+    const btnUploadImages = document.getElementById('btn-upload-images');
+    const pVideoFileInput = document.getElementById('p-video-file');
+    const pVideoUploadStatus = document.getElementById('p-video-upload-status');
+    const btnUploadVideo = document.getElementById('btn-upload-video');
+    const pVideoUrlInput = document.getElementById('p-videoUrl');
+    
+    const mImageFileInput = document.getElementById('m-image-file');
+    const mImageUploadStatus = document.getElementById('m-image-upload-status');
+    const btnUploadMarquee = document.getElementById('btn-upload-marquee');
+    const pVideoUploadGroup = document.getElementById('p-video-upload-group');
+
+    const fbSyncToggle = document.getElementById('fb-sync-toggle');
+    const fbConfigFields = document.getElementById('fb-config-fields');
+    const fbConfigInput = document.getElementById('fb-config-input');
+    const saveFbSettingsBtn = document.getElementById('save-fb-settings-btn');
+    const syncLocalBtn = document.getElementById('sync-local-btn');
+    const fbStatusMessage = document.getElementById('fb-status-message');
+
+    const rawJsonTextarea = document.getElementById('raw-json-data');
+    const exportBtn = document.getElementById('export-btn');
+    const importBtn = document.getElementById('import-btn');
+    const importStatusMessage = document.getElementById('import-status-message');
+    const loadingOverlay = document.getElementById('loading-overlay');
+
+    // 1. CMS PASSCODE SECURITY GATE (Removed as requested for direct access)
+
+    // 2. DASHBOARD TABS ENGINE
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sidebarLinks.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(tab => tab.classList.remove('active'));
+
+        link.classList.add('active');
+        const tabId = link.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+        
+        // Refresh export text area on entering settings tab
+        if (tabId === 'settings-tab') {
+          refreshExportJson();
+        }
+      });
+    });
+
+    // 3. CACHED DATA & GRID LOADERS
+    let cachedProjects = {};
+    let cachedMarquee = {};
+
+    async function initDashboard() {
+      showLoading(true);
+      try {
+        await loadProjectsGrid();
+        await loadMarqueeGrid();
+        loadSettings();
+      } catch (err) {
+        console.error('CMS Dashboard initialization error:', err);
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    async function loadProjectsGrid() {
+      cachedProjects = await db.getAllProjects();
+      projectsTbody.innerHTML = '';
+
+      Object.values(cachedProjects).forEach(project => {
+        const tr = document.createElement('tr');
+        tr.style.cursor = 'pointer';
+        tr.innerHTML = `
+          <td><strong style="font-family: Outfit; font-weight: 500;">${project.title}</strong></td>
+          <td>${project.subtitle}</td>
+          <td>
+            <span class="badge badge-${project.type || 'simple'}">${project.type || 'simple'}</span>
+          </td>
+          <td>
+            ${project.tags && Array.isArray(project.tags) 
+              ? project.tags.map(tag => `<span class="tag-bubble">${tag}</span>`).join('') 
+              : ''}
+          </td>
+          <td style="text-align: right; white-space: nowrap;">
+            <button class="btn-action-edit btn-edit-project" data-id="${project.id}" title="Chỉnh sửa">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            </button>
+            <button class="btn-action-delete btn-delete-project" data-id="${project.id}" title="Xóa">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            </button>
+          </td>
+        `;
+
+        tr.addEventListener('click', (e) => {
+          if (e.target.closest('.btn-delete-project')) {
+            return;
+          }
+          openEditForm(project.id);
+        });
+
+        projectsTbody.appendChild(tr);
+      });
+
+      // Bind dynamic actions
+      document.querySelectorAll('.btn-edit-project').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openEditForm(btn.getAttribute('data-id'));
+        });
+      });
+      document.querySelectorAll('.btn-delete-project').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteProject(btn.getAttribute('data-id'));
+        });
+      });
+    }
+
+    async function loadMarqueeGrid() {
+      cachedMarquee = await db.getAllMarqueeCards();
+      marqueeTbody.innerHTML = '';
+
+      Object.values(cachedMarquee).forEach(card => {
+        const tr = document.createElement('tr');
+        tr.style.cursor = 'pointer';
+        const bgLabel = card.imageUrl 
+          ? `<span style="color:#2ecc71; font-size:0.85rem; font-family:monospace; word-break:break-all;">Custom: ${card.imageUrl}</span>`
+          : `<span class="tag-bubble">${card.imageClass}</span>`;
+
+        tr.innerHTML = `
+          <td><strong style="font-family: Outfit; font-weight: 500;">${card.title}</strong></td>
+          <td><span class="badge badge-simple">Row ${card.row}</span></td>
+          <td>${bgLabel}</td>
+          <td style="text-align: right; white-space: nowrap;">
+            <button class="btn-action-edit btn-edit-marquee" data-id="${card.id}" title="Chỉnh sửa">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            </button>
+            <button class="btn-action-delete btn-delete-marquee" data-id="${card.id}" title="Xóa">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            </button>
+          </td>
+        `;
+
+        tr.addEventListener('click', (e) => {
+          if (e.target.closest('.btn-delete-marquee')) {
+            return;
+          }
+          openEditMarqueeForm(card.id);
+        });
+
+        marqueeTbody.appendChild(tr);
+      });
+
+      // Bind dynamic actions
+      document.querySelectorAll('.btn-edit-marquee').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openEditMarqueeForm(btn.getAttribute('data-id'));
+        });
+      });
+      document.querySelectorAll('.btn-delete-marquee').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteMarqueeCard(btn.getAttribute('data-id'));
+        });
+      });
+    }
+
+    // Modal forms toggles for projects
+    addProjectBtn.addEventListener('click', () => {
+      projectForm.reset();
+      formMode.value = 'add';
+      modalTitle.innerText = 'Add New Project';
+      pIdInput.disabled = false;
+      simpleOnlyFields.style.display = 'block';
+      pImagesUploadStatus.innerText = '';
+      pVideoUploadStatus.innerText = '';
+      pVideoUploadGroup.style.display = 'none';
+      modal.style.display = 'flex';
+    });
+
+    modalFormCloseBtn.addEventListener('click', () => modal.style.display = 'none');
+    
+    pTypeSelect.addEventListener('change', () => {
+      if (pTypeSelect.value === 'selected') {
+        simpleOnlyFields.style.display = 'none';
+      } else {
+        simpleOnlyFields.style.display = 'block';
+      }
+    });
+
+    function openEditForm(id) {
+      const project = cachedProjects[id];
+      if (!project) return;
+
+      formMode.value = 'edit';
+      modalTitle.innerText = `Edit Project: ${project.title}`;
+      
+      pIdInput.value = project.id;
+      pIdInput.disabled = true;
+      pTypeSelect.value = project.type || 'simple';
+      
+      document.getElementById('p-title').value = project.title;
+      document.getElementById('p-subtitle').value = project.subtitle;
+      
+      // Populate category checkboxes
+      const categories = project.category ? project.category.split(' ').map(s => s.trim()) : [];
+      document.querySelectorAll('input[name="p-category-cb"]').forEach(cb => {
+        cb.checked = categories.includes(cb.value);
+      });
+      
+      document.getElementById('p-themeClass').value = project.themeClass || 'bg-gradient-4';
+      
+      // Populate tag checkboxes
+      const tags = project.tags || [];
+      document.querySelectorAll('input[name="p-tags-cb"]').forEach(cb => {
+        cb.checked = tags.includes(cb.value);
+      });
+      
+      document.getElementById('p-desc').value = project.desc || '';
+
+      pImagesUploadStatus.innerText = '';
+      pVideoUploadStatus.innerText = '';
+
+      if (project.type === 'selected') {
+        simpleOnlyFields.style.display = 'none';
+      } else {
+        simpleOnlyFields.style.display = 'block';
+        document.getElementById('p-client').value = project.client || '';
+        document.getElementById('p-role').value = project.role || '';
+        document.getElementById('p-date').value = project.date || '';
+        document.getElementById('p-images').value = project.images ? project.images.join(', ') : '';
+        document.getElementById('p-nextProject').value = project.nextProject || '';
+        document.getElementById('p-nextTitle').value = project.nextTitle || '';
+        document.getElementById('p-videoUrl').value = project.videoUrl || '';
+        checkVideoFeature();
+      }
+
+      modal.style.display = 'flex';
+    }
+
+    projectForm.addEventListener('submit', async () => {
+      showLoading(true);
+      const id = pIdInput.value.trim().toLowerCase();
+      const type = pTypeSelect.value;
+      
+      // Get selected categories (space separated)
+      const selectedCategories = Array.from(document.querySelectorAll('input[name="p-category-cb"]:checked'))
+        .map(cb => cb.value)
+        .join(' ');
+
+      // Get selected tags
+      const selectedTags = Array.from(document.querySelectorAll('input[name="p-tags-cb"]:checked'))
+        .map(cb => cb.value);
+
+      if (!selectedCategories) {
+        showLoading(false);
+        alert('Vui lòng chọn ít nhất một Category.');
+        return;
+      }
+      if (selectedTags.length === 0) {
+        showLoading(false);
+        alert('Vui lòng chọn ít nhất một Tag.');
+        return;
+      }
+
+      const data = {
+        title: document.getElementById('p-title').value.trim(),
+        subtitle: document.getElementById('p-subtitle').value.trim(),
+        category: selectedCategories,
+        themeClass: document.getElementById('p-themeClass').value,
+        tags: selectedTags,
+        desc: document.getElementById('p-desc').value.trim(),
+        type: type
+      };
+
+      if (type === 'simple') {
+        data.client = document.getElementById('p-client').value.trim();
+        data.role = document.getElementById('p-role').value.trim();
+        data.date = document.getElementById('p-date').value.trim();
+        data.images = document.getElementById('p-images').value.split(',').map(img => img.trim()).filter(Boolean);
+        data.nextProject = document.getElementById('p-nextProject').value.trim();
+        data.nextTitle = document.getElementById('p-nextTitle').value.trim();
+        data.videoUrl = document.getElementById('p-videoUrl').value.trim();
+      }
+
+      try {
+        await db.saveProject(id, data);
+        modal.style.display = 'none';
+        await loadProjectsGrid();
+      } catch (err) {
+        alert('Lưu dữ liệu thất bại. Kiểm tra kết nối.');
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    async function deleteProject(id) {
+      if (!confirm(`Bạn có chắc chắn muốn xóa dự án '${id}' khỏi cơ sở dữ liệu?`)) {
+        return;
+      }
+      
+      showLoading(true);
+      try {
+        await db.deleteProject(id);
+        await loadProjectsGrid();
+      } catch (err) {
+        alert('Xóa dữ liệu thất bại.');
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    // Modal toggles & operations for marquee cards
+    addMarqueeBtn.addEventListener('click', () => {
+      marqueeForm.reset();
+      marqueeFormMode.value = 'add';
+      marqueeModalTitle.innerText = 'Add Marquee Card';
+      mIdInput.disabled = false;
+      mImageUploadStatus.innerText = '';
+      marqueeModal.style.display = 'flex';
+    });
+
+    marqueeModalCloseBtn.addEventListener('click', () => marqueeModal.style.display = 'none');
+
+    function openEditMarqueeForm(id) {
+      const card = cachedMarquee[id];
+      if (!card) return;
+
+      marqueeFormMode.value = 'edit';
+      marqueeModalTitle.innerText = `Edit Marquee Card: ${id}`;
+      
+      mIdInput.value = card.id;
+      mIdInput.disabled = true;
+      document.getElementById('m-row').value = card.row || 1;
+      document.getElementById('m-title').value = card.title || 'Social Media Design';
+      document.getElementById('m-imageClass').value = card.imageClass || 'img-1';
+      document.getElementById('m-imageUrl').value = card.imageUrl || '';
+      mImageUploadStatus.innerText = '';
+
+      marqueeModal.style.display = 'flex';
+    }
+
+    marqueeForm.addEventListener('submit', async () => {
+      showLoading(true);
+      const id = mIdInput.value.trim().toLowerCase();
+      
+      const data = {
+        row: Number(document.getElementById('m-row').value),
+        title: document.getElementById('m-title').value.trim(),
+        imageClass: document.getElementById('m-imageClass').value,
+        imageUrl: document.getElementById('m-imageUrl').value.trim()
+      };
+
+      try {
+        await db.saveMarqueeCard(id, data);
+        marqueeModal.style.display = 'none';
+        await loadMarqueeGrid();
+      } catch (err) {
+        alert('Lưu dữ liệu thẻ marquee thất bại.');
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    async function deleteMarqueeCard(id) {
+      if (!confirm(`Bạn có chắc muốn xóa thẻ marquee '${id}'?`)) {
+        return;
+      }
+      
+      showLoading(true);
+      try {
+        await db.deleteMarqueeCard(id);
+        await loadMarqueeGrid();
+      } catch (err) {
+        alert('Xóa dữ liệu thất bại.');
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    // 4. SETTINGS & SYNCHRONIZATION
+    function loadSettings() {
+      const settings = db.getDbSettings();
+      fbSyncToggle.checked = settings.firebaseEnabled;
+      
+      if (settings.firebaseEnabled) {
+        fbConfigFields.style.display = 'block';
+        syncLocalBtn.style.display = 'inline-block';
+      } else {
+        fbConfigFields.style.display = 'none';
+        syncLocalBtn.style.display = 'none';
+      }
+
+      if (settings.firebaseConfig) {
+        fbConfigInput.value = JSON.stringify(settings.firebaseConfig, null, 2);
+      }
+    }
+
+    fbSyncToggle.addEventListener('change', () => {
+      if (fbSyncToggle.checked) {
+        fbConfigFields.style.display = 'block';
+      } else {
+        fbConfigFields.style.display = 'none';
+        syncLocalBtn.style.display = 'none';
+        
+        const settings = db.getDbSettings();
+        settings.firebaseEnabled = false;
+        db.saveDbSettings(settings);
+        
+        fbStatusMessage.innerText = 'Đồng bộ Firebase đã tắt. Hệ thống chuyển về sử dụng LocalStorage.';
+        fbStatusMessage.className = 'status-msg info';
+      }
+    });
+
+    saveFbSettingsBtn.addEventListener('click', async () => {
+      const configStr = fbConfigInput.value.trim();
+      if (!configStr) {
+        fbStatusMessage.innerText = 'Vui lòng nhập chuỗi JSON cấu hình Firebase SDK.';
+        fbStatusMessage.className = 'status-msg error';
+        return;
+      }
+
+      showLoading(true);
+      fbStatusMessage.innerText = '';
+      
+      try {
+        const config = JSON.parse(configStr);
+        if (!config.apiKey || !config.projectId) {
+          throw new Error('Cấu hình JSON thiếu các trường bắt buộc (apiKey, projectId).');
+        }
+
+        const settings = {
+          firebaseEnabled: true,
+          firebaseConfig: config
+        };
+
+        db.saveDbSettings(settings);
+        
+        // Re-initialize database to verify connection
+        const testData = await db.getAllProjects();
+        cachedProjects = testData;
+        await loadProjectsGrid();
+        await loadMarqueeGrid();
+
+        fbStatusMessage.innerText = 'Kết nối Firebase thành công! Cơ sở dữ liệu đã đồng bộ đám mây.';
+        fbStatusMessage.className = 'status-msg success';
+        syncLocalBtn.style.display = 'inline-block';
+      } catch (err) {
+        fbStatusMessage.innerText = `Lỗi cấu hình: ${err.message}. Đảm bảo chuỗi JSON hợp lệ.`;
+        fbStatusMessage.className = 'status-msg error';
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    syncLocalBtn.addEventListener('click', async () => {
+      if (!confirm('Bạn có muốn đẩy toàn bộ dữ liệu trong LocalStorage lên đám mây Firestore không?')) {
+        return;
+      }
+
+      showLoading(true);
+      fbStatusMessage.innerText = '';
+
+      try {
+        await db.syncLocalToFirebase();
+        fbStatusMessage.innerText = 'Đồng bộ dữ liệu LocalStorage lên Firestore hoàn tất!';
+        fbStatusMessage.className = 'status-msg success';
+      } catch (err) {
+        fbStatusMessage.innerText = `Đồng bộ thất bại: ${err.message}`;
+        fbStatusMessage.className = 'status-msg error';
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    // 5. IMPORT / EXPORT DATA (Unified JSON Backup)
+    function refreshExportJson() {
+      const localProjects = localStorage.getItem('portfolio_projects') || '{}';
+      const localMarquee = localStorage.getItem('portfolio_marquee_cards') || '{}';
+      
+      const combined = {
+        projects: JSON.parse(localProjects),
+        marquee: JSON.parse(localMarquee)
+      };
+      
+      rawJsonTextarea.value = JSON.stringify(combined, null, 2);
+    }
+
+    exportBtn.addEventListener('click', () => {
+      refreshExportJson();
+      importStatusMessage.innerText = 'Dữ liệu xuất đã làm mới thành công.';
+      importStatusMessage.className = 'status-msg success';
+    });
+
+    importBtn.addEventListener('click', async () => {
+      const jsonStr = rawJsonTextarea.value.trim();
+      if (!jsonStr) {
+        importStatusMessage.innerText = 'Vui lòng dán chuỗi JSON thô vào khung văn bản.';
+        importStatusMessage.className = 'status-msg error';
+        return;
+      }
+
+      if (!confirm('Hành động này sẽ xóa và dán đè toàn bộ dự án & marquee hiện tại của bạn trong bộ nhớ LocalStorage. Bạn có muốn tiếp tục?')) {
+        return;
+      }
+
+      showLoading(true);
+      importStatusMessage.innerText = '';
+
+      try {
+        const data = JSON.parse(jsonStr);
+        
+        if (data.projects) {
+          // Schema verification
+          Object.keys(data.projects).forEach(key => {
+            if (!data.projects[key].title || !data.projects[key].subtitle) {
+              throw new Error(`Dự án '${key}' thiếu các trường bắt buộc (title, subtitle).`);
+            }
+          });
+          localStorage.setItem('portfolio_projects', JSON.stringify(data.projects));
+        }
+
+        if (data.marquee) {
+          // Schema verification
+          Object.keys(data.marquee).forEach(key => {
+            if (!data.marquee[key].title || !data.marquee[key].row) {
+              throw new Error(`Thẻ Marquee '${key}' thiếu các trường bắt buộc (title, row).`);
+            }
+          });
+          localStorage.setItem('portfolio_marquee_cards', JSON.stringify(data.marquee));
+        }
+        
+        // Sync to Firebase if sync is active
+        const settings = db.getDbSettings();
+        if (settings.firebaseEnabled) {
+          await db.syncLocalToFirebase();
+        }
+
+        await loadProjectsGrid();
+        await loadMarqueeGrid();
+        
+        importStatusMessage.innerText = 'Nhập tệp dữ liệu hoàn tất! Toàn bộ cơ sở dữ liệu đã được thay thế.';
+        importStatusMessage.className = 'status-msg success';
+      } catch (err) {
+        importStatusMessage.innerText = `Lỗi nhập JSON: ${err.message}.`;
+        importStatusMessage.className = 'status-msg error';
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    // 6. UTILITY LOADER
+    function showLoading(show) {
+      loadingOverlay.style.display = show ? 'flex' : 'none';
+    }
+
+    // 7. FILE UPLOAD CONTROLLERS
+    async function processUpload(file, folder, statusSpan) {
+      const settings = db.getDbSettings();
+      statusSpan.className = 'status-msg info';
+      
+      if (settings.firebaseEnabled) {
+        statusSpan.innerText = `Uploading ${file.name}...`;
+        try {
+          const url = await db.uploadFileToFirebase(file, folder);
+          statusSpan.innerText = 'Upload successful';
+          statusSpan.className = 'status-msg success';
+          return url;
+        } catch (err) {
+          statusSpan.innerText = `Upload failed: ${err.message}`;
+          statusSpan.className = 'status-msg error';
+          throw err;
+        }
+      } else {
+        // Local Base64 conversion
+        if (file.size > 2 * 1024 * 1024) {
+          alert(`Tệp ${file.name} vượt quá 2MB. Với dung lượng LocalStorage giới hạn (~5MB), tệp lớn có thể làm lỗi lưu trữ. Vui lòng kích hoạt Firebase Firestore & Storage trong Settings để sử dụng lưu trữ đám mây tốt hơn.`);
+        }
+        statusSpan.innerText = `Converting ${file.name}...`;
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            statusSpan.innerText = 'Convert successful';
+            statusSpan.className = 'status-msg success';
+            resolve(reader.result);
+          };
+          reader.onerror = (err) => {
+            statusSpan.innerText = 'Conversion failed';
+            statusSpan.className = 'status-msg error';
+            reject(err);
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+    }
+
+    // Toggle video upload feature visibility based on tags
+    function checkVideoFeature() {
+      const selectedTags = Array.from(document.querySelectorAll('input[name="p-tags-cb"]:checked'))
+        .map(cb => cb.value.toLowerCase());
+      
+      const compositingTags = [
+        'intro / outro video',
+        'editing video',
+        'motion graphic',
+        'logo animation'
+      ];
+      
+      const supportsVideo = selectedTags.some(tag => compositingTags.includes(tag));
+      
+      if (supportsVideo) {
+        pVideoUploadGroup.style.display = 'block';
+      } else {
+        pVideoUploadGroup.style.display = 'none';
+      }
+    }
+
+    // Bind change listeners to the tag checkboxes
+    document.querySelectorAll('input[name="p-tags-cb"]').forEach(cb => {
+      cb.addEventListener('change', checkVideoFeature);
+    });
+
+    // Bind triggers to click of hidden selectors
+    btnUploadImages.addEventListener('click', () => pImagesFileInput.click());
+    btnUploadVideo.addEventListener('click', () => pVideoFileInput.click());
+    btnUploadMarquee.addEventListener('click', () => mImageFileInput.click());
+
+    // Project Showcase Images Upload
+    pImagesFileInput.addEventListener('change', async () => {
+      const files = Array.from(pImagesFileInput.files);
+      if (!files.length) return;
+      
+      pImagesUploadStatus.innerText = 'Processing images...';
+      pImagesUploadStatus.className = 'status-msg info';
+      
+      const urls = [];
+      try {
+        for (const file of files) {
+          const url = await processUpload(file, 'portfolio/images', pImagesUploadStatus);
+          urls.push(url);
+        }
+        
+        const currentVal = document.getElementById('p-images').value.trim();
+        const existing = currentVal ? currentVal.split(',').map(s => s.trim()).filter(Boolean) : [];
+        const combined = [...existing, ...urls];
+        document.getElementById('p-images').value = combined.join(', ');
+        
+        pImagesUploadStatus.innerText = `Processed ${files.length} images.`;
+        pImagesUploadStatus.className = 'status-msg success';
+      } catch (err) {
+        console.error(err);
+        pImagesUploadStatus.innerText = 'Error processing some images';
+        pImagesUploadStatus.className = 'status-msg error';
+      }
+    });
+
+    // Project Video Upload
+    pVideoFileInput.addEventListener('change', async () => {
+      const file = pVideoFileInput.files[0];
+      if (!file) return;
+      
+      pVideoUploadStatus.innerText = 'Processing video...';
+      pVideoUploadStatus.className = 'status-msg info';
+      
+      try {
+        const url = await processUpload(file, 'portfolio/videos', pVideoUploadStatus);
+        pVideoUrlInput.value = url;
+        pVideoUploadStatus.innerText = 'Video processed successfully';
+        pVideoUploadStatus.className = 'status-msg success';
+      } catch (err) {
+        console.error(err);
+        pVideoUploadStatus.innerText = 'Error processing video';
+        pVideoUploadStatus.className = 'status-msg error';
+      }
+    });
+
+    // Marquee Image Upload
+    mImageFileInput.addEventListener('change', async () => {
+      const file = mImageFileInput.files[0];
+      if (!file) return;
+      
+      mImageUploadStatus.innerText = 'Processing marquee image...';
+      mImageUploadStatus.className = 'status-msg info';
+      
+      try {
+        const url = await processUpload(file, 'portfolio/marquee', mImageUploadStatus);
+        document.getElementById('m-imageUrl').value = url;
+        mImageUploadStatus.innerText = 'Image processed successfully';
+        mImageUploadStatus.className = 'status-msg success';
+      } catch (err) {
+        console.error(err);
+        mImageUploadStatus.innerText = 'Error processing image';
+        mImageUploadStatus.className = 'status-msg error';
+      }
+    });
+
+
+    // ========================================
+    // 8. LIVE PREVIEW ENGINE
+    // ========================================
+    const GRADIENT_CLASSES = [
+      'bg-gradient-1','bg-gradient-2','bg-gradient-3','bg-gradient-4',
+      'bg-gradient-5','bg-gradient-6','bg-gradient-7','bg-gradient-8','bg-gradient-9'
+    ];
+
+    function updatePreview() {
+      const title     = document.getElementById('p-title').value.trim()    || 'Project Title';
+      const subtitle  = document.getElementById('p-subtitle').value.trim() || 'Subtitle';
+      const desc      = document.getElementById('p-desc').value.trim()      || 'Project description will appear here...';
+      const themeClass = document.getElementById('p-themeClass').value      || 'bg-gradient-4';
+      const type      = document.getElementById('p-type').value             || 'simple';
+
+      const selectedTags = Array.from(document.querySelectorAll('input[name="p-tags-cb"]:checked'))
+        .map(cb => cb.value);
+
+      // Update hero card preview
+      const previewVisual = document.getElementById('preview-visual');
+      GRADIENT_CLASSES.forEach(cls => previewVisual.classList.remove(cls));
+      previewVisual.classList.add(themeClass);
+
+      document.getElementById('preview-title').innerText    = title;
+      document.getElementById('preview-subtitle').innerText = subtitle;
+      document.getElementById('preview-desc').innerText     = desc;
+
+
+      // Tag chips
+      const tagsContainer = document.getElementById('preview-tags');
+      tagsContainer.innerHTML = selectedTags.length
+        ? selectedTags.map(t => `<span class="preview-tag">${t}</span>`).join('')
+        : '<span style="font-size:0.75rem; color:rgba(255,255,255,0.25);">No tags selected</span>';
+
+      // Portfolio card preview
+      const pfVisual = document.getElementById('preview-pf-visual');
+      GRADIENT_CLASSES.forEach(cls => pfVisual.classList.remove(cls));
+      pfVisual.classList.add(themeClass);
+
+      document.getElementById('preview-pf-title').innerText = title;
+      const truncated = desc.length > 100 ? desc.substring(0, 100) + '...' : desc;
+      document.getElementById('preview-pf-desc').innerText  = truncated;
+
+      const pfTags = document.getElementById('preview-pf-tags');
+      pfTags.innerHTML = selectedTags.length
+        ? selectedTags.map(t => `<span class="preview-tag">${t}</span>`).join('')
+        : '';
+    }
+
+    // Wire live preview to all relevant form fields
+    ['p-title','p-subtitle','p-desc'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', updatePreview);
+    });
+    document.getElementById('p-themeClass').addEventListener('change', updatePreview);
+    document.getElementById('p-type').addEventListener('change', updatePreview);
+    document.querySelectorAll('input[name="p-tags-cb"]').forEach(cb => {
+      cb.addEventListener('change', updatePreview);
+    });
+
+    // Run once immediately to set initial state
+    updatePreview();
+
+    // INITIALIZE DASHBOARD DIRECTLY
+    initDashboard();
+
+    // Set modular script loaded flag
+    window.moduleScriptLoaded = true;
+
+  </script>
+
+  <!-- Script to verify ES modules are allowed by browser (CORS policy under file:// protocol) -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      // Check if modular script was loaded after a short delay
+      setTimeout(() => {
+        if (!window.moduleScriptLoaded) {
+          const banner = document.getElementById('cors-warning-banner');
+          if (banner) {
+            banner.style.display = 'block';
+          }
+        }
+      }, 500);
+    });
+  </script>
+
+  <!-- External Script to run floating color blobs (Reusing main visual assets) -->
+  <script src="script.js" defer></script>
+
+</body>
+
+</html>
