@@ -183,20 +183,42 @@ const DEFAULT_PROJECTS = {
 let firebaseApp = null;
 let firestoreDb = null;
 
+// =============================================
+// BUILT-IN FIREBASE CONFIG (hardcoded)
+// Thay đổi nếu bạn muốn dùng project khác
+// =============================================
+const BUILT_IN_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBCYeVNjQSuL_1n31iJR6NCtmSBE5lS_aI",
+  authDomain: "portfolio-f4207.firebaseapp.com",
+  projectId: "portfolio-f4207",
+  storageBucket: "portfolio-f4207.firebasestorage.app",
+  messagingSenderId: "72710774066",
+  appId: "1:72710774066:web:5d02182da6e1961232cb2b",
+  measurementId: "G-M5512XBX60"
+};
+
 // Retrieves DB config settings from LocalStorage
+// Falls back to built-in config if not set
 export function getDbSettings() {
   const localSettings = localStorage.getItem('portfolio_db_settings');
   if (localSettings) {
     try {
-      return JSON.parse(localSettings);
+      const parsed = JSON.parse(localSettings);
+      // If user has not explicitly disabled firebase, merge in the built-in config as fallback
+      if (!parsed.firebaseConfig) {
+        parsed.firebaseConfig = BUILT_IN_FIREBASE_CONFIG;
+        parsed.firebaseEnabled = true;
+      }
+      return parsed;
     } catch (e) {
       console.error('Corrupted portfolio_db_settings JSON in localStorage, resetting:', e);
       localStorage.removeItem('portfolio_db_settings');
     }
   }
+  // Default: use built-in config with Firebase enabled
   return {
-    firebaseEnabled: false,
-    firebaseConfig: null
+    firebaseEnabled: true,
+    firebaseConfig: BUILT_IN_FIREBASE_CONFIG
   };
 }
 
@@ -213,16 +235,21 @@ async function getFirestoreDb() {
   if (firestoreDb) return firestoreDb;
 
   const settings = getDbSettings();
-  if (!settings.firebaseEnabled || !settings.firebaseConfig || (typeof navigator !== 'undefined' && !navigator.onLine)) {
+  if (!settings.firebaseEnabled || !settings.firebaseConfig) {
     return null;
   }
 
+  // Allow offline usage gracefully — don't block on navigator.onLine
+  // Firebase SDK handles reconnection automatically
+
   try {
-    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js');
+    const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js');
     const { getFirestore } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
     
     if (!firebaseApp) {
-      firebaseApp = initializeApp(settings.firebaseConfig);
+      // Reuse existing Firebase app if already initialized (avoids duplicate app error)
+      const apps = getApps();
+      firebaseApp = apps.length > 0 ? getApp() : initializeApp(settings.firebaseConfig);
     }
     firestoreDb = getFirestore(firebaseApp);
     return firestoreDb;
@@ -459,16 +486,17 @@ export async function getFirebaseStorage() {
   if (firebaseStorage) return firebaseStorage;
 
   const settings = getDbSettings();
-  if (!settings.firebaseEnabled || !settings.firebaseConfig || (typeof navigator !== 'undefined' && !navigator.onLine)) {
+  if (!settings.firebaseEnabled || !settings.firebaseConfig) {
     return null;
   }
 
   try {
-    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js');
+    const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js');
     const { getStorage } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js');
     
     if (!firebaseApp) {
-      firebaseApp = initializeApp(settings.firebaseConfig);
+      const apps = getApps();
+      firebaseApp = apps.length > 0 ? getApp() : initializeApp(settings.firebaseConfig);
     }
     firebaseStorage = getStorage(firebaseApp);
     return firebaseStorage;

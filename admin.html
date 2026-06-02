@@ -1056,6 +1056,21 @@
           <textarea id="p-desc" rows="4" required placeholder="Chi tiết câu chuyện giới thiệu dự án..."></textarea>
         </div>
 
+        <!-- Selected Work specific fields -->
+        <div id="selected-only-fields" style="display: none; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.5rem; margin-top: 1.5rem;">
+          <h4 style="margin: 0 0 1.2rem 0; font-family: Outfit; font-weight: 500; font-size: 1.1rem; color: #7b8ef7;">Selected Work Fields</h4>
+
+          <div class="form-group">
+            <label>Cover / Hero Image URL (Displayed on portfolio card &amp; case study)</label>
+            <input type="text" id="p-coverImage" placeholder="e.g. https://... or upload an image">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
+              <button type="button" class="btn-secondary" id="btn-upload-cover" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Cover Image</button>
+              <input type="file" id="p-cover-file" accept="image/*" style="display: none;">
+              <span id="p-cover-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
+            </div>
+          </div>
+        </div>
+
         <!-- Dynamic detail block specifically for Dynamic Simple Page templates -->
         <div id="simple-only-fields" style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.5rem; margin-top: 1.5rem;">
           <h4 style="margin: 0 0 1.2rem 0; font-family: Outfit; font-weight: 500; font-size: 1.1rem; color: #ef9311;">Dynamic Showcase Fields</h4>
@@ -1261,6 +1276,10 @@
     const mImageUploadStatus = document.getElementById('m-image-upload-status');
     const btnUploadMarquee = document.getElementById('btn-upload-marquee');
     const pVideoUploadGroup = document.getElementById('p-video-upload-group');
+    const selectedOnlyFields = document.getElementById('selected-only-fields');
+    const pCoverFileInput = document.getElementById('p-cover-file');
+    const pCoverUploadStatus = document.getElementById('p-cover-upload-status');
+    const btnUploadCover = document.getElementById('btn-upload-cover');
 
     const fbSyncToggle = document.getElementById('fb-sync-toggle');
     const fbConfigFields = document.getElementById('fb-config-fields');
@@ -1421,9 +1440,12 @@
       modalTitle.innerText = 'Add New Project';
       pIdInput.disabled = false;
       simpleOnlyFields.style.display = 'block';
+      selectedOnlyFields.style.display = 'none';
       pImagesUploadStatus.innerText = '';
       pVideoUploadStatus.innerText = '';
+      pCoverUploadStatus.innerText = '';
       pVideoUploadGroup.style.display = 'none';
+      updatePreview();
       modal.style.display = 'flex';
     });
 
@@ -1432,8 +1454,10 @@
     pTypeSelect.addEventListener('change', () => {
       if (pTypeSelect.value === 'selected') {
         simpleOnlyFields.style.display = 'none';
+        selectedOnlyFields.style.display = 'block';
       } else {
         simpleOnlyFields.style.display = 'block';
+        selectedOnlyFields.style.display = 'none';
       }
     });
 
@@ -1469,11 +1493,15 @@
 
       pImagesUploadStatus.innerText = '';
       pVideoUploadStatus.innerText = '';
+      pCoverUploadStatus.innerText = '';
 
       if (project.type === 'selected') {
         simpleOnlyFields.style.display = 'none';
+        selectedOnlyFields.style.display = 'block';
+        document.getElementById('p-coverImage').value = project.coverImage || '';
       } else {
         simpleOnlyFields.style.display = 'block';
+        selectedOnlyFields.style.display = 'none';
         document.getElementById('p-client').value = project.client || '';
         document.getElementById('p-role').value = project.role || '';
         document.getElementById('p-date').value = project.date || '';
@@ -1530,6 +1558,8 @@
         data.nextProject = document.getElementById('p-nextProject').value.trim();
         data.nextTitle = document.getElementById('p-nextTitle').value.trim();
         data.videoUrl = document.getElementById('p-videoUrl').value.trim();
+      } else if (type === 'selected') {
+        data.coverImage = document.getElementById('p-coverImage').value.trim();
       }
 
       try {
@@ -1642,6 +1672,24 @@
 
       if (settings.firebaseConfig) {
         fbConfigInput.value = JSON.stringify(settings.firebaseConfig, null, 2);
+      }
+
+      // Auto-test Firebase Storage on load
+      if (settings.firebaseEnabled) {
+        fbStatusMessage.innerText = '⏳ Đang kiểm tra kết nối Firebase Storage...';
+        fbStatusMessage.className = 'status-msg info';
+        db.getFirebaseStorage().then(storage => {
+          if (storage) {
+            fbStatusMessage.innerText = '✅ Firebase Storage kết nối thành công! Upload ảnh sẵn sàng.';
+            fbStatusMessage.className = 'status-msg success';
+          } else {
+            fbStatusMessage.innerText = '⚠️ Firebase Storage chưa hoạt động. Vào Firebase Console → Build → Storage → "Get Started" để kích hoạt, sau đó kiểm tra Rules cho phép read/write.';
+            fbStatusMessage.className = 'status-msg error';
+          }
+        }).catch(err => {
+          fbStatusMessage.innerText = `❌ Lỗi Firebase Storage: ${err.message}`;
+          fbStatusMessage.className = 'status-msg error';
+        });
       }
     }
 
@@ -1805,43 +1853,96 @@
 
     // 7. FILE UPLOAD CONTROLLERS
     async function processUpload(file, folder, statusSpan) {
-      const settings = db.getDbSettings();
       statusSpan.className = 'status-msg info';
-      
-      if (settings.firebaseEnabled) {
-        statusSpan.innerText = `Uploading ${file.name}...`;
-        try {
-          const url = await db.uploadFileToFirebase(file, folder);
-          statusSpan.innerText = 'Upload successful';
-          statusSpan.className = 'status-msg success';
-          return url;
-        } catch (err) {
-          statusSpan.innerText = `Upload failed: ${err.message}`;
-          statusSpan.className = 'status-msg error';
-          throw err;
-        }
-      } else {
-        // Local Base64 conversion
+      statusSpan.innerText = 'Đang kiểm tra kết nối Firebase...';
+
+      // Step 1: Check Firebase settings
+      const settings = db.getDbSettings();
+      console.log('[Upload] Firebase settings:', settings);
+
+      if (!settings.firebaseEnabled || !settings.firebaseConfig) {
+        // Fallback to Base64 local conversion
+        console.log('[Upload] Firebase not enabled, using base64 fallback');
+        statusSpan.innerText = 'Firebase chưa kết nối – đang chuyển đổi ảnh thành Base64...';
         if (file.size > 2 * 1024 * 1024) {
-          alert(`Tệp ${file.name} vượt quá 2MB. Với dung lượng LocalStorage giới hạn (~5MB), tệp lớn có thể làm lỗi lưu trữ. Vui lòng kích hoạt Firebase Firestore & Storage trong Settings để sử dụng lưu trữ đám mây tốt hơn.`);
+          statusSpan.innerText = `⚠️ File quá lớn (${(file.size/1024/1024).toFixed(1)}MB). Firebase Storage chưa kết nối nên dùng Base64.`;
+          statusSpan.className = 'status-msg error';
         }
-        statusSpan.innerText = `Converting ${file.name}...`;
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = () => {
-            statusSpan.innerText = 'Convert successful';
+            statusSpan.innerText = '✓ Đã chuyển đổi thành Base64 (local)';
             statusSpan.className = 'status-msg success';
             resolve(reader.result);
           };
           reader.onerror = (err) => {
-            statusSpan.innerText = 'Conversion failed';
+            statusSpan.innerText = '✗ Chuyển đổi Base64 thất bại';
             statusSpan.className = 'status-msg error';
             reject(err);
           };
           reader.readAsDataURL(file);
         });
       }
+
+      // Step 2: Try Firebase Storage
+      statusSpan.innerText = `Đang kết nối Firebase Storage... (${file.name})`;
+      console.log('[Upload] Attempting Firebase Storage upload:', file.name, '->', folder);
+
+      try {
+        // Initialize storage
+        const storage = await db.getFirebaseStorage();
+        console.log('[Upload] Storage instance:', storage);
+
+        if (!storage) {
+          throw new Error('Không lấy được Firebase Storage instance. Kiểm tra Firebase Console → Storage đã được kích hoạt chưa?');
+        }
+
+        statusSpan.innerText = `Đang tải lên... ${file.name}`;
+
+        const url = await db.uploadFileToFirebase(file, folder);
+
+        console.log('[Upload] Success! URL:', url);
+        statusSpan.innerText = `✓ Upload thành công!`;
+        statusSpan.className = 'status-msg success';
+        return url;
+
+      } catch (err) {
+        console.error('[Upload] Firebase Storage ERROR:', err);
+
+        // Show specific error guidance
+        let errMsg = err.message || String(err);
+        if (errMsg.includes('storage/unauthorized') || errMsg.includes('permission')) {
+          errMsg = '🔒 Lỗi phân quyền Storage. Vào Firebase Console → Storage → Rules và cho phép read/write.';
+        } else if (errMsg.includes('storage/unknown') || errMsg.includes('Firebase Storage')) {
+          errMsg = '⚠️ Firebase Storage chưa được kích hoạt. Vào Firebase Console → Build → Storage và nhấn "Get Started".';
+        } else if (errMsg.includes('Failed to fetch') || errMsg.includes('network')) {
+          errMsg = '🌐 Lỗi mạng – kiểm tra kết nối internet.';
+        }
+
+        statusSpan.innerText = errMsg;
+        statusSpan.className = 'status-msg error';
+
+        // Offer Base64 fallback
+        const useFallback = confirm(`Firebase Storage lỗi:\n${err.message}\n\nBạn có muốn lưu ảnh dưới dạng Base64 (local) thay thế không?`);
+        if (useFallback) {
+          statusSpan.innerText = 'Đang chuyển đổi Base64...';
+          statusSpan.className = 'status-msg info';
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              statusSpan.innerText = '✓ Đã lưu Base64 (local fallback)';
+              statusSpan.className = 'status-msg success';
+              resolve(reader.result);
+            };
+            reader.onerror = (e) => reject(e);
+            reader.readAsDataURL(file);
+          });
+        }
+
+        throw err;
+      }
     }
+
 
     // Toggle video upload feature visibility based on tags
     function checkVideoFeature() {
@@ -1873,6 +1974,7 @@
     btnUploadImages.addEventListener('click', () => pImagesFileInput.click());
     btnUploadVideo.addEventListener('click', () => pVideoFileInput.click());
     btnUploadMarquee.addEventListener('click', () => mImageFileInput.click());
+    btnUploadCover.addEventListener('click', () => pCoverFileInput.click());
 
     // Project Showcase Images Upload
     pImagesFileInput.addEventListener('change', async () => {
@@ -1943,6 +2045,26 @@
       }
     });
 
+    // Selected Work Cover Image Upload
+    pCoverFileInput.addEventListener('change', async () => {
+      const file = pCoverFileInput.files[0];
+      if (!file) return;
+
+      pCoverUploadStatus.innerText = 'Uploading cover image...';
+      pCoverUploadStatus.className = 'status-msg info';
+
+      try {
+        const url = await processUpload(file, 'portfolio/covers', pCoverUploadStatus);
+        document.getElementById('p-coverImage').value = url;
+        pCoverUploadStatus.innerText = 'Cover image uploaded successfully';
+        pCoverUploadStatus.className = 'status-msg success';
+      } catch (err) {
+        console.error(err);
+        pCoverUploadStatus.innerText = 'Error uploading cover image';
+        pCoverUploadStatus.className = 'status-msg error';
+      }
+    });
+
 
     // ========================================
     // 8. LIVE PREVIEW ENGINE
@@ -1962,15 +2084,43 @@
       const selectedTags = Array.from(document.querySelectorAll('input[name="p-tags-cb"]:checked'))
         .map(cb => cb.value);
 
+      // Determine preview image source
+      let previewImgSrc = null;
+      if (type === 'selected') {
+        const coverVal = document.getElementById('p-coverImage') ? document.getElementById('p-coverImage').value.trim() : '';
+        if (coverVal && (coverVal.startsWith('http') || coverVal.startsWith('data:'))) {
+          previewImgSrc = coverVal;
+        }
+      } else {
+        const imagesVal = document.getElementById('p-images') ? document.getElementById('p-images').value.trim() : '';
+        const firstImg = imagesVal.split(',')[0] ? imagesVal.split(',')[0].trim() : '';
+        if (firstImg && (firstImg.startsWith('http') || firstImg.startsWith('data:'))) {
+          previewImgSrc = firstImg;
+        }
+      }
+
       // Update hero card preview
       const previewVisual = document.getElementById('preview-visual');
       GRADIENT_CLASSES.forEach(cls => previewVisual.classList.remove(cls));
       previewVisual.classList.add(themeClass);
+      // Show image or clear it
+      const existingImg = previewVisual.querySelector('img');
+      if (previewImgSrc) {
+        if (existingImg) {
+          existingImg.src = previewImgSrc;
+        } else {
+          const img = document.createElement('img');
+          img.src = previewImgSrc;
+          img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;';
+          previewVisual.insertBefore(img, previewVisual.firstChild);
+        }
+      } else {
+        if (existingImg) existingImg.remove();
+      }
 
       document.getElementById('preview-title').innerText    = title;
       document.getElementById('preview-subtitle').innerText = subtitle;
       document.getElementById('preview-desc').innerText     = desc;
-
 
       // Tag chips
       const tagsContainer = document.getElementById('preview-tags');
@@ -1982,6 +2132,20 @@
       const pfVisual = document.getElementById('preview-pf-visual');
       GRADIENT_CLASSES.forEach(cls => pfVisual.classList.remove(cls));
       pfVisual.classList.add(themeClass);
+      const existingPfImg = pfVisual.querySelector('img');
+      if (previewImgSrc) {
+        if (existingPfImg) {
+          existingPfImg.src = previewImgSrc;
+        } else {
+          const img2 = document.createElement('img');
+          img2.src = previewImgSrc;
+          img2.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;border-radius:inherit;';
+          pfVisual.style.position = 'relative';
+          pfVisual.insertBefore(img2, pfVisual.firstChild);
+        }
+      } else {
+        if (existingPfImg) existingPfImg.remove();
+      }
 
       document.getElementById('preview-pf-title').innerText = title;
       const truncated = desc.length > 100 ? desc.substring(0, 100) + '...' : desc;
@@ -1993,8 +2157,9 @@
         : '';
     }
 
+
     // Wire live preview to all relevant form fields
-    ['p-title','p-subtitle','p-desc'].forEach(id => {
+    ['p-title','p-subtitle','p-desc','p-coverImage','p-images'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('input', updatePreview);
     });

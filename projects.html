@@ -127,10 +127,14 @@
             ? `project-${id}.html`
             : `project-simple.html?project=${id}`;
 
+          const coverSrc = project.coverImage
+            || (project.images && Array.isArray(project.images) && project.images[0] && (project.images[0].startsWith('http') || project.images[0].startsWith('data:')) ? project.images[0] : null);
+
           card.innerHTML = `
             <a href="${href}" style="text-decoration: none; color: inherit;">
-              <div class="pf-visual ${project.themeClass || 'bg-gradient-4'}">
-                <div class="pf-visual-overlay"></div>
+              <div class="pf-visual ${project.themeClass || 'bg-gradient-4'}" style="position: relative; overflow: hidden;">
+                ${coverSrc ? `<img src="${coverSrc}" alt="${project.title}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">` : ''}
+                <div class="pf-visual-overlay" style="position: absolute; inset: 0; z-index: 1;"></div>
               </div>
               <div class="pf-content">
                 <h3 class="pf-title">${project.title}</h3>
