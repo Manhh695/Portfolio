@@ -338,55 +338,13 @@
       <h2 class="multimedia-title">Multimedia Works</h2>
       
       <!-- Multimedia Grid -->
-      <div class="multimedia-grid">
-        
-        <!-- Video 1 -->
-        <div class="multimedia-card">
-          <a href="project-simple.html?project=ssi-video" style="text-decoration: none; color: inherit;">
-            <div class="media-preview preview-1">
-              <div class="play-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <polygon points="5 3 19 12 5 21 5 3"/>
-                </svg>
-              </div>
-            </div>
-            <h3 class="media-title">SSI Corporate Video 2024</h3>
-          </a>
-        </div>
-
-        <!-- Video 2 -->
-        <div class="multimedia-card">
-          <a href="project-simple.html?project=shark-video" style="text-decoration: none; color: inherit;">
-            <div class="media-preview preview-2">
-              <div class="play-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <polygon points="5 3 19 12 5 21 5 3"/>
-                </svg>
-              </div>
-            </div>
-            <h3 class="media-title">Shark Binh Viral Promo</h3>
-          </a>
-        </div>
-
-        <!-- Video 3 -->
-        <div class="multimedia-card">
-          <a href="project-simple.html?project=nganluong-video" style="text-decoration: none; color: inherit;">
-            <div class="media-preview preview-3">
-              <div class="play-btn">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <polygon points="5 3 19 12 5 21 5 3"/>
-                </svg>
-              </div>
-            </div>
-            <h3 class="media-title">Ngan Luong Explainer Clip</h3>
-          </a>
-        </div>
-
+      <div class="multimedia-grid" id="multimedia-grid">
+        <!-- Dynamically populated multimedia cards -->
       </div>
 
       <!-- Footer Button -->
       <div class="multimedia-footer">
-        <a href="projects.html" class="see-all-link">
+        <a href="projects.html?filter=compositing" class="see-all-link">
           See all works
           <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="7" y1="17" x2="17" y2="7"/>
@@ -590,67 +548,125 @@
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
   <script src="script.js" defer></script>
 
-  <!-- Dynamic Marquee Render Script -->
+  <!-- Dynamic Marquee Render Script & Multimedia Thumbnails -->
   <script type="module">
-    import { getAllMarqueeCards } from './db.js';
+    import { getAllMarqueeCards, getAllProjects } from './db.js';
 
     document.addEventListener('DOMContentLoaded', async () => {
+      // 1. RENDER INFINITE MARQUEE CARDS
       const track1 = document.getElementById('marquee-track-1');
       const track2 = document.getElementById('marquee-track-2');
-      if (!track1 || !track2) return;
+      if (track1 && track2) {
+        try {
+          const cards = await getAllMarqueeCards();
+          const cardArray = Object.values(cards);
 
-      try {
-        const cards = await getAllMarqueeCards();
-        const cardArray = Object.values(cards);
+          // Filter cards by row
+          const row1Cards = cardArray.filter(card => Number(card.row) === 1);
+          const row2Cards = cardArray.filter(card => Number(card.row) === 2);
 
-        // Filter cards by row
-        const row1Cards = cardArray.filter(card => Number(card.row) === 1);
-        const row2Cards = cardArray.filter(card => Number(card.row) === 2);
+          // Render Row 1
+          renderTrack(track1, row1Cards);
+          // Render Row 2
+          renderTrack(track2, row2Cards);
 
-        // Render Row 1
-        renderTrack(track1, row1Cards);
-        // Render Row 2
-        renderTrack(track2, row2Cards);
-
-        function renderTrack(trackElement, cardsList) {
-          trackElement.innerHTML = ''; // clear
-
-          if (cardsList.length === 0) {
-            trackElement.innerHTML = '<div style="color: rgba(255,255,255,0.3); padding: 1rem;">No items</div>';
-            return;
-          }
-
-          // Render main elements
-          const cardElements = cardsList.map(card => {
-            const cardDiv = document.createElement('div');
-            cardDiv.className = 'project-card';
-            
-            let bgStyle = '';
-            if (card.imageUrl) {
-              bgStyle = `style="background-image: url('${card.imageUrl}'); background-size: cover; background-position: center;"`;
+          function renderTrack(trackElement, cardsList) {
+            trackElement.innerHTML = ''; // clear
+            if (cardsList.length === 0) {
+              trackElement.innerHTML = '<div style="color: rgba(255,255,255,0.3); padding: 1rem;">No items</div>';
+              return;
             }
 
-            cardDiv.innerHTML = `
-              <div class="card-inner">
-                <div class="card-header">${card.title}</div>
-                <div class="card-image-wrapper">
-                  <div class="card-image ${card.imageUrl ? '' : card.imageClass}" ${bgStyle}></div>
+            // Render main elements
+            const cardElements = cardsList.map(card => {
+              const cardDiv = document.createElement('div');
+              cardDiv.className = 'project-card';
+              let bgStyle = '';
+              if (card.imageUrl) {
+                bgStyle = `style="background-image: url('${card.imageUrl}'); background-size: cover; background-position: center;"`;
+              }
+              cardDiv.innerHTML = `
+                <div class="card-inner">
+                  <div class="card-header">${card.title}</div>
+                  <div class="card-image-wrapper">
+                    <div class="card-image ${card.imageUrl ? '' : card.imageClass}" ${bgStyle}></div>
+                  </div>
                 </div>
-              </div>
-            `;
-            return cardDiv;
-          });
+              `;
+              return cardDiv;
+            });
 
-          // Append main elements
-          cardElements.forEach(el => trackElement.appendChild(el));
-
-          // Duplicate elements for seamless infinite loop scroll
-          cardElements.forEach(el => {
-            trackElement.appendChild(el.cloneNode(true));
-          });
+            // Append main elements
+            cardElements.forEach(el => trackElement.appendChild(el));
+            // Duplicate elements for seamless infinite loop scroll
+            cardElements.forEach(el => trackElement.appendChild(el.cloneNode(true)));
+          }
+        } catch (err) {
+          console.error('Failed to render dynamic marquee:', err);
         }
-      } catch (err) {
-        console.error('Failed to render dynamic marquee:', err);
+      }
+
+      // 2. DYNAMICALLY RENDER MULTIMEDIA WORK CARDS
+      const multimediaGrid = document.getElementById('multimedia-grid');
+      if (multimediaGrid) {
+        try {
+          const projects = await getAllProjects();
+          
+          // Filter projects that have showInMultimedia === true
+          const multimediaProjects = Object.values(projects).filter(p => !!p.showInMultimedia);
+          
+          multimediaGrid.innerHTML = ''; // clear
+
+          if (multimediaProjects.length === 0) {
+            multimediaGrid.innerHTML = '<div style="color: rgba(255,255,255,0.3); padding: 2rem; grid-column: span 3; text-align: center;">Chưa có video nào được cấu hình hiển thị ở đây. Vào CMS bật tính năng này lên!</div>';
+          } else {
+            function getYouTubeId(url) {
+              if (!url) return null;
+              const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+              const match = url.match(regExp);
+              return (match && match[2].length === 11) ? match[2] : null;
+            }
+
+            multimediaProjects.forEach(project => {
+              const cardDiv = document.createElement('div');
+              cardDiv.className = 'multimedia-card';
+
+              let thumbUrl = '';
+              if (project.coverImage) {
+                thumbUrl = project.coverImage;
+              } else if (project.videoUrl) {
+                const ytId = getYouTubeId(project.videoUrl);
+                if (ytId) {
+                  thumbUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+                }
+              }
+
+              let bgStyle = '';
+              if (thumbUrl) {
+                bgStyle = `style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.7) 100%), url('${thumbUrl}'); background-size: cover; background-position: center;"`;
+              } else {
+                // Fallback: Use gradient theme class
+                bgStyle = `class="media-preview ${project.themeClass || 'bg-gradient-4'}" style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.7) 100%);"`;
+              }
+
+              cardDiv.innerHTML = `
+                <a href="project-simple.html?project=${project.id}" style="text-decoration: none; color: inherit;">
+                  <div ${bgStyle.includes('class=') ? bgStyle : `class="media-preview" ${bgStyle}`}>
+                    <div class="play-btn">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <h3 class="media-title">${project.title}</h3>
+                </a>
+              `;
+              multimediaGrid.appendChild(cardDiv);
+            });
+          }
+        } catch (err) {
+          console.error('Failed to render dynamic multimedia works:', err);
+        }
       }
     });
   </script>

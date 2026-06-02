@@ -940,7 +940,7 @@ select {
 .projects-section {
   position: relative;
   width: 100%;
-  padding: 150px 0 8rem 0;
+  padding: 150px 0 50px 0;
   background-color: var(--color-bg);
   overflow: hidden;
   border-top: 1px solid var(--color-border);
@@ -1030,7 +1030,7 @@ select {
 /* Thiết kế thẻ Card trắng nổi bật trên nền tối theo Mockup */
 .project-card {
   width: 320px;
-  height: 420px;
+  height: auto;
   flex-shrink: 0;
   margin-right: 2rem;
   /* Sử dụng margin thay cho gap để tạo vòng lặp đối xứng hoàn hảo */
@@ -1064,7 +1064,8 @@ select {
 }
 
 .card-image-wrapper {
-  flex-grow: 1;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
@@ -1134,7 +1135,7 @@ select {
   padding: 8rem 4rem;
   background-color: var(--color-bg);
   overflow: hidden;
-  border-top: 1px solid var(--color-border);
+  border-top: none;
   z-index: 5;
 }
 

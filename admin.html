@@ -713,6 +713,81 @@
     .status-msg.success { color: #2ecc71; }
     .status-msg.error { color: #e74c3c; }
     .status-msg.info { color: #3498db; }
+
+    /* CMS FORM FIELD PREVIEWS */
+    .desc-toolbar {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 0.5rem;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 0.5rem 0.8rem;
+      border-radius: 8px;
+    }
+    .btn-xs {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.78rem;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-xs:hover {
+      background: rgba(239, 147, 17, 0.15);
+      border-color: #ef9311;
+      color: #ef9311;
+    }
+    .form-field-preview {
+      margin-top: 0.6rem;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 0.5rem;
+      display: inline-flex;
+      max-height: 110px;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .form-field-preview img, 
+    .form-field-preview video {
+      max-height: 90px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .form-field-preview-grid {
+      margin-top: 0.6rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+      gap: 0.5rem;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 0.5rem;
+    }
+    .form-field-preview-grid img {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .preview-info-text {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      font-family: monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
   </style>
 </head>
 
@@ -1053,7 +1128,25 @@
 
         <div class="form-group">
           <label>Description (HTML supported)</label>
-          <textarea id="p-desc" rows="4" required placeholder="Chi tiết câu chuyện giới thiệu dự án..."></textarea>
+          <div class="desc-toolbar">
+            <span style="font-size:0.75rem; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.05em; margin-right:auto;">Mô tả chi tiết</span>
+            <button type="button" class="btn-xs" id="btn-desc-upload-img">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              Insert Image
+            </button>
+            <button type="button" class="btn-xs" id="btn-desc-upload-vid">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+              Insert Video
+            </button>
+            <button type="button" class="btn-xs" id="btn-desc-youtube">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+              Embed YouTube
+            </button>
+            <input type="file" id="p-desc-img-file" accept="image/*" style="display: none;">
+            <input type="file" id="p-desc-vid-file" accept="video/*" style="display: none;">
+          </div>
+          <textarea id="p-desc" rows="6" required placeholder="Chi tiết câu chuyện giới thiệu dự án... Bạn có thể soạn thảo HTML hoặc dùng công cụ chèn đa phương tiện bên trên."></textarea>
+          <span id="p-desc-upload-status" class="status-msg" style="margin-top: 0.3rem; font-size: 0.8rem; display: none;"></span>
         </div>
 
         <!-- Selected Work specific fields -->
@@ -1068,6 +1161,7 @@
               <input type="file" id="p-cover-file" accept="image/*" style="display: none;">
               <span id="p-cover-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
             </div>
+            <div id="p-coverImage-preview" class="form-field-preview" style="display: none;"></div>
           </div>
         </div>
 
@@ -1098,6 +1192,7 @@
               <input type="file" id="p-images-file" accept="image/*" multiple style="display: none;">
               <span id="p-images-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
             </div>
+            <div id="p-images-preview" class="form-field-preview-grid" style="display: none;"></div>
           </div>
 
           <div class="form-row">
@@ -1119,6 +1214,17 @@
               <input type="file" id="p-video-file" accept="video/*" style="display: none;">
               <span id="p-video-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
             </div>
+            <div id="p-videoUrl-preview" class="form-field-preview" style="display: none;"></div>
+          </div>
+        </div>
+
+        <div class="form-group" id="p-multimedia-toggle-group" style="margin-top: 1.5rem; margin-bottom: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.5rem; display: none;">
+          <div class="form-toggle">
+            <label class="switch">
+              <input type="checkbox" id="p-showInMultimedia">
+              <span class="slider round"></span>
+            </label>
+            <span style="font-weight: 600; color: rgba(255, 255, 255, 0.85); text-transform: uppercase; letter-spacing: 0.03em; font-size: 0.85rem;">Hiển thị ở mục Multimedia Works</span>
           </div>
         </div>
 
@@ -1218,6 +1324,7 @@
             <input type="file" id="m-image-file" accept="image/*" style="display: none;">
             <span id="m-image-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
           </div>
+          <div id="m-imageUrl-preview" class="form-field-preview" style="display: none;"></div>
         </div>
 
         <button type="submit" class="btn-primary" id="save-marquee-btn" style="width: 100%; padding: 1.1rem; border-radius: 8px; margin-top: 1rem;">Save Marquee Item</button>
@@ -1271,6 +1378,8 @@
     const pVideoUploadStatus = document.getElementById('p-video-upload-status');
     const btnUploadVideo = document.getElementById('btn-upload-video');
     const pVideoUrlInput = document.getElementById('p-videoUrl');
+    const pShowInMultimediaInput = document.getElementById('p-showInMultimedia');
+    const pMultimediaToggleGroup = document.getElementById('p-multimedia-toggle-group');
     
     const mImageFileInput = document.getElementById('m-image-file');
     const mImageUploadStatus = document.getElementById('m-image-upload-status');
@@ -1280,6 +1389,20 @@
     const pCoverFileInput = document.getElementById('p-cover-file');
     const pCoverUploadStatus = document.getElementById('p-cover-upload-status');
     const btnUploadCover = document.getElementById('btn-upload-cover');
+
+    // New Media Description & Inline Preview Elements
+    const pDescInput = document.getElementById('p-desc');
+    const btnDescUploadImg = document.getElementById('btn-desc-upload-img');
+    const btnDescUploadVid = document.getElementById('btn-desc-upload-vid');
+    const btnDescYoutube = document.getElementById('btn-desc-youtube');
+    const pDescImgFileInput = document.getElementById('p-desc-img-file');
+    const pDescVidFileInput = document.getElementById('p-desc-vid-file');
+    const pDescUploadStatus = document.getElementById('p-desc-upload-status');
+
+    const pCoverImagePreview = document.getElementById('p-coverImage-preview');
+    const pImagesPreview = document.getElementById('p-images-preview');
+    const pVideoUrlPreview = document.getElementById('p-videoUrl-preview');
+    const mImageUrlPreview = document.getElementById('m-imageUrl-preview');
 
     const fbSyncToggle = document.getElementById('fb-sync-toggle');
     const fbConfigFields = document.getElementById('fb-config-fields');
@@ -1445,6 +1568,7 @@
       pVideoUploadStatus.innerText = '';
       pCoverUploadStatus.innerText = '';
       pVideoUploadGroup.style.display = 'none';
+      pShowInMultimediaInput.checked = false;
       updatePreview();
       modal.style.display = 'flex';
     });
@@ -1471,6 +1595,7 @@
       pIdInput.value = project.id;
       pIdInput.disabled = true;
       pTypeSelect.value = project.type || 'simple';
+      pShowInMultimediaInput.checked = !!project.showInMultimedia;
       
       document.getElementById('p-title').value = project.title;
       document.getElementById('p-subtitle').value = project.subtitle;
@@ -1512,6 +1637,7 @@
         checkVideoFeature();
       }
 
+      updatePreview();
       modal.style.display = 'flex';
     }
 
@@ -1540,6 +1666,9 @@
         return;
       }
 
+      const compositingTags = ['intro / outro video', 'editing video', 'motion graphic', 'logo animation'];
+      const supportsVideo = selectedTags.some(tag => compositingTags.includes(tag.toLowerCase()));
+
       const data = {
         title: document.getElementById('p-title').value.trim(),
         subtitle: document.getElementById('p-subtitle').value.trim(),
@@ -1547,7 +1676,8 @@
         themeClass: document.getElementById('p-themeClass').value,
         tags: selectedTags,
         desc: document.getElementById('p-desc').value.trim(),
-        type: type
+        type: type,
+        showInMultimedia: supportsVideo ? pShowInMultimediaInput.checked : false
       };
 
       if (type === 'simple') {
@@ -1596,6 +1726,7 @@
       marqueeModalTitle.innerText = 'Add Marquee Card';
       mIdInput.disabled = false;
       mImageUploadStatus.innerText = '';
+      updateFormInlinePreviews();
       marqueeModal.style.display = 'flex';
     });
 
@@ -1616,6 +1747,7 @@
       document.getElementById('m-imageUrl').value = card.imageUrl || '';
       mImageUploadStatus.innerText = '';
 
+      updateFormInlinePreviews();
       marqueeModal.style.display = 'flex';
     }
 
@@ -1960,8 +2092,11 @@
       
       if (supportsVideo) {
         pVideoUploadGroup.style.display = 'block';
+        pMultimediaToggleGroup.style.display = 'block';
       } else {
         pVideoUploadGroup.style.display = 'none';
+        pMultimediaToggleGroup.style.display = 'none';
+        pShowInMultimediaInput.checked = false;
       }
     }
 
@@ -1998,6 +2133,7 @@
         
         pImagesUploadStatus.innerText = `Processed ${files.length} images.`;
         pImagesUploadStatus.className = 'status-msg success';
+        updatePreview();
       } catch (err) {
         console.error(err);
         pImagesUploadStatus.innerText = 'Error processing some images';
@@ -2018,6 +2154,7 @@
         pVideoUrlInput.value = url;
         pVideoUploadStatus.innerText = 'Video processed successfully';
         pVideoUploadStatus.className = 'status-msg success';
+        updatePreview();
       } catch (err) {
         console.error(err);
         pVideoUploadStatus.innerText = 'Error processing video';
@@ -2038,6 +2175,7 @@
         document.getElementById('m-imageUrl').value = url;
         mImageUploadStatus.innerText = 'Image processed successfully';
         mImageUploadStatus.className = 'status-msg success';
+        updatePreview();
       } catch (err) {
         console.error(err);
         mImageUploadStatus.innerText = 'Error processing image';
@@ -2058,12 +2196,161 @@
         document.getElementById('p-coverImage').value = url;
         pCoverUploadStatus.innerText = 'Cover image uploaded successfully';
         pCoverUploadStatus.className = 'status-msg success';
+        updatePreview();
       } catch (err) {
         console.error(err);
         pCoverUploadStatus.innerText = 'Error uploading cover image';
         pCoverUploadStatus.className = 'status-msg error';
       }
     });
+
+    // Helper to insert text at textarea cursor position
+    function insertAtCursor(myField, myValue) {
+      if (myField.selectionStart || myField.selectionStart === 0) {
+        const startPos = myField.selectionStart;
+        const endPos = myField.selectionEnd;
+        myField.value = myField.value.substring(0, startPos)
+          + myValue
+          + myField.value.substring(endPos, myField.value.length);
+        myField.focus();
+        myField.selectionStart = startPos + myValue.length;
+        myField.selectionEnd = startPos + myValue.length;
+      } else {
+        myField.value += myValue;
+      }
+    }
+
+    // Helper to extract YouTube video ID from various link formats
+    function getYouTubeId(url) {
+      if (!url) return null;
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      const match = url.match(regExp);
+      return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    // Form Inline Previews rendering helper
+    function updateFormInlinePreviews() {
+      // 1. Cover Image
+      const coverVal = document.getElementById('p-coverImage') ? document.getElementById('p-coverImage').value.trim() : '';
+      if (coverVal && (coverVal.startsWith('http://') || coverVal.startsWith('https://') || coverVal.startsWith('data:'))) {
+        pCoverImagePreview.innerHTML = `<img src="${coverVal}" alt="Cover image"><span class="preview-info-text">${coverVal}</span>`;
+        pCoverImagePreview.style.display = 'inline-flex';
+      } else {
+        pCoverImagePreview.style.display = 'none';
+      }
+
+      // 2. Marquee Custom Image
+      const mVal = document.getElementById('m-imageUrl') ? document.getElementById('m-imageUrl').value.trim() : '';
+      if (mVal && (mVal.startsWith('http://') || mVal.startsWith('https://') || mVal.startsWith('data:'))) {
+        mImageUrlPreview.innerHTML = `<img src="${mVal}" alt="Marquee image"><span class="preview-info-text">${mVal}</span>`;
+        mImageUrlPreview.style.display = 'inline-flex';
+      } else {
+        mImageUrlPreview.style.display = 'none';
+      }
+
+      // 3. Project Video
+      const videoVal = pVideoUrlInput ? pVideoUrlInput.value.trim() : '';
+      if (videoVal) {
+        const ytId = getYouTubeId(videoVal);
+        if (ytId) {
+          pVideoUrlPreview.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}" style="max-height: 90px; width: 160px; border: none; border-radius: 6px;"></iframe><span class="preview-info-text">${videoVal}</span>`;
+          pVideoUrlPreview.style.display = 'inline-flex';
+        } else if (videoVal.startsWith('http://') || videoVal.startsWith('https://') || videoVal.startsWith('data:')) {
+          pVideoUrlPreview.innerHTML = `<video src="${videoVal}" muted autoplay loop style="max-height: 90px;"></video><span class="preview-info-text">${videoVal}</span>`;
+          pVideoUrlPreview.style.display = 'inline-flex';
+        } else {
+          pVideoUrlPreview.style.display = 'none';
+        }
+      } else {
+        pVideoUrlPreview.style.display = 'none';
+      }
+
+      // 4. Showcase Images Grid
+      const imagesVal = document.getElementById('p-images') ? document.getElementById('p-images').value.trim() : '';
+      if (imagesVal) {
+        const parts = imagesVal.split(',').map(s => s.trim()).filter(Boolean);
+        const imgUrls = parts.filter(part => part.startsWith('http://') || part.startsWith('https://') || part.startsWith('data:'));
+        if (imgUrls.length > 0) {
+          pImagesPreview.innerHTML = imgUrls.map(url => `<img src="${url}" alt="Showcase thumb">`).join('');
+          pImagesPreview.style.display = 'grid';
+        } else {
+          pImagesPreview.style.display = 'none';
+        }
+      } else {
+        pImagesPreview.style.display = 'none';
+      }
+    }
+
+    // Trigger Description upload selections
+    if (btnDescUploadImg) btnDescUploadImg.addEventListener('click', () => pDescImgFileInput.click());
+    if (btnDescUploadVid) btnDescUploadVid.addEventListener('click', () => pDescVidFileInput.click());
+
+    // YouTube video embedding prompt event
+    if (btnDescYoutube) {
+      btnDescYoutube.addEventListener('click', () => {
+        const ytUrl = prompt('Nhập đường dẫn video YouTube (ví dụ: https://www.youtube.com/watch?v=... hoặc https://youtu.be/...):');
+        if (!ytUrl) return;
+
+        const ytId = getYouTubeId(ytUrl.trim());
+        if (ytId) {
+          const htmlTag = `\n<iframe width="100%" height="450" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius:12px; margin: 1.5rem 0; display:block; border: 1px solid rgba(255,255,255,0.1);"></iframe>\n`;
+          insertAtCursor(pDescInput, htmlTag);
+          updatePreview();
+        } else {
+          alert('Đường dẫn YouTube không hợp lệ. Vui lòng kiểm tra lại.');
+        }
+      });
+    }
+
+    // Description image upload event
+    if (pDescImgFileInput) {
+      pDescImgFileInput.addEventListener('change', async () => {
+        const file = pDescImgFileInput.files[0];
+        if (!file) return;
+
+        pDescUploadStatus.style.display = 'block';
+        pDescUploadStatus.innerText = 'Uploading image to description...';
+        pDescUploadStatus.className = 'status-msg info';
+
+        try {
+          const url = await processUpload(file, 'portfolio/description_images', pDescUploadStatus);
+          const htmlTag = `\n<img src="${url}" alt="Project Showcase Image" style="width:100%; border-radius:12px; margin: 1.5rem 0; display:block; border: 1px solid rgba(255,255,255,0.1);">\n`;
+          insertAtCursor(pDescInput, htmlTag);
+          pDescUploadStatus.innerText = 'Image uploaded and inserted successfully';
+          pDescUploadStatus.className = 'status-msg success';
+          updatePreview();
+        } catch (err) {
+          console.error(err);
+          pDescUploadStatus.innerText = 'Error uploading image to description';
+          pDescUploadStatus.className = 'status-msg error';
+        }
+      });
+    }
+
+    // Description video upload event
+    if (pDescVidFileInput) {
+      pDescVidFileInput.addEventListener('change', async () => {
+        const file = pDescVidFileInput.files[0];
+        if (!file) return;
+
+        pDescUploadStatus.style.display = 'block';
+        pDescUploadStatus.innerText = 'Uploading video to description...';
+        pDescUploadStatus.className = 'status-msg info';
+
+        try {
+          const url = await processUpload(file, 'portfolio/description_videos', pDescUploadStatus);
+          const htmlTag = `\n<video src="${url}" controls style="width:100%; border-radius:12px; margin: 1.5rem 0; display:block; border: 1px solid rgba(255,255,255,0.1);"></video>\n`;
+          insertAtCursor(pDescInput, htmlTag);
+          pDescUploadStatus.innerText = 'Video uploaded and inserted successfully';
+          pDescUploadStatus.className = 'status-msg success';
+          updatePreview();
+        } catch (err) {
+          console.error(err);
+          pDescUploadStatus.innerText = 'Error uploading video to description';
+          pDescUploadStatus.className = 'status-msg error';
+        }
+      });
+    }
 
 
     // ========================================
@@ -2155,11 +2442,14 @@
       pfTags.innerHTML = selectedTags.length
         ? selectedTags.map(t => `<span class="preview-tag">${t}</span>`).join('')
         : '';
+
+      // Render all inline previews in the form
+      updateFormInlinePreviews();
     }
 
 
     // Wire live preview to all relevant form fields
-    ['p-title','p-subtitle','p-desc','p-coverImage','p-images'].forEach(id => {
+    ['p-title','p-subtitle','p-desc','p-coverImage','p-images','p-videoUrl','m-imageUrl'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('input', updatePreview);
     });

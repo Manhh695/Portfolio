@@ -397,9 +397,8 @@ function initVideoModal() {
   const modal = document.getElementById('video-modal');
   const video = document.getElementById('modal-video');
   const closeBtn = document.getElementById('modal-close-btn');
-  const previews = document.querySelectorAll('.multimedia-card .media-preview');
 
-  if (!modal || !video || !closeBtn || !previews.length) return;
+  if (!modal || !video || !closeBtn) return;
 
   // Map project keys to high-fidelity stock video clips
   const videoUrls = {
@@ -408,66 +407,112 @@ function initVideoModal() {
     'nganluong-video': 'https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-financial-charts-41712-large.mp4'
   };
 
-  // Click on thumbnail triggers popup media player
-  previews.forEach(preview => {
-    preview.addEventListener('click', async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+  function getYouTubeId(url) {
+    if (!url) return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  }
 
-      const anchor = preview.closest('a');
-      if (!anchor) return;
+  // Click on thumbnail triggers popup media player (using Event Delegation)
+  document.addEventListener('click', async (e) => {
+    const preview = e.target.closest('.multimedia-card .media-preview');
+    if (!preview) return;
 
-      // Extract project key from href query params
-      const href = anchor.getAttribute('href');
-      let projectKey = '';
-      if (href) {
-        try {
-          const url = new URL(href, window.location.origin);
-          projectKey = url.searchParams.get('project');
-        } catch (err) {
-          // Fallback parsing if URL is relative and complex
-          const match = href.match(/project=([^&]+)/);
-          if (match) {
-            projectKey = match[1];
-          }
-        }
-      }
+    e.preventDefault();
+    e.stopPropagation();
 
-      if (!projectKey) return;
+    const anchor = preview.closest('a');
+    if (!anchor) return;
 
-      let finalVideoUrl = videoUrls[projectKey];
-
+    // Extract project key from href query params
+    const href = anchor.getAttribute('href');
+    let projectKey = '';
+    if (href) {
       try {
-        // Dynamic import db.js to load the latest project's videoUrl if defined in DB
-        const db = await import('./db.js');
-        const project = await db.getProject(projectKey);
-        if (project && project.videoUrl) {
-          finalVideoUrl = project.videoUrl;
-        }
+        const url = new URL(href, window.location.origin);
+        projectKey = url.searchParams.get('project');
       } catch (err) {
-        console.warn('CMS database fetch failed for video, using default stock fallback:', err);
+        // Fallback parsing if URL is relative and complex
+        const match = href.match(/project=([^&]+)/);
+        if (match) {
+          projectKey = match[1];
+        }
       }
+    }
 
-      if (!finalVideoUrl) return;
+    if (!projectKey) return;
 
-      // Load media resource and play
+    let finalVideoUrl = videoUrls[projectKey];
+
+    try {
+      // Dynamic import db.js to load the latest project's videoUrl if defined in DB
+      const db = await import('./db.js');
+      const project = await db.getProject(projectKey);
+      if (project && project.videoUrl) {
+        finalVideoUrl = project.videoUrl;
+      }
+    } catch (err) {
+      console.warn('CMS database fetch failed for video, using default stock fallback:', err);
+    }
+
+    if (!finalVideoUrl) return;
+
+    const ytId = getYouTubeId(finalVideoUrl);
+    if (ytId) {
+      video.style.display = 'none';
+      video.pause();
+      
+      let iframe = modal.querySelector('#modal-youtube-iframe');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'modal-youtube-iframe';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        iframe.setAttribute('allowfullscreen', 'true');
+        video.parentNode.appendChild(iframe);
+      }
+      iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1`;
+      iframe.style.display = 'block';
+
+      // Add backup fallback watch link below iframe
+      let fallbackLink = modal.querySelector('#modal-youtube-fallback');
+      if (!fallbackLink) {
+        fallbackLink = document.createElement('a');
+        fallbackLink.id = 'modal-youtube-fallback';
+        fallbackLink.target = '_blank';
+        fallbackLink.style.cssText = 'display:block; text-align:center; margin-top:1rem; font-size:0.85rem; color:#EF9311; text-decoration:underline; font-weight:600; font-family:sans-serif;';
+        video.parentNode.appendChild(fallbackLink);
+      }
+      fallbackLink.href = finalVideoUrl;
+      fallbackLink.innerText = '👉 Nhấp vào đây để xem trực tiếp trên YouTube nếu video không hiển thị';
+      fallbackLink.style.display = 'block';
+    } else {
+      const iframe = modal.querySelector('#modal-youtube-iframe');
+      if (iframe) {
+        iframe.style.display = 'none';
+        iframe.src = '';
+      }
+      const fallbackLink = modal.querySelector('#modal-youtube-fallback');
+      if (fallbackLink) {
+        fallbackLink.style.display = 'none';
+      }
+      video.style.display = 'block';
       video.src = finalVideoUrl;
       video.load();
-      
-      modal.setAttribute('aria-hidden', 'false');
-      modal.classList.add('active');
-      
-      // Auto play the video
-      video.play().catch(error => {
-        console.log('Video autoplay blocked or failed:', error);
-      });
+      video.play().catch(error => console.log('Video autoplay blocked or failed:', error));
+    }
+    
+    modal.setAttribute('aria-hidden', 'false');
+    modal.classList.add('active');
 
-      // Contain page scrolling
-      document.body.style.overflow = 'hidden';
-      if (typeof lenis !== 'undefined' && lenis) {
-        lenis.stop();
-      }
-    });
+    // Contain page scrolling
+    document.body.style.overflow = 'hidden';
+    if (typeof lenis !== 'undefined' && lenis) {
+      lenis.stop();
+    }
   });
 
   // Handle closing modal
@@ -479,6 +524,18 @@ function initVideoModal() {
     video.pause();
     video.src = '';
     video.load();
+
+    const iframe = modal.querySelector('#modal-youtube-iframe');
+    if (iframe) {
+      iframe.style.display = 'none';
+      iframe.src = '';
+    }
+
+    const fallbackLink = modal.querySelector('#modal-youtube-fallback');
+    if (fallbackLink) {
+      fallbackLink.style.display = 'none';
+      fallbackLink.href = '';
+    }
 
     // Restore page scrolling
     document.body.style.overflow = '';

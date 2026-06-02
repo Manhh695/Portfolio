@@ -117,6 +117,13 @@
         const projects = await getAllProjects();
         grid.innerHTML = ''; // clear loading state
 
+        function getYouTubeId(url) {
+          if (!url) return null;
+          const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+          const match = url.match(regExp);
+          return (match && match[2].length === 11) ? match[2] : null;
+        }
+
         Object.values(projects).forEach(project => {
           const id = project.id;
           const card = document.createElement('div');
@@ -127,8 +134,15 @@
             ? `project-${id}.html`
             : `project-simple.html?project=${id}`;
 
-          const coverSrc = project.coverImage
+          let coverSrc = project.coverImage
             || (project.images && Array.isArray(project.images) && project.images[0] && (project.images[0].startsWith('http') || project.images[0].startsWith('data:')) ? project.images[0] : null);
+
+          if (!coverSrc && project.videoUrl) {
+            const ytId = getYouTubeId(project.videoUrl);
+            if (ytId) {
+              coverSrc = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+            }
+          }
 
           card.innerHTML = `
             <a href="${href}" style="text-decoration: none; color: inherit;">
@@ -155,10 +169,32 @@
           initArchiveFilters();
         }
 
-        // Trigger filter trigger to synchronize view state
-        const activeFilter = document.querySelector('.filter-btn.active');
-        if (activeFilter) {
-          activeFilter.click();
+        // Check if there is a filter query parameter in URL (e.g., ?filter=compositing)
+        const urlParams = new URLSearchParams(window.location.search);
+        const filterParam = urlParams.get('filter');
+
+        if (filterParam) {
+          const targetFilterBtn = document.querySelector(`.filter-btn[data-filter="${filterParam}"]`);
+          if (targetFilterBtn) {
+            // Remove active class from default button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            // Add active class to query matched button
+            targetFilterBtn.classList.add('active');
+            // Trigger filter click to hide/show cards
+            targetFilterBtn.click();
+          } else {
+            // Fallback to active default
+            const activeFilter = document.querySelector('.filter-btn.active');
+            if (activeFilter) {
+              activeFilter.click();
+            }
+          }
+        } else {
+          // Trigger default active filter to synchronize view state
+          const activeFilter = document.querySelector('.filter-btn.active');
+          if (activeFilter) {
+            activeFilter.click();
+          }
         }
 
       } catch (err) {
