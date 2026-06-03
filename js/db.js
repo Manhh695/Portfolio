@@ -6,30 +6,48 @@ const DEFAULT_PROJECTS = {
     title: 'SSI Keyvisual',
     subtitle: 'Graphic Design',
     category: 'graphic compositing',
-    desc: 'Dự án quảng bá truyền thông toàn diện thiết lập hình ảnh đẳng cấp của SSI Securities.',
+    desc: 'Dự án quảng bá truyền thông toàn diện thiết lập hình ảnh đẳng cấp của SSI Securities. Thử thách lớn nhất là làm thế nào để dung hòa tính kỷ luật, sự chính xác của ngành chứng khoán với ngôn ngữ hình ảnh hiện đại, tràn đầy năng lượng đột phá.<br><br>Để giải quyết bài toán này, tôi đã phát triển hệ thống Keyvisual chủ đạo sử dụng các khối đa diện nổi bật kết hợp với các đường dẫn ánh sáng động hướng lên trên, biểu trưng cho sự tăng trưởng và thịnh vượng vững bền. Hệ thống màu sắc được tinh chỉnh để làm nổi bật tông vàng hổ phách đặc trưng của SSI trên nền xám than trung tính, tạo nên độ tương phản cực đại.<br><br>Bên cạnh đó, tôi đã chỉ đạo sản xuất loạt video Motion Graphics dạng explainer để tối ưu hóa các chiến dịch truyền thông marketing trên nền tảng fanpage của Shark Nguyễn Hòa Bình (quotes, infographics, viral video...), đóng vai trò chủ chốt trong việc gia tăng tương tác và truyền cảm hứng đầu tư mạnh mẽ cho cộng đồng.',
     tags: ['Event - Key Visual', 'Brand Identity', 'Motion Graphic'],
     themeClass: 'bg-gradient-1',
-    type: 'selected'
+    type: 'selected',
+    client: 'SSI Securities Corporation',
+    role: 'Lead Graphic & Motion Designer',
+    date: 'Q2 2025',
+    images: ['Brand Keyvisual & Color Identity Breakdown', 'POSM Print Media Designs', 'Motion Graphics Explainer Storyboard'],
+    nextProject: 'mineverse',
+    nextTitle: 'Mineverse Website'
   },
   'mineverse': {
     id: 'mineverse',
     title: 'Mineverse Website',
     subtitle: 'Product Design',
     category: 'product',
-    desc: 'Giao diện landing page đa vũ trụ game kết hợp với hệ thống Design System và UI kit.',
+    desc: 'Mineverse Website là dự án cổng thông tin và trang đích (landing page) chính thức dành cho tựa game đa vũ trụ Mineverse. Nhiệm vụ cốt lõi của dự án là xây dựng một cầu nối hoàn hảo giữa người chơi và thế giới trò chơi giả tưởng, mang lại cảm giác đắm chìm trực quan (visual immersion) cao độ ngay từ lần đầu truy cập.<br><br>Để thực hiện điều đó, tôi đã áp dụng phong cách thiết kế vị lai (futuristic/cyberpunk) kết hợp các tông màu neon tương phản mạnh: tím thạch anh, hồng cánh sen sẫm và xanh lá ma trận. Trải nghiệm người dùng (UX) được thiết kế xoay quanh tính tối giản và khả năng điều hướng nhanh chóng, giúp game thủ dễ dàng tìm kiếm thông tin nhân vật, cốt truyện, lộ trình phát triển (roadmap) và cổng đăng nhập.<br><br>Hệ thống Design System của Mineverse được xây dựng vô cùng chi tiết với các trạng thái tương tác nút (button states) sinh động, các lưới guides cấu trúc chặt chẽ và các biểu tượng tùy chỉnh độc quyền, hỗ trợ đắc lực cho đội ngũ lập trình viên phát triển giao diện web tương thích hoàn mỹ trên mọi nền tảng thiết bị.',
     tags: ['Web Design', 'Design System', 'Landing Page Design'],
     themeClass: 'bg-gradient-2',
-    type: 'selected'
+    type: 'selected',
+    client: 'Mineverse Game Studios',
+    role: 'UI UX & Brand Designer',
+    date: 'Q3 2025',
+    images: ['Desktop Landing Page Interactive Mockup', 'Hệ Thống Design System & UI Kit', 'Mobile UX Layout & Responsive Screens'],
+    nextProject: 'vietnam-airline',
+    nextTitle: 'Vietnam Airlines Keyvisual'
   },
   'vietnam-airline': {
     id: 'vietnam-airline',
     title: 'Vietnam Airlines Keyvisual',
     subtitle: 'Graphic Design',
     category: 'graphic',
-    desc: 'Bộ Keyvisual chiến dịch quảng bá khoang hành khách thương gia 5 sao của hãng hàng không quốc gia.',
+    desc: 'Hãng hàng không quốc gia Vietnam Airlines luôn đòi hỏi một ngôn ngữ thiết kế sang trọng, lịch lãm và thấm đẫm các giá trị bản sắc văn hóa Việt Nam, song hành cùng tiêu chuẩn dịch vụ đẳng cấp quốc tế 5 sao. Bài toán sáng tạo ở đây là làm mới các tài liệu quảng bá truyền thống mà vẫn giữ được tính cốt lõi của nhận diện thương hiệu bông sen vàng huyền thoại.<br><br>Tôi đã thiết kế loạt ấn phẩm Keyvisual phục vụ cho các chiến dịch quảng bá điểm đến và dịch vụ thương gia mới. Sử dụng hệ tông màu xanh ngọc biển sâu (deep teal) làm nền chủ đạo, kết hợp khéo léo với ánh sáng nhũ vàng hoàng gia để tôn vinh sự quý phái và nâng cao giá trị định vị cao cấp.<br><br>Dự án cũng bao gồm việc thiết kế lại toàn bộ hệ thống POSM in ấn, tờ rơi giới thiệu đường bay (leaflets) và bảng hướng dẫn tiện ích khoang thương gia. Bố cục chữ (typography) được sắp xếp thoáng đạt, hình ảnh máy bay và phong cảnh được lồng ghép nghệ thuật với các nét cọ vàng lượn sóng bay bổng, đại diện cho những chuyến bay an lành vượt đại dương.',
     tags: ['Event - Key Visual', 'Brand Identity', 'Catalogue Layout'],
     themeClass: 'bg-gradient-3',
-    type: 'selected'
+    type: 'selected',
+    client: 'Vietnam Airlines Joint Stock Co.',
+    role: 'Senior Graphic Designer',
+    date: 'Q4 2025',
+    images: ['Campaign Keyvisual & Magazine Editorial Mockups', 'Business Class Services Leaflets Design', 'POSM & Banner Advertising Signages'],
+    nextProject: 'ssi',
+    nextTitle: 'SSI Keyvisual'
   },
   'acme': {
     id: 'acme',
@@ -572,5 +590,83 @@ export async function uploadFileToFirebase(file, path) {
     throw err;
   }
 }
+
+// --- PROFILE ABOUT & TIMELINE FUNCTIONS ---
+
+const DEFAULT_ABOUT = {
+  aboutIntro: "Designer with 6+ years of experience and 1+ year in Digital Product Design, specializing in product thinking, visual systems, and UX optimization.",
+  timeline: [
+    {
+      year: "2018 - 2019",
+      company: "Entaid International",
+      role: "Multimedia Designer",
+      desc: "Thiết kế các ấn phẩm truyền thông Marketing (Keyvisual, Social media post, POSM, leaflets, Motion Graphic Explaining Video), thiết kế Packaging sản phẩm khăn lau đa năng."
+    },
+    {
+      company: "Nexus Creative Studio",
+      desc: "Chịu trách nhiệm thiết kế bộ nhận diện thương hiệu, định hướng mỹ thuật cho các dự án Web/App, phối hợp xây dựng hệ thống hình ảnh nhất quán và thiết kế bao bì quảng cáo.",
+      role: "Senior Graphic Designer",
+      year: "2019 - 2021"
+    },
+    {
+      company: "Vortex Tech Group",
+      desc: "Thiết kế giao diện người dùng (UI), xây dựng hệ thống Design System đa nền tảng, nghiên cứu và tối ưu hóa trải nghiệm người dùng (UX) cho các sản phẩm công nghệ cao.",
+      role: "Product Designer",
+      year: "2021 - 2024"
+    },
+    {
+      company: "Aura Digital Consult",
+      desc: "Tư vấn và thực hiện thiết kế UI/UX kết hợp Motion Design cho các công ty khởi nghiệp và doanh nghiệp số quốc tế, tối ưu tỷ lệ chuyển đổi và tăng tương tác sản phẩm.",
+      role: "UI UX & Motion Consultant",
+      year: "2024 - Present"
+    }
+  ]
+};
+
+export async function getAboutData() {
+  const localAbout = localStorage.getItem('portfolio_about');
+  let aboutData = null;
+  if (localAbout) {
+    try {
+      aboutData = JSON.parse(localAbout);
+    } catch (e) {
+      console.error('Error parsing portfolio_about from localStorage:', e);
+    }
+  }
+
+  // Load from Firestore if active
+  const dbInstance = await getFirestoreDb();
+  if (dbInstance) {
+    try {
+      const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+      const docSnap = await getDoc(doc(dbInstance, 'profile', 'about'));
+      if (docSnap.exists()) {
+        const firestoreData = docSnap.data();
+        localStorage.setItem('portfolio_about', JSON.stringify(firestoreData));
+        return firestoreData;
+      }
+    } catch (err) {
+      console.error('Firestore getAboutData failed:', err);
+    }
+  }
+
+  return aboutData || DEFAULT_ABOUT;
+}
+
+export async function saveAboutData(data) {
+  localStorage.setItem('portfolio_about', JSON.stringify(data));
+
+  const dbInstance = await getFirestoreDb();
+  if (dbInstance) {
+    try {
+      const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+      await setDoc(doc(dbInstance, 'profile', 'about'), data);
+    } catch (err) {
+      console.error('Firestore saveAboutData failed:', err);
+      throw err;
+    }
+  }
+}
+
 
 

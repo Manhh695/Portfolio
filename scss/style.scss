@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@900&family=Unica+One&display=swap');
 
 /* --- Lenis Smooth Scroll Integration --- */
 html.lenis,
@@ -22,31 +22,33 @@ html.lenis body {
   pointer-events: none;
 }
 
+@import 'variables';
+
 :root {
   /* System Fonts */
-  --font-primary: 'Inter', sans-serif;
+  --font-primary: #{$font-primary};
   /* Font cho tiêu đề: Sử dụng 'Montserrat' (Black) */
-  --font-heading: 'impact', sans-serif;
+  --font-heading: #{$font-heading};
 
   /* Color Palette */
-  --color-bg: #231F20;
-  --color-bg-secondary: #2d292a;
-  --color-text: #FFFFFF;
-  --color-text-muted: #a09d9e;
-  --color-accent: #EF9311;
-  --color-accent-hover: #d4800b;
-  --color-border: #3e3a3b;
+  --color-bg: #{$color-bg};
+  --color-bg-secondary: #{$color-bg-secondary};
+  --color-text: #{$color-text};
+  --color-text-muted: #{$color-text-muted};
+  --color-accent: #{$color-accent};
+  --color-accent-hover: #{$color-accent-hover};
+  --color-border: #{$color-border};
 
   /* Spacing System */
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
-  --spacing-xl: 3rem;
+  --spacing-xs: #{$spacing-xs};
+  --spacing-sm: #{$spacing-sm};
+  --spacing-md: #{$spacing-md};
+  --spacing-lg: #{$spacing-lg};
+  --spacing-xl: #{$spacing-xl};
 
   /* Motion & Transitions */
-  --transition-fast: 0.2s ease;
-  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: #{$transition-fast};
+  --transition-normal: #{$transition-normal};
 }
 
 /* CSS Reset */
@@ -378,21 +380,19 @@ select {
 .hero-title {
   display: flex;
   flex-direction: column;
+  font-family: 'Unica One', sans-serif;
   font-size: clamp(4rem, 13vw, 11rem);
-  /* Tối ưu kích thước chữ cho Montserrat Black */
+  font-weight: 400; /* Thiết lập đúng độ dày gốc 400 của Unica One */
   line-height: 0.85;
   margin: 0;
   letter-spacing: 0.04em;
-  /* Khoảng cách chữ vừa phải cho font Montserrat */
-  transform: scaleX(1.15);
-  /* Giãn ngang 15% giúp tạo cảm giác khối chữ rộng và vững chãi */
-  transform-origin: left center;
+  transform: none; /* Bỏ giãn ngang để giữ đúng tỷ lệ phông chữ gốc */
 }
 
 .hero-title span {
   display: block;
-  color: transparent;
-  -webkit-text-stroke: 2px #FFFFFF;
+  color: #FFFFFF; /* Dùng màu trắng đặc thay vì rỗng viền để hiển thị Unica One rõ ràng */
+  -webkit-text-stroke: none; /* Bỏ viền */
 }
 
 .hero-name {
@@ -933,7 +933,6 @@ select {
   border-color: var(--color-accent);
   color: var(--color-bg);
   transform: translateY(-2px);
-}
 }
 
 /* --- Projects Section --- */
@@ -1476,7 +1475,6 @@ select {
   padding-top: 1.5rem;
   z-index: 2;
 }
-}
 
 /* --- Selected Works Section --- */
 .selected-works-section {
@@ -1492,6 +1490,7 @@ select {
   .selected-works-section {
     height: 250vh;
     /* Scroll length for sequential card reveals */
+    overflow: visible;
   }
 
   .works-sticky-container {
@@ -2305,6 +2304,43 @@ select {
   color: #FFFFFF;
 }
 
+/* Video Showcase Section styling */
+.cs-video-section {
+  max-width: 1200px;
+  margin: 6rem auto;
+  padding: 0 4rem;
+
+  h3 {
+    font-family: var(--font-primary);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 1.5rem;
+  }
+
+  .video-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #000000;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  @media (max-width: 1024px) {
+    padding: 0 2.5rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 1.5rem;
+    margin: 4rem auto;
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
 /* Image Gallery Grid */
 .cs-gallery {
   max-width: 1200px;
@@ -2751,4 +2787,67 @@ select {
 .case-study-body .footer-bottom {
   color: rgba(255, 255, 255, 0.35);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ==========================================================================
+   BACK TO TOP BUTTON
+   ========================================================================== */
+.back-to-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  background: rgba(10, 8, 8, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 99;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
+  transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+  svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    box-shadow: 0 15px 35px rgba(239, 147, 17, 0.3);
+
+    svg {
+      transform: translateY(-3px);
+    }
+  }
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .back-to-top-btn {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    
+    svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
 }

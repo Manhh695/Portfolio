@@ -6,11 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pham Duc Manh - Portfolio</title>
   <!-- SEO Meta Tags -->
-  <meta name="description"
-    content="Pham Duc Manh - Personal Portfolio. Motion Designer, Graphic Designer, and UI UX Designer.">
+  <meta name="description" content="Pham Duc Manh - Personal Portfolio. Motion Designer, Graphic Designer, and UI UX Designer.">
+  <meta name="keywords" content="Pham Duc Manh, Portfolio, Motion Designer, Graphic Designer, UI UX Designer, Creative Portfolio, Designer Vietnam">
+  <meta name="author" content="Pham Duc Manh">
+  <meta property="og:title" content="Pham Duc Manh - Personal Portfolio">
+  <meta property="og:description" content="Explore the creative works, motion graphics, and digital product designs of Pham Duc Manh.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phamducmanh.com">
+  <meta name="twitter:card" content="summary_large_image">
 
   <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -70,8 +76,11 @@
     </nav>
   </div>
 
-  <!-- Hero Section -->
-  <section class="hero-section" id="hero">
+  <!-- Main Content of the Page -->
+  <main id="main-content">
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero">
 
     <!-- Animated Wave Canvas -->
     <canvas id="hero-canvas" class="hero-bg-canvas"></canvas>
@@ -114,9 +123,8 @@
       <!-- Section Header -->
       <div class="about-header">
         <span class="section-subtitle">About me</span>
-        <h2 class="about-intro">
-          Designer with 6+ years of experience and 1+ year in Digital Product Design, specializing in product thinking,
-          visual systems, and UX optimization.
+        <h2 class="about-intro" id="about-intro-text">
+          <!-- Dynamically Loaded -->
         </h2>
       </div>
 
@@ -125,55 +133,7 @@
         <div class="timeline-track" id="timeline-track">
           <!-- The continuous horizontal line -->
           <div class="timeline-line"></div>
-
-          <!-- Timeline Item 1 -->
-          <div class="timeline-item">
-            <div class="timeline-year">2018 - 2019</div>
-            <div class="timeline-node"></div>
-            <div class="timeline-content">
-              <h3 class="company-name">Entaid International</h3>
-              <h4 class="company-role">Multimedia Designer</h4>
-              <p class="company-desc">Thiết kế các ấn phẩm truyền thông Marketing (Keyvisual, Social media post, POSM,
-                leaflets, Motion Graphic Explaining Video), thiết kế Packaging sản phẩm khăn lau đa năng.</p>
-            </div>
-          </div>
-
-          <!-- Timeline Item 2 -->
-          <div class="timeline-item">
-            <div class="timeline-year">2019 - 2021</div>
-            <div class="timeline-node"></div>
-            <div class="timeline-content">
-              <h3 class="company-name">Nexus Creative Studio</h3>
-              <h4 class="company-role">Senior Graphic Designer</h4>
-              <p class="company-desc">Chịu trách nhiệm thiết kế bộ nhận diện thương hiệu, định hướng mỹ thuật cho các dự
-                án Web/App, phối hợp xây dựng hệ thống hình ảnh nhất quán và thiết kế bao bì quảng cáo.</p>
-            </div>
-          </div>
-
-          <!-- Timeline Item 3 -->
-          <div class="timeline-item">
-            <div class="timeline-year">2021 - 2024</div>
-            <div class="timeline-node"></div>
-            <div class="timeline-content">
-              <h3 class="company-name">Vortex Tech Group</h3>
-              <h4 class="company-role">Product Designer</h4>
-              <p class="company-desc">Thiết kế giao diện người dùng (UI), xây dựng hệ thống Design System đa nền tảng,
-                nghiên cứu và tối ưu hóa trải nghiệm người dùng (UX) cho các sản phẩm công nghệ cao.</p>
-            </div>
-          </div>
-
-          <!-- Timeline Item 4 -->
-          <div class="timeline-item">
-            <div class="timeline-year">2024 - Present</div>
-            <div class="timeline-node"></div>
-            <div class="timeline-content">
-              <h3 class="company-name">Aura Digital Consult</h3>
-              <h4 class="company-role">UI UX & Motion Consultant</h4>
-              <p class="company-desc">Tư vấn và thực hiện thiết kế UI/UX kết hợp Motion Design cho các công ty khởi
-                nghiệp và doanh nghiệp số quốc tế, tối ưu tỷ lệ chuyển đổi và tăng tương tác sản phẩm.</p>
-            </div>
-          </div>
-
+          <!-- Dynamically Loaded Timeline Items -->
         </div>
       </div>
 
@@ -294,7 +254,6 @@
       </div>
 
       <!-- Infinite Marquee Rows -->
-      <!-- Infinite Marquee Rows -->
       <div class="marquee-container" id="marquee-container">
         <!-- Row 1: Right to Left (Từ phải sang trái) -->
         <div class="marquee-row marquee-left">
@@ -344,7 +303,7 @@
 
       <!-- Footer Button -->
       <div class="multimedia-footer">
-        <a href="projects.html?filter=compositing" class="see-all-link">
+        <a href="pages/projects.html?filter=compositing" class="see-all-link">
           See all works
           <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="7" y1="17" x2="17" y2="7"/>
@@ -372,7 +331,7 @@
         <div class="work-cards-list">
           <!-- Card 1 -->
           <div class="work-card" id="work-card-1">
-            <a href="project-ssi.html" class="work-card-inner" style="text-decoration: none; color: inherit;">
+            <a href="pages/project-selected.html?project=ssi" class="work-card-inner" style="text-decoration: none; color: inherit;">
               <div class="work-card-left">
                 <div class="work-card-num">01</div>
                 <h3 class="work-card-title">SSI Keyvisual</h3>
@@ -393,7 +352,7 @@
           
           <!-- Card 2 -->
           <div class="work-card" id="work-card-2">
-            <a href="project-mineverse.html" class="work-card-inner" style="text-decoration: none; color: inherit;">
+            <a href="pages/project-selected.html?project=mineverse" class="work-card-inner" style="text-decoration: none; color: inherit;">
               <div class="work-card-left">
                 <div class="work-card-num">02</div>
                 <h3 class="work-card-title">Mineverse Website</h3>
@@ -413,7 +372,7 @@
           
           <!-- Card 3 -->
           <div class="work-card" id="work-card-3">
-            <a href="project-vietnam-airline.html" class="work-card-inner" style="text-decoration: none; color: inherit;">
+            <a href="pages/project-selected.html?project=vietnam-airline" class="work-card-inner" style="text-decoration: none; color: inherit;">
               <div class="work-card-left">
                 <div class="work-card-num">03</div>
                 <h3 class="work-card-title">Vietnam Airline Keyvisual</h3>
@@ -434,7 +393,7 @@
         
         <!-- Footer / See all link -->
         <div class="works-footer">
-          <a href="projects.html" class="see-all-link">
+          <a href="pages/projects.html" class="see-all-link">
             See all works
             <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="7" y1="17" x2="17" y2="7"/>
@@ -526,6 +485,8 @@
     </footer>
   </section>
 
+  </main>
+
   <!-- Video Lightbox Modal Overlay -->
   <div class="video-modal" id="video-modal" aria-hidden="true">
     <button class="modal-close-btn" id="modal-close-btn" aria-label="Close video player">
@@ -544,15 +505,68 @@
     </div>
   </div>
 
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="back-to-top-btn" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
   <!-- External JavaScript Logic -->
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-  <script src="script.js" defer></script>
+  <script src="js/script.js" defer></script>
 
   <!-- Dynamic Marquee Render Script & Multimedia Thumbnails -->
   <script type="module">
-    import { getAllMarqueeCards, getAllProjects } from './db.js';
+    import { getAllMarqueeCards, getAllProjects, getAboutData } from './js/db.js';
 
     document.addEventListener('DOMContentLoaded', async () => {
+      // 0. RENDER ABOUT ME & TIMELINE
+      try {
+        const aboutData = await getAboutData();
+        const introTextEl = document.getElementById('about-intro-text');
+        const timelineTrackEl = document.getElementById('timeline-track');
+        
+        if (introTextEl && timelineTrackEl && aboutData) {
+          introTextEl.innerText = aboutData.aboutIntro || '';
+          
+          // Clear any dynamic items except the timeline-line
+          const existingLine = timelineTrackEl.querySelector('.timeline-line');
+          timelineTrackEl.innerHTML = '';
+          if (existingLine) {
+            timelineTrackEl.appendChild(existingLine);
+          } else {
+            const newLine = document.createElement('div');
+            newLine.className = 'timeline-line';
+            timelineTrackEl.appendChild(newLine);
+          }
+          
+          if (aboutData.timeline && aboutData.timeline.length > 0) {
+            aboutData.timeline.forEach(item => {
+              const itemDiv = document.createElement('div');
+              itemDiv.className = 'timeline-item';
+              itemDiv.innerHTML = `
+                <div class="timeline-year">${item.year || ''}</div>
+                <div class="timeline-node"></div>
+                <div class="timeline-content">
+                  <h3 class="company-name">${item.company || ''}</h3>
+                  <h4 class="company-role">${item.role || ''}</h4>
+                  <p class="company-desc">${item.desc || ''}</p>
+                </div>
+              `;
+              timelineTrackEl.appendChild(itemDiv);
+            });
+          }
+          
+          // Re-initialize scroll animations after dynamic rendering
+          if (typeof window.initAboutScroll === 'function') {
+            window.initAboutScroll();
+          }
+        }
+      } catch (err) {
+        console.error('Failed to render about me section:', err);
+      }
+
       // 1. RENDER INFINITE MARQUEE CARDS
       const track1 = document.getElementById('marquee-track-1');
       const track2 = document.getElementById('marquee-track-2');
@@ -650,7 +664,7 @@
               }
 
               cardDiv.innerHTML = `
-                <a href="project-simple.html?project=${project.id}" style="text-decoration: none; color: inherit;">
+                <a href="pages/project-simple.html?project=${project.id}" style="text-decoration: none; color: inherit;">
                   <div ${bgStyle.includes('class=') ? bgStyle : `class="media-preview" ${bgStyle}`}>
                     <div class="play-btn">
                       <svg viewBox="0 0 24 24" fill="currentColor">

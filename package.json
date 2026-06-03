@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-sass",
+  "version": "1.0.0",
+  "description": "Portfolio styling migration to SASS",
+  "main": "index.html",
+  "scripts": {
+    "css:build": "sass scss:css",
+    "css:watch": "sass --watch scss:css"
+  },
+  "devDependencies": {
+    "sass": "^1.72.0"
+  }
+}

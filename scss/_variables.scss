@@ -1,0 +1,23 @@
+// System Fonts
+$font-primary: 'Inter', sans-serif;
+$font-heading: 'impact', sans-serif;
+
+// Color Palette
+$color-bg: #231F20;
+$color-bg-secondary: #2d292a;
+$color-text: #FFFFFF;
+$color-text-muted: #a09d9e;
+$color-accent: #EF9311;
+$color-accent-hover: #d4800b;
+$color-border: #3e3a3b;
+
+// Spacing System
+$spacing-xs: 0.5rem;
+$spacing-sm: 1rem;
+$spacing-md: 1.5rem;
+$spacing-lg: 2rem;
+$spacing-xl: 3rem;
+
+// Motion & Transitions
+$transition-fast: 0.2s ease;
+$transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);

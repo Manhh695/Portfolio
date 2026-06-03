@@ -6,27 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Project Case Study - Pham Duc Manh Portfolio</title>
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Simple Project Case Study by Pham Duc Manh. Motion Designer, Graphic Designer, and UI UX Designer.">
+  <meta name="description" content="Project Case Study by Pham Duc Manh. Motion Designer, Graphic Designer, and UI UX Designer.">
   <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body class="case-study-body">
 
   <!-- Header / Navigation Bar -->
   <header class="header">
-    <a href="index.html" class="status-badge" id="status-badge" style="color: #FFFFFF;">
+    <a href="../index.html" class="status-badge" id="status-badge" style="color: #FFFFFF;">
       <span class="dot"></span>
       Available for works
     </a>
 
     <nav class="nav-bar" id="main-nav">
-      <a href="index.html#about" class="nav-link">About me</a>
-      <a href="index.html#services" class="nav-link">Services</a>
-      <a href="index.html#portfolio" class="nav-link">Portfolio</a>
+      <a href="../index.html#about" class="nav-link">About me</a>
+      <a href="../index.html#services" class="nav-link">Services</a>
+      <a href="../index.html#portfolio" class="nav-link">Portfolio</a>
     </nav>
 
-    <a href="index.html#contact" class="btn-contact" id="btn-contact">
+    <a href="../index.html#contact" class="btn-contact" id="btn-contact">
       <svg class="phone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round">
         <path
@@ -53,10 +53,10 @@
     </button>
 
     <nav class="mobile-nav">
-      <a href="index.html#about" class="mobile-link">About me</a>
-      <a href="index.html#services" class="mobile-link">Services</a>
-      <a href="index.html#portfolio" class="mobile-link">Portfolio</a>
-      <a href="index.html#contact" class="mobile-link mobile-btn-contact">
+      <a href="../index.html#about" class="mobile-link">About me</a>
+      <a href="../index.html#services" class="mobile-link">Services</a>
+      <a href="../index.html#portfolio" class="mobile-link">Portfolio</a>
+      <a href="../index.html#contact" class="mobile-link mobile-btn-contact">
         <svg class="phone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
           <path
@@ -78,15 +78,17 @@
     </a>
   </div>
 
-  <!-- Main Case Study Hero -->
-  <main class="cs-hero" style="padding-bottom: 2rem;">
-    <span class="cs-subtitle" id="project-subtitle">Category</span>
-    <h1 class="cs-title" id="project-title">Project Title</h1>
-    
-    <div class="cs-hero-tags" id="project-tags">
-      <!-- Dynamic Tags go here -->
-    </div>
-  </main>
+  <main id="main-content">
+
+    <!-- Main Case Study Hero -->
+    <header class="cs-hero" style="padding-bottom: 2rem;">
+      <span class="cs-subtitle" id="project-subtitle">Category</span>
+      <h1 class="cs-title" id="project-title">Project Title</h1>
+      
+      <div class="cs-hero-tags" id="project-tags">
+        <!-- Dynamic Tags go here -->
+      </div>
+    </header>
 
   <!-- Simple Two-column Narrative & Visual Gallery Grid -->
   <section class="cs-content-section" style="margin-top: 2rem; margin-bottom: 6rem;">
@@ -122,6 +124,12 @@
       <h3 style="font-family: var(--font-primary); font-size: 1.6rem; font-weight: 700; color: #FFFFFF;">
         Visual Showcase
       </h3>
+      <!-- Video Showcase Section -->
+      <div class="cs-video-section" id="project-video-section" style="display: none; padding: 0; margin: 0; max-width: 100%;">
+        <div class="video-wrapper" id="project-video-wrapper" style="box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); border-radius: 12px; margin-bottom: 1.5rem;">
+          <!-- Video Element or IFrame will be injected here -->
+        </div>
+      </div>
       <div style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%;" id="project-gallery">
         <!-- Dynamic Mockup Visual Containers go here -->
       </div>
@@ -136,6 +144,8 @@
     </div>
   </section>
 
+  </main>
+
   <!-- Footer Watermark & Copyright -->
   <footer class="site-footer">
     <div class="footer-watermark">PHAM MANH DESIGNER</div>
@@ -144,13 +154,20 @@
     </div>
   </footer>
 
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="back-to-top-btn" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
   <!-- External JavaScript Logic -->
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-  <script src="script.js" defer></script>
+  <script src="../js/script.js" defer></script>
 
   <!-- Dynamic Router & Mini-CMS Database Script -->
   <script type="module">
-    import { getProject } from './db.js';
+    import { getProject } from '../js/db.js';
 
     document.addEventListener('DOMContentLoaded', async () => {
       // 2. PARSE URL QUERY PARAMETER
@@ -177,6 +194,7 @@
 
       function renderProject(data, key) {
         // 3. POPULATE DOM CONTENT
+        document.title = `${data.title} Case Study - Pham Duc Manh`;
         document.getElementById('project-title').innerText = data.title;
         document.getElementById('project-subtitle').innerText = data.subtitle;
         document.getElementById('project-client').innerText = data.client || 'N/A';
@@ -194,6 +212,36 @@
             span.innerText = tag;
             tagsContainer.appendChild(span);
           });
+        }
+
+        // Populate Video if available
+        const videoSection = document.getElementById('project-video-section');
+        const videoWrapper = document.getElementById('project-video-wrapper');
+        if (videoSection && videoWrapper) {
+          if (data.videoUrl) {
+            videoSection.style.display = 'block';
+            
+            function getYouTubeId(url) {
+              if (!url) return null;
+              const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+              const match = url.match(regExp);
+              return (match && match[2].length === 11) ? match[2] : null;
+            }
+            
+            const ytId = getYouTubeId(data.videoUrl);
+            if (ytId) {
+              videoWrapper.innerHTML = `
+                <iframe src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen style="width:100%; height:100%; object-fit: cover; aspect-ratio: 16/9; border-radius: 12px;"></iframe>
+              `;
+            } else {
+              videoWrapper.innerHTML = `
+                <video src="${data.videoUrl}" controls playsinline style="width:100%; height:100%; object-fit: contain; aspect-ratio: 16/9; border-radius: 12px; background-color: #000;"></video>
+              `;
+            }
+          } else {
+            videoSection.style.display = 'none';
+            videoWrapper.innerHTML = '';
+          }
         }
 
         // Populate Visual Gallery Grid (with styled gradient visual panels)
@@ -235,7 +283,7 @@
         // Update Back Button target depending on where we came from
         const backLink = document.getElementById('back-gallery-link');
         if (key.includes('-video')) {
-          backLink.setAttribute('href', 'index.html#multimedia');
+          backLink.setAttribute('href', '../index.html#multimedia');
           backLink.innerHTML = `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"></line>

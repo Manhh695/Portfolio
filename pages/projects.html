@@ -8,25 +8,25 @@
   <!-- SEO Meta Tags -->
   <meta name="description" content="All selected works and design archive by Pham Duc Manh. Filterable projects in Graphic Design, Compositing, and Product Design.">
   <!-- CSS Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body class="case-study-body">
 
   <!-- Header / Navigation Bar -->
   <header class="header">
-    <a href="index.html" class="status-badge" id="status-badge" style="color: #FFFFFF;">
+    <a href="../index.html" class="status-badge" id="status-badge" style="color: #FFFFFF;">
       <span class="dot"></span>
       Available for works
     </a>
 
     <nav class="nav-bar" id="main-nav">
-      <a href="index.html#about" class="nav-link">About me</a>
-      <a href="index.html#services" class="nav-link">Services</a>
-      <a href="index.html#portfolio" class="nav-link">Portfolio</a>
+      <a href="../index.html#about" class="nav-link">About me</a>
+      <a href="../index.html#services" class="nav-link">Services</a>
+      <a href="../index.html#portfolio" class="nav-link">Portfolio</a>
     </nav>
 
-    <a href="index.html#contact" class="btn-contact" id="btn-contact">
+    <a href="../index.html#contact" class="btn-contact" id="btn-contact">
       <svg class="phone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
         stroke-linecap="round" stroke-linejoin="round">
         <path
@@ -53,10 +53,10 @@
     </button>
 
     <nav class="mobile-nav">
-      <a href="index.html#about" class="mobile-link">About me</a>
-      <a href="index.html#services" class="mobile-link">Services</a>
-      <a href="index.html#portfolio" class="mobile-link">Portfolio</a>
-      <a href="index.html#contact" class="mobile-link mobile-btn-contact">
+      <a href="../index.html#about" class="mobile-link">About me</a>
+      <a href="../index.html#services" class="mobile-link">Services</a>
+      <a href="../index.html#portfolio" class="mobile-link">Portfolio</a>
+      <a href="../index.html#contact" class="mobile-link mobile-btn-contact">
         <svg class="phone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
           <path
@@ -69,7 +69,7 @@
 
   <!-- Back to Home Button -->
   <div class="back-btn-container">
-    <a href="index.html" class="back-home-link">
+    <a href="../index.html" class="back-home-link">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="19" y1="12" x2="5" y2="12"></line>
         <polyline points="12 19 5 12 12 5"></polyline>
@@ -78,14 +78,16 @@
     </a>
   </div>
 
-  <!-- Hero / Description Block -->
-  <main class="archive-hero" style="padding-top: 1rem;">
-    <span class="cs-subtitle">Works Archive</span>
-    <h1 class="archive-title">All Products</h1>
-    <p class="archive-subtitle">
-      Khám phá danh sách đầy đủ các sản phẩm và dự án thiết kế sáng tạo của tôi, được phân loại chính xác dựa trên các thẻ dịch vụ tương ứng.
-    </p>
-  </main>
+  <main id="main-content">
+
+    <!-- Hero / Description Block -->
+    <header class="archive-hero" style="padding-top: 1rem;">
+      <span class="cs-subtitle">Works Archive</span>
+      <h1 class="archive-title">All Products</h1>
+      <p class="archive-subtitle">
+        Khám phá danh sách đầy đủ các sản phẩm và dự án thiết kế sáng tạo của tôi, được phân loại chính xác dựa trên các thẻ dịch vụ tương ứng.
+      </p>
+    </header>
 
   <!-- Category Interactive Filter Tabs -->
   <section class="filter-tabs-container">
@@ -107,7 +109,7 @@
 
   <!-- Central Dynamic Render Script -->
   <script type="module">
-    import { getAllProjects } from './db.js';
+    import { getAllProjects } from '../js/db.js';
 
     document.addEventListener('DOMContentLoaded', async () => {
       const grid = document.getElementById('portfolio-grid');
@@ -131,7 +133,7 @@
           card.setAttribute('data-category', project.category || '');
 
           const href = project.type === 'selected'
-            ? `project-${id}.html`
+            ? `project-selected.html?project=${id}`
             : `project-simple.html?project=${id}`;
 
           let coverSrc = project.coverImage
@@ -204,6 +206,8 @@
     });
   </script>
 
+  </main>
+
   <!-- Footer Watermark & Copyright -->
   <footer class="site-footer">
     <div class="footer-watermark">PHAM MANH DESIGNER</div>
@@ -212,9 +216,16 @@
     </div>
   </footer>
 
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="back-to-top-btn" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
   <!-- External JavaScript Logic -->
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-  <script src="script.js" defer></script>
+  <script src="../js/script.js" defer></script>
 </body>
 
 </html>

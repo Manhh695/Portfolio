@@ -36,11 +36,53 @@ document.addEventListener('click', (e) => {
       e.preventDefault();
       lenis.scrollTo(targetElement, {
         offset: -70,
-        duration: 1.2,
+        duration: 1.5, // Tăng lên 1.5s để cuộn mượt mà thanh lịch hơn
       });
     }
   }
 });
+
+// Smooth scroll to hash on initial load if present in URL (e.g., from other pages)
+window.addEventListener('load', () => {
+  if (window.location.hash && lenis) {
+    const targetElement = document.querySelector(window.location.hash);
+    if (targetElement) {
+      setTimeout(() => {
+        lenis.scrollTo(targetElement, {
+          offset: -70,
+          duration: 1.6,
+          immediate: false
+        });
+      }, 150); // delay nhỏ để trình duyệt hoàn tất dựng layout
+    }
+  }
+});
+
+// --- BACK TO TOP BUTTON LOGIC ---
+const backToTopBtn = document.getElementById('back-to-top');
+if (backToTopBtn) {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) {
+      backToTopBtn.classList.add('visible');
+    } else {
+      backToTopBtn.classList.remove('visible');
+    }
+  });
+
+  backToTopBtn.addEventListener('click', () => {
+    if (lenis) {
+      lenis.scrollTo(0, {
+        duration: 1.5,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+      });
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  });
+}
 
 const canvas = document.getElementById('hero-canvas');
 if (canvas) {
@@ -133,15 +175,34 @@ if (canvas) {
 // --- LOGIC CUỘN TIMELINE NGANG (STICKY HORIZONTAL TIMELINE) ---
 const aboutSection = document.getElementById('about');
 const timelineTrack = document.getElementById('timeline-track');
-const timelineItems = document.querySelectorAll('.timeline-item');
+let timelineItems = document.querySelectorAll('.timeline-item');
 const aboutIntro = document.querySelector('.about-intro');
+let revealWords = document.querySelectorAll('.reveal-word');
 
-// Khởi tạo tách chữ trong khối giới thiệu để tạo hiệu ứng reveal
-if (aboutIntro) {
-  const words = aboutIntro.innerText.trim().split(/\s+/);
-  aboutIntro.innerHTML = words.map(word => `<span class="reveal-word">${word}</span>`).join(' ');
-}
-const revealWords = document.querySelectorAll('.reveal-word');
+// Hàm khởi tạo lại timeline và hiệu ứng reveal sau khi load dữ liệu động
+window.initAboutScroll = function() {
+  const intro = document.querySelector('.about-intro');
+  if (intro) {
+    const text = intro.innerText.trim();
+    if (text) {
+      const words = text.split(/\s+/);
+      intro.innerHTML = words.map(word => `<span class="reveal-word">${word}</span>`).join(' ');
+    }
+  }
+  // Cập nhật lại danh sách các phần tử mới được render động vào DOM
+  revealWords = document.querySelectorAll('.reveal-word');
+  timelineItems = document.querySelectorAll('.timeline-item');
+  
+  // Cập nhật kích thước Lenis để tính toán cuộn trang chính xác
+  if (lenis) {
+    lenis.resize();
+  }
+  
+  // Chạy lại các hàm cập nhật vị trí
+  updateTimeline();
+  updateSelectedWorks();
+  updateHeaderAndSpy();
+};
 
 function updateTimeline() {
   if (!aboutSection || !timelineTrack) return;
@@ -175,6 +236,8 @@ function updateTimeline() {
 
   // Chiều rộng cuộn ngang tối đa (Mỗi khối timeline-item rộng 100vw = window.innerWidth)
   const totalItems = timelineItems.length;
+  if (totalItems === 0) return;
+
   const viewportWidth = window.innerWidth;
   const maxTranslate = (totalItems - 1) * viewportWidth;
 
