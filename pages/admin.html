@@ -1110,11 +1110,7 @@
       document.getElementById('p-title').value = project.title;
       document.getElementById('p-subtitle').value = project.subtitle;
 
-      // Populate category checkboxes
-      const categories = project.category ? project.category.split(' ').map(s => s.trim()) : [];
-      document.querySelectorAll('input[name="p-category-cb"]').forEach(cb => {
-        cb.checked = categories.includes(cb.value);
-      });
+
 
       document.getElementById('p-themeClass').value = project.themeClass || 'bg-gradient-4';
 
@@ -1156,23 +1152,46 @@
       const id = pIdInput.value.trim().toLowerCase();
       const type = pTypeSelect.value;
 
-      // Get selected categories (space separated)
-      const selectedCategories = Array.from(document.querySelectorAll('input[name="p-category-cb"]:checked'))
-        .map(cb => cb.value)
-        .join(' ');
-
       // Get selected tags
       const selectedTags = Array.from(document.querySelectorAll('input[name="p-tags-cb"]:checked'))
         .map(cb => cb.value);
 
-      if (!selectedCategories) {
-        showLoading(false);
-        alert('Vui lòng chọn ít nhất một Category.');
-        return;
-      }
       if (selectedTags.length === 0) {
         showLoading(false);
         alert('Vui lòng chọn ít nhất một Tag.');
+        return;
+      }
+
+      // Auto-derive categories from selected tags
+      const tagCategoryMap = {
+        "Catalogue Layout": "graphic",
+        "Banner/Poster": "graphic",
+        "Event - Key Visual": "graphic",
+        "Brand Identity": "graphic",
+        "Info-graphics": "graphic",
+        "Presentation": "graphic",
+        "Intro / Outro Video": "compositing",
+        "Editing Video": "compositing",
+        "Motion Graphic": "compositing",
+        "Logo Animation": "compositing",
+        "Landing Page Design": "product",
+        "Web Design": "product",
+        "Design System": "product",
+        "App Design": "product"
+      };
+
+      const categoriesSet = new Set();
+      selectedTags.forEach(tag => {
+        const cat = tagCategoryMap[tag];
+        if (cat) {
+          categoriesSet.add(cat);
+        }
+      });
+      const selectedCategories = Array.from(categoriesSet).join(' ');
+
+      if (!selectedCategories) {
+        showLoading(false);
+        alert('Vui lòng chọn ít nhất một Tag hợp lệ.');
         return;
       }
 
