@@ -85,6 +85,9 @@ body {
 
 .admin-sidebar {
   width: 280px;
+  min-width: 280px;
+  flex-shrink: 0;
+  box-sizing: border-box;
   background: rgba(18, 14, 14, 0.85);
   backdrop-filter: blur(25px);
   border-right: 1px solid rgba(255, 255, 255, 0.06);
@@ -186,6 +189,7 @@ body {
 /* MAIN CONTENT VIEW */
 .admin-main {
   flex-grow: 1;
+  min-width: 0;
   padding: 3.5rem 4.5rem;
   max-height: 100vh;
   overflow-y: auto;
