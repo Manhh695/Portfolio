@@ -244,33 +244,34 @@
           }
         }
 
-        // Populate Visual Gallery Grid (with styled gradient visual panels)
+        // Populate Visual Gallery Grid (only uploaded images, no placeholder frames)
         const galleryContainer = document.getElementById('project-gallery');
         galleryContainer.innerHTML = '';
         if (data.images && Array.isArray(data.images)) {
-          data.images.forEach(imgTitle => {
+          // Filter to only show actual uploaded images (URLs or base64)
+          const imageUrls = data.images.filter(img =>
+            img.startsWith('http://') || img.startsWith('https://') || img.startsWith('data:image/')
+          );
+
+          imageUrls.forEach(imgSrc => {
             const itemDiv = document.createElement('div');
-            itemDiv.className = `cs-gallery-item ${data.themeClass || 'bg-gradient-4'}`;
-            itemDiv.style.aspectRatio = '16 / 10';
+            itemDiv.className = 'cs-gallery-item';
             itemDiv.style.width = '100%';
+            itemDiv.style.aspectRatio = 'auto';
+            itemDiv.style.background = 'none';
+            itemDiv.style.border = 'none';
+            itemDiv.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.2)';
             
-            const textDiv = document.createElement('div');
-            textDiv.className = 'cs-gallery-img';
+            const imgElement = document.createElement('img');
+            imgElement.src = imgSrc;
+            imgElement.style.width = '100%';
+            imgElement.style.height = '100%';
+            imgElement.style.objectFit = 'cover';
+            imgElement.style.display = 'block';
+            imgElement.style.borderRadius = '12px';
+            imgElement.alt = data.title;
             
-            // Check if imgTitle is a URL or base64 data
-            if (imgTitle.startsWith('http://') || imgTitle.startsWith('https://') || imgTitle.startsWith('data:image/')) {
-              const imgElement = document.createElement('img');
-              imgElement.src = imgTitle;
-              imgElement.style.width = '100%';
-              imgElement.style.height = '100%';
-              imgElement.style.objectFit = 'cover';
-              imgElement.alt = data.title;
-              textDiv.appendChild(imgElement);
-            } else {
-              textDiv.innerText = imgTitle;
-            }
-            
-            itemDiv.appendChild(textDiv);
+            itemDiv.appendChild(imgElement);
             galleryContainer.appendChild(itemDiv);
           });
         }

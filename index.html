@@ -648,6 +648,8 @@
               let thumbUrl = '';
               if (project.coverImage) {
                 thumbUrl = project.coverImage;
+              } else if (project.images && Array.isArray(project.images) && project.images[0] && (project.images[0].startsWith('http') || project.images[0].startsWith('data:'))) {
+                thumbUrl = project.images[0];
               } else if (project.videoUrl) {
                 const ytId = getYouTubeId(project.videoUrl);
                 if (ytId) {
