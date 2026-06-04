@@ -668,5 +668,68 @@ export async function saveAboutData(data) {
   }
 }
 
+// --- FIREBASE STORAGE MEDIA LIBRARY FUNCTIONS ---
 
+/**
+ * Lists all files in a Firebase Storage folder.
+ * @param {string} folder - Storage path e.g. 'portfolio/images'
+ * @returns {Promise<Array<{name: string, fullPath: string, url: string}>>}
+ */
+export async function listAllFiles(folder) {
+  const storage = await getFirebaseStorage();
+  if (!storage) {
+    return [];
+  }
 
+  try {
+    const { ref, listAll, getDownloadURL, getMetadata } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js');
+    const folderRef = ref(storage, folder);
+    const result = await listAll(folderRef);
+
+    const files = [];
+    for (const itemRef of result.items) {
+      try {
+        const url = await getDownloadURL(itemRef);
+        let size = 0;
+        try {
+          const metadata = await getMetadata(itemRef);
+          size = metadata.size || 0;
+        } catch (e) { /* ignore metadata errors */ }
+
+        files.push({
+          name: itemRef.name,
+          fullPath: itemRef.fullPath,
+          url: url,
+          size: size
+        });
+      } catch (e) {
+        console.warn(`Failed to get URL for ${itemRef.fullPath}:`, e);
+      }
+    }
+
+    return files;
+  } catch (err) {
+    console.error(`Failed to list files in ${folder}:`, err);
+    return [];
+  }
+}
+
+/**
+ * Deletes a file from Firebase Storage by its full path.
+ * @param {string} fullPath - Full storage path e.g. 'portfolio/images/1234_photo.webp'
+ */
+export async function deleteFileFromFirebase(fullPath) {
+  const storage = await getFirebaseStorage();
+  if (!storage) {
+    throw new Error('Firebase Storage is not initialized.');
+  }
+
+  try {
+    const { ref, deleteObject } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js');
+    const fileRef = ref(storage, fullPath);
+    await deleteObject(fileRef);
+  } catch (err) {
+    console.error(`Failed to delete ${fullPath}:`, err);
+    throw err;
+  }
+}

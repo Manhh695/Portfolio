@@ -136,8 +136,22 @@
             ? `project-selected.html?project=${id}`
             : `project-simple.html?project=${id}`;
 
-          let coverSrc = project.coverImage
-            || (project.images && Array.isArray(project.images) && project.images[0] && (project.images[0].startsWith('http') || project.images[0].startsWith('data:')) ? project.images[0] : null);
+          let coverSrc = (project.coverImage && (project.coverImage.startsWith('http') || project.coverImage.startsWith('data:'))) ? project.coverImage : null;
+
+          if (!coverSrc) {
+            let imageList = [];
+            if (project.images) {
+              if (Array.isArray(project.images)) {
+                imageList = project.images;
+              } else if (typeof project.images === 'string') {
+                imageList = project.images.split(',').map(img => img.trim()).filter(Boolean);
+              }
+            }
+            const firstValidImage = imageList.find(img => img.startsWith('http') || img.startsWith('data:'));
+            if (firstValidImage) {
+              coverSrc = firstValidImage;
+            }
+          }
 
           if (!coverSrc && project.videoUrl) {
             const ytId = getYouTubeId(project.videoUrl);
