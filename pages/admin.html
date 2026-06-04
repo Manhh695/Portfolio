@@ -351,14 +351,14 @@
 
   <!-- Form Modal Overlay (Add & Edit Project) -->
   <div class="modal-overlay" id="project-modal" style="display: none;">
-    <div class="modal-box">
+    <div class="modal-box modal-large">
       <div class="modal-header">
         <h3 id="modal-form-title">Add New Project</h3>
         <button class="modal-close" id="modal-form-close-btn">&times;</button>
       </div>
       <div class="modal-inner-layout">
+        <!-- Form Left Column -->
         <div class="modal-form-col">
-
           <form id="project-form" onsubmit="event.preventDefault();">
             <input type="hidden" id="form-mode" value="add"> <!-- 'add' or 'edit' -->
 
@@ -421,7 +421,7 @@
                     </div>
                     <div>
                       <div class="type-toggle-name">Simple Work</div>
-                      <div class="type-toggle-desc">Dynamic template page</div>
+                      <div class="type-toggle-desc">Hiển thị trong Works Archive</div>
                     </div>
                   </label>
 
@@ -437,7 +437,7 @@
                     </div>
                     <div>
                       <div class="type-toggle-name">Selected Work</div>
-                      <div class="type-toggle-desc">Custom HTML page</div>
+                      <div class="type-toggle-desc">Hiển thị ở trang chủ</div>
                     </div>
                   </label>
                 </div>
@@ -451,6 +451,65 @@
 
             <!-- Hidden themeClass input (auto-assigned, no longer shown) -->
             <input type="hidden" id="p-themeClass" value="bg-gradient-4">
+
+            <!-- Project Detail Fields (shared for all types) -->
+            <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.5rem; margin-top: 1.5rem;">
+              <h4
+                style="margin: 0 0 1.2rem 0; font-family: Outfit; font-weight: 500; font-size: 1.1rem; color: #ef9311;">
+                Project Details</h4>
+
+              <div class="form-row">
+                <div class="form-group third">
+                  <label>Client</label>
+                  <input type="text" id="p-client" placeholder="Acme Corporation">
+                </div>
+                <div class="form-group third">
+                  <label>Role</label>
+                  <input type="text" id="p-role" placeholder="Graphic Designer">
+                </div>
+                <div class="form-group third">
+                  <label>Date</label>
+                  <input type="text" id="p-date" placeholder="Q3 2025">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group half">
+                  <label>Next Project Slug</label>
+                  <input type="text" id="p-nextProject" placeholder="cyberpunk">
+                </div>
+                <div class="form-group half">
+                  <label>Next Project CTA Title</label>
+                  <input type="text" id="p-nextTitle" placeholder="Cyberpunk Game Intro">
+                </div>
+              </div>
+
+              <div class="form-group" id="p-video-upload-group" style="margin-top: 1.5rem; display: none;">
+                <label>Project Video URL (Optional - For Video Lightbox/Viewer)</label>
+                <input type="text" id="p-videoUrl" placeholder="e.g. https://assets.mixkit.co/... or upload a video">
+                <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                  <button type="button" class="btn-secondary" id="btn-upload-video"
+                    style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Video</button>
+                  <button type="button" class="btn-library" id="btn-library-video" data-target="p-videoUrl" data-folder="portfolio/videos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>Thư viện</button>
+                  <input type="file" id="p-video-file" accept="video/*" style="display: none;">
+                  <span id="p-video-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
+                </div>
+                <div id="p-videoUrl-preview" class="form-field-preview" style="display: none;"></div>
+              </div>
+            </div>
+
+            <!-- Multimedia toggle block -->
+            <div class="form-group" id="p-multimedia-toggle-group"
+              style="margin-top: 1.5rem; margin-bottom: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.5rem; display: none;">
+              <div class="form-toggle">
+                <label class="switch">
+                  <input type="checkbox" id="p-showInMultimedia">
+                  <span class="slider round"></span>
+                </label>
+                <span
+                  style="font-weight: 600; color: rgba(255, 255, 255, 0.85); text-transform: uppercase; letter-spacing: 0.03em; font-size: 0.85rem;">Hiển thị ở mục Multimedia Works</span>
+              </div>
+            </div>
 
             <div class="form-group">
               <label>Tags (Select from services listed in index.html)</label>
@@ -608,99 +667,18 @@
                 style="margin-top: 0.3rem; font-size: 0.8rem; display: none;"></span>
             </div>
 
-            <!-- Selected Work specific fields -->
-            <div id="selected-only-fields"
-              style="display: none; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.5rem; margin-top: 1.5rem;">
-              <h4
-                style="margin: 0 0 1.2rem 0; font-family: Outfit; font-weight: 500; font-size: 1.1rem; color: #7b8ef7;">
-                Selected Work Fields</h4>
-
-              <div class="form-group">
-                <label>Cover / Hero Image URL (Displayed on portfolio card &amp; case study)</label>
-                <input type="text" id="p-coverImage" placeholder="e.g. https://... or upload an image">
-                <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap;">
-                  <button type="button" class="btn-secondary" id="btn-upload-cover"
-                    style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Cover Image</button>
-                  <button type="button" class="btn-library" id="btn-library-cover" data-target="p-coverImage" data-folder="portfolio/covers">📁 Thư viện</button>
-                  <input type="file" id="p-cover-file" accept="image/*" style="display: none;">
-                  <span id="p-cover-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
-                </div>
-                <div id="p-coverImage-preview" class="form-field-preview" style="display: none;"></div>
+            <div class="form-group">
+              <label>Showcase Images (Comma separated list of titles/URLs)</label>
+              <input type="text" id="p-images" placeholder="Grid Presentation Layout, Corporate stationery mockup">
+              <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                <button type="button" class="btn-secondary" id="btn-upload-images"
+                  style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Images</button>
+                <button type="button" class="btn-library" id="btn-library-images" data-target="p-images" data-folder="portfolio/images"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>Thư viện</button>
+                <input type="file" id="p-images-file" accept="image/*" multiple style="display: none;">
+                <span id="p-images-upload-status" class="status-msg"
+                  style="margin-top: 0; font-size: 0.85rem;"></span>
               </div>
-            </div>
-
-            <!-- Dynamic detail block specifically for Dynamic Simple Page templates -->
-            <div id="simple-only-fields"
-              style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.5rem; margin-top: 1.5rem;">
-              <h4
-                style="margin: 0 0 1.2rem 0; font-family: Outfit; font-weight: 500; font-size: 1.1rem; color: #ef9311;">
-                Dynamic Showcase Fields</h4>
-
-              <div class="form-row">
-                <div class="form-group third">
-                  <label>Client</label>
-                  <input type="text" id="p-client" placeholder="Acme Corporation">
-                </div>
-                <div class="form-group third">
-                  <label>Role</label>
-                  <input type="text" id="p-role" placeholder="Graphic Designer">
-                </div>
-                <div class="form-group third">
-                  <label>Date</label>
-                  <input type="text" id="p-date" placeholder="Q3 2025">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Showcase Images (Comma separated list of titles/URLs)</label>
-                <input type="text" id="p-images" placeholder="Grid Presentation Layout, Corporate stationery mockup">
-                <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap;">
-                  <button type="button" class="btn-secondary" id="btn-upload-images"
-                    style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Images</button>
-                  <button type="button" class="btn-library" id="btn-library-images" data-target="p-images" data-folder="portfolio/images">📁 Thư viện</button>
-                  <input type="file" id="p-images-file" accept="image/*" multiple style="display: none;">
-                  <span id="p-images-upload-status" class="status-msg"
-                    style="margin-top: 0; font-size: 0.85rem;"></span>
-                </div>
-                <div id="p-images-preview" class="form-field-preview-grid" style="display: none;"></div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group half">
-                  <label>Next Project Slug</label>
-                  <input type="text" id="p-nextProject" placeholder="cyberpunk">
-                </div>
-                <div class="form-group half">
-                  <label>Next Project CTA Title</label>
-                  <input type="text" id="p-nextTitle" placeholder="Cyberpunk Game Intro">
-                </div>
-              </div>
-
-              <div class="form-group" id="p-video-upload-group" style="margin-top: 1.5rem; display: none;">
-                <label>Project Video URL (Optional - For Video Lightbox/Viewer)</label>
-                <input type="text" id="p-videoUrl" placeholder="e.g. https://assets.mixkit.co/... or upload a video">
-                <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap;">
-                  <button type="button" class="btn-secondary" id="btn-upload-video"
-                    style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Video</button>
-                  <button type="button" class="btn-library" id="btn-library-video" data-target="p-videoUrl" data-folder="portfolio/videos">📁 Thư viện</button>
-                  <input type="file" id="p-video-file" accept="video/*" style="display: none;">
-                  <span id="p-video-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
-                </div>
-                <div id="p-videoUrl-preview" class="form-field-preview" style="display: none;"></div>
-              </div>
-            </div>
-
-            <div class="form-group" id="p-multimedia-toggle-group"
-              style="margin-top: 1.5rem; margin-bottom: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.5rem; display: none;">
-              <div class="form-toggle">
-                <label class="switch">
-                  <input type="checkbox" id="p-showInMultimedia">
-                  <span class="slider round"></span>
-                </label>
-                <span
-                  style="font-weight: 600; color: rgba(255, 255, 255, 0.85); text-transform: uppercase; letter-spacing: 0.03em; font-size: 0.85rem;">Hiển
-                  thị ở mục Multimedia Works</span>
-              </div>
+              <div id="p-images-preview" class="form-field-preview-grid" style="display: none;"></div>
             </div>
 
             <button type="submit" class="btn-primary" id="save-project-btn"
@@ -725,30 +703,12 @@
             </div>
 
             <div class="preview-card-content">
-
               <div class="preview-project-subtitle" id="preview-subtitle">Category · Subtitle</div>
               <div class="preview-project-title" id="preview-title">Project Title</div>
               <div class="preview-project-desc" id="preview-desc">Project description will appear here...</div>
               <div class="preview-tags" id="preview-tags">
                 <span class="preview-tag">Tag 1</span>
               </div>
-            </div>
-          </div>
-
-          <!-- Portfolio card preview -->
-          <div
-            style="margin-top: 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden;">
-            <div
-              style="padding: 0.7rem 1rem; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em;">
-              Portfolio Card</div>
-            <div style="padding: 1rem;">
-              <div class="preview-card-visual bg-gradient-4" id="preview-pf-visual"
-                style="border-radius: 8px; aspect-ratio: 4/3; margin-bottom: 0.8rem;"></div>
-              <div style="font-family: Outfit; font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.3rem;"
-                id="preview-pf-title">Project Title</div>
-              <div style="font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-bottom: 0.6rem;"
-                id="preview-pf-desc">Description...</div>
-              <div id="preview-pf-tags" style="display: flex; flex-wrap: wrap; gap: 0.3rem;"></div>
             </div>
           </div>
         </div>
@@ -809,7 +769,7 @@
           <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap;">
             <button type="button" class="btn-secondary" id="btn-upload-marquee"
               style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Image</button>
-            <button type="button" class="btn-library" id="btn-library-marquee" data-target="m-imageUrl" data-folder="portfolio/marquee">📁 Thư viện</button>
+            <button type="button" class="btn-library" id="btn-library-marquee" data-target="m-imageUrl" data-folder="portfolio/marquee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>Thư viện</button>
             <input type="file" id="m-image-file" accept="image/*" style="display: none;">
             <span id="m-image-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
           </div>
@@ -871,7 +831,7 @@
     const formMode = document.getElementById('form-mode');
     const pIdInput = document.getElementById('p-id');
     const pTypeSelect = document.getElementById('p-type');
-    const simpleOnlyFields = document.getElementById('simple-only-fields');
+    // simpleOnlyFields and selectedOnlyFields removed — all fields are now shared
 
     // Marquee Grid Elements
     const marqueeTbody = document.getElementById('marquee-tbody');
@@ -898,10 +858,7 @@
     const mImageUploadStatus = document.getElementById('m-image-upload-status');
     const btnUploadMarquee = document.getElementById('btn-upload-marquee');
     const pVideoUploadGroup = document.getElementById('p-video-upload-group');
-    const selectedOnlyFields = document.getElementById('selected-only-fields');
-    const pCoverFileInput = document.getElementById('p-cover-file');
-    const pCoverUploadStatus = document.getElementById('p-cover-upload-status');
-    const btnUploadCover = document.getElementById('btn-upload-cover');
+    // selectedOnlyFields removed — unified form
 
     // New Media Description & Inline Preview Elements
     const pDescInput = document.getElementById('p-desc');
@@ -912,7 +869,6 @@
     const pDescVidFileInput = document.getElementById('p-desc-vid-file');
     const pDescUploadStatus = document.getElementById('p-desc-upload-status');
 
-    const pCoverImagePreview = document.getElementById('p-coverImage-preview');
     const pImagesPreview = document.getElementById('p-images-preview');
     const pVideoUrlPreview = document.getElementById('p-videoUrl-preview');
     const mImageUrlPreview = document.getElementById('m-imageUrl-preview');
@@ -1093,8 +1049,7 @@
       formMode.value = 'add';
       modalTitle.innerText = 'Add New Project';
       pIdInput.disabled = false;
-      simpleOnlyFields.style.display = 'block';
-      selectedOnlyFields.style.display = 'none';
+      // All fields always visible (unified form)
       pImagesUploadStatus.innerText = '';
       pVideoUploadStatus.innerText = '';
       pCoverUploadStatus.innerText = '';
@@ -1108,15 +1063,7 @@
 
     modalFormCloseBtn.addEventListener('click', () => modal.style.display = 'none');
 
-    pTypeSelect.addEventListener('change', () => {
-      if (pTypeSelect.value === 'selected') {
-        simpleOnlyFields.style.display = 'none';
-        selectedOnlyFields.style.display = 'block';
-      } else {
-        simpleOnlyFields.style.display = 'block';
-        selectedOnlyFields.style.display = 'none';
-      }
-    });
+    // Type toggle no longer hides/shows fields — all fields always visible
 
     function openEditForm(id) {
       const project = cachedProjects[id];
@@ -1139,10 +1086,9 @@
 
       document.getElementById('p-title').value = project.title;
       document.getElementById('p-category').value = project.category || 'graphic';
-
-
-
       document.getElementById('p-themeClass').value = project.themeClass || 'bg-gradient-4';
+      document.getElementById('p-desc').value = project.desc || '';
+      document.getElementById('p-images').value = project.images ? project.images.join(', ') : '';
 
       // Populate tag checkboxes
       const tags = project.tags || [];
@@ -1150,28 +1096,17 @@
         cb.checked = tags.includes(cb.value);
       });
 
-      document.getElementById('p-desc').value = project.desc || '';
-
       pImagesUploadStatus.innerText = '';
       pVideoUploadStatus.innerText = '';
-      pCoverUploadStatus.innerText = '';
 
-      if (project.type === 'selected') {
-        simpleOnlyFields.style.display = 'none';
-        selectedOnlyFields.style.display = 'block';
-        document.getElementById('p-coverImage').value = project.coverImage || '';
-      } else {
-        simpleOnlyFields.style.display = 'block';
-        selectedOnlyFields.style.display = 'none';
-        document.getElementById('p-client').value = project.client || '';
-        document.getElementById('p-role').value = project.role || '';
-        document.getElementById('p-date').value = project.date || '';
-        document.getElementById('p-images').value = project.images ? project.images.join(', ') : '';
-        document.getElementById('p-nextProject').value = project.nextProject || '';
-        document.getElementById('p-nextTitle').value = project.nextTitle || '';
-        document.getElementById('p-videoUrl').value = project.videoUrl || '';
-        checkVideoFeature();
-      }
+      // All fields populated regardless of type (unified form)
+      document.getElementById('p-client').value = project.client || '';
+      document.getElementById('p-role').value = project.role || '';
+      document.getElementById('p-date').value = project.date || '';
+      document.getElementById('p-nextProject').value = project.nextProject || '';
+      document.getElementById('p-nextTitle').value = project.nextTitle || '';
+      document.getElementById('p-videoUrl').value = project.videoUrl || '';
+      checkVideoFeature();
 
       updatePreview();
       modal.style.display = 'flex';
@@ -1205,21 +1140,18 @@
         themeClass: document.getElementById('p-themeClass').value,
         tags: selectedTags,
         desc: document.getElementById('p-desc').value.trim(),
+        images: document.getElementById('p-images').value.split(',').map(img => img.trim()).filter(Boolean),
         type: type,
         showInMultimedia: supportsVideo ? pShowInMultimediaInput.checked : false
       };
 
-      if (type === 'simple') {
-        data.client = document.getElementById('p-client').value.trim();
-        data.role = document.getElementById('p-role').value.trim();
-        data.date = document.getElementById('p-date').value.trim();
-        data.images = document.getElementById('p-images').value.split(',').map(img => img.trim()).filter(Boolean);
-        data.nextProject = document.getElementById('p-nextProject').value.trim();
-        data.nextTitle = document.getElementById('p-nextTitle').value.trim();
-        data.videoUrl = document.getElementById('p-videoUrl').value.trim();
-      } else if (type === 'selected') {
-        data.coverImage = document.getElementById('p-coverImage').value.trim();
-      }
+      // All fields saved regardless of type (unified form)
+      data.client = document.getElementById('p-client').value.trim();
+      data.role = document.getElementById('p-role').value.trim();
+      data.date = document.getElementById('p-date').value.trim();
+      data.nextProject = document.getElementById('p-nextProject').value.trim();
+      data.nextTitle = document.getElementById('p-nextTitle').value.trim();
+      data.videoUrl = document.getElementById('p-videoUrl').value.trim();
 
       try {
         await db.saveProject(id, data);
@@ -1925,7 +1857,6 @@
       btnUploadImages.addEventListener('click', () => pImagesFileInput.click());
       btnUploadVideo.addEventListener('click', () => pVideoFileInput.click());
       btnUploadMarquee.addEventListener('click', () => mImageFileInput.click());
-      btnUploadCover.addEventListener('click', () => pCoverFileInput.click());
 
       // Project Showcase Images Upload
       pImagesFileInput.addEventListener('change', async () => {
@@ -1999,26 +1930,6 @@
         }
       });
 
-      // Selected Work Cover Image Upload
-      pCoverFileInput.addEventListener('change', async () => {
-        const file = pCoverFileInput.files[0];
-        if (!file) return;
-
-        pCoverUploadStatus.innerText = 'Uploading cover image...';
-        pCoverUploadStatus.className = 'status-msg info';
-
-        try {
-          const url = await processUpload(file, 'portfolio/covers', pCoverUploadStatus);
-          document.getElementById('p-coverImage').value = url;
-          pCoverUploadStatus.innerText = 'Cover image uploaded successfully';
-          pCoverUploadStatus.className = 'status-msg success';
-          updatePreview();
-        } catch (err) {
-          console.error(err);
-          pCoverUploadStatus.innerText = 'Error uploading cover image';
-          pCoverUploadStatus.className = 'status-msg error';
-        }
-      });
 
       // Helper to insert text at textarea cursor position
       function insertAtCursor(myField, myValue) {
@@ -2077,25 +1988,6 @@
           return wrapper;
         }
 
-        // 1. Cover Image (with delete)
-        const coverVal = document.getElementById('p-coverImage') ? document.getElementById('p-coverImage').value.trim() : '';
-        if (coverVal && (coverVal.startsWith('http://') || coverVal.startsWith('https://') || coverVal.startsWith('data:'))) {
-          pCoverImagePreview.innerHTML = '';
-          const thumb = createDeletableThumb(coverVal, 'Cover image', () => {
-            document.getElementById('p-coverImage').value = '';
-            updateFormInlinePreviews();
-            updatePreview();
-          });
-          thumb.querySelector('img').style.cssText = 'max-height: 90px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);';
-          pCoverImagePreview.appendChild(thumb);
-          const infoText = document.createElement('span');
-          infoText.className = 'preview-info-text';
-          infoText.innerText = coverVal;
-          pCoverImagePreview.appendChild(infoText);
-          pCoverImagePreview.style.display = 'inline-flex';
-        } else {
-          pCoverImagePreview.style.display = 'none';
-        }
 
         // 2. Marquee Custom Image (with delete)
         const mVal = document.getElementById('m-imageUrl') ? document.getElementById('m-imageUrl').value.trim() : '';
@@ -2482,11 +2374,10 @@
 
         // Determine preview image source
         let previewImgSrc = null;
-        if (type === 'selected') {
-          const coverVal = document.getElementById('p-coverImage') ? document.getElementById('p-coverImage').value.trim() : '';
-          if (coverVal && (coverVal.startsWith('http') || coverVal.startsWith('data:'))) {
-            previewImgSrc = coverVal;
-          }
+        const videoVal = document.getElementById('p-videoUrl') ? document.getElementById('p-videoUrl').value.trim() : '';
+        const ytId = getYouTubeId(videoVal);
+        if (ytId) {
+          previewImgSrc = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
         } else {
           const imagesVal = document.getElementById('p-images') ? document.getElementById('p-images').value.trim() : '';
           const firstImg = imagesVal.split(',')[0] ? imagesVal.split(',')[0].trim() : '';
@@ -2524,41 +2415,13 @@
           ? selectedTags.map(t => `<span class="preview-tag">${t}</span>`).join('')
           : '<span style="font-size:0.75rem; color:rgba(255,255,255,0.25);">No tags selected</span>';
 
-        // Portfolio card preview
-        const pfVisual = document.getElementById('preview-pf-visual');
-        GRADIENT_CLASSES.forEach(cls => pfVisual.classList.remove(cls));
-        pfVisual.classList.add(themeClass);
-        const existingPfImg = pfVisual.querySelector('img');
-        if (previewImgSrc) {
-          if (existingPfImg) {
-            existingPfImg.src = previewImgSrc;
-          } else {
-            const img2 = document.createElement('img');
-            img2.src = previewImgSrc;
-            img2.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;border-radius:inherit;';
-            pfVisual.style.position = 'relative';
-            pfVisual.insertBefore(img2, pfVisual.firstChild);
-          }
-        } else {
-          if (existingPfImg) existingPfImg.remove();
-        }
-
-        document.getElementById('preview-pf-title').innerText = title;
-        const truncated = desc.length > 100 ? desc.substring(0, 100) + '...' : desc;
-        document.getElementById('preview-pf-desc').innerText = truncated;
-
-        const pfTags = document.getElementById('preview-pf-tags');
-        pfTags.innerHTML = selectedTags.length
-          ? selectedTags.map(t => `<span class="preview-tag">${t}</span>`).join('')
-          : '';
-
         // Render all inline previews in the form
         updateFormInlinePreviews();
       }
 
 
       // Wire live preview to all relevant form fields
-      ['p-title', 'p-desc', 'p-coverImage', 'p-images', 'p-videoUrl', 'm-imageUrl'].forEach(id => {
+      ['p-title', 'p-desc', 'p-images', 'p-videoUrl', 'm-imageUrl'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('input', updatePreview);
       });

@@ -132,13 +132,13 @@
           card.className = 'portfolio-card';
           card.setAttribute('data-category', project.category || '');
 
-          const href = project.type === 'selected'
-            ? `project-selected.html?project=${id}`
-            : `project-simple.html?project=${id}`;
+          const href = `project-simple.html?project=${id}`;
 
-          let coverSrc = (project.coverImage && (project.coverImage.startsWith('http') || project.coverImage.startsWith('data:'))) ? project.coverImage : null;
-
-          if (!coverSrc) {
+          let coverSrc = null;
+          const ytId = project.videoUrl ? getYouTubeId(project.videoUrl) : null;
+          if (ytId) {
+            coverSrc = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+          } else {
             let imageList = [];
             if (project.images) {
               if (Array.isArray(project.images)) {
@@ -150,13 +150,8 @@
             const firstValidImage = imageList.find(img => img.startsWith('http') || img.startsWith('data:'));
             if (firstValidImage) {
               coverSrc = firstValidImage;
-            }
-          }
-
-          if (!coverSrc && project.videoUrl) {
-            const ytId = getYouTubeId(project.videoUrl);
-            if (ytId) {
-              coverSrc = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+            } else if (project.coverImage && (project.coverImage.startsWith('http') || project.coverImage.startsWith('data:'))) {
+              coverSrc = project.coverImage;
             }
           }
 

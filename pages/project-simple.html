@@ -91,6 +91,9 @@
       <div class="cs-hero-tags" id="project-tags">
         <!-- Dynamic Tags go here -->
       </div>
+
+      <!-- Cover / Hero Banner (shown when coverImage exists) -->
+      <div class="cs-hero-banner" id="project-banner" style="display: none;"></div>
     </header>
 
     <!-- Simple Two-column Narrative & Visual Gallery Grid -->
@@ -224,6 +227,16 @@
             span.innerText = tag;
             tagsContainer.appendChild(span);
           });
+        }
+
+        // Populate Cover Banner (using first showcase image or coverImage fallback)
+        const bannerEl = document.getElementById('project-banner');
+        const coverImg = (data.images && data.images[0]) || data.coverImage;
+        if (bannerEl && coverImg) {
+          bannerEl.style.display = 'block';
+          bannerEl.style.backgroundImage = `url('${coverImg}')`;
+          bannerEl.style.backgroundSize = 'cover';
+          bannerEl.style.backgroundPosition = 'center';
         }
 
         // Populate Video if available

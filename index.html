@@ -580,6 +580,13 @@
 
       // 2. DYNAMICALLY RENDER SELECTED WORKS & MULTIMEDIA
       let projectsPromise = (async () => {
+        function getYouTubeId(url) {
+          if (!url) return null;
+          const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+          const match = url.match(regExp);
+          return (match && match[2].length === 11) ? match[2] : null;
+        }
+
         try {
           const projects = await getAllProjects();
 
@@ -595,9 +602,12 @@
               selectedProjects.forEach((project, index) => {
                 const numStr = String(index + 1).padStart(2, '0');
                 
-                // Cover image extraction
-                let coverSrc = (project.coverImage && (project.coverImage.startsWith('http') || project.coverImage.startsWith('data:'))) ? project.coverImage : '';
-                if (!coverSrc) {
+                // Cover image extraction (YouTube thumbnail if video exists, first showcase image, fallback to coverImage)
+                let coverSrc = '';
+                const ytId = project.videoUrl ? getYouTubeId(project.videoUrl) : null;
+                if (ytId) {
+                  coverSrc = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+                } else {
                   let imageList = [];
                   if (project.images) {
                     if (Array.isArray(project.images)) {
@@ -609,6 +619,8 @@
                   const firstValidImage = imageList.find(img => img.startsWith('http') || img.startsWith('data:'));
                   if (firstValidImage) {
                     coverSrc = firstValidImage;
+                  } else if (project.coverImage && (project.coverImage.startsWith('http') || project.coverImage.startsWith('data:'))) {
+                    coverSrc = project.coverImage;
                   }
                 }
 
@@ -630,7 +642,7 @@
                 const truncatedDesc = cleanDesc.length > 300 ? cleanDesc.substring(0, 300) + '...' : cleanDesc;
 
                 cardDiv.innerHTML = `
-                  <a href="pages/project-selected.html?project=${project.id}" class="work-card-inner"
+                  <a href="pages/project-simple.html?project=${project.id}" class="work-card-inner"
                     style="text-decoration: none; color: inherit;">
                     <div class="work-card-left">
                       <div class="work-card-num">${numStr}</div>
@@ -661,20 +673,15 @@
             if (multimediaProjects.length === 0) {
               multimediaGrid.innerHTML = '<div style="color: rgba(255,255,255,0.3); padding: 2rem; grid-column: span 3; text-align: center;">Chưa có video nào được cấu hình hiển thị ở đây. Vào CMS bật tính năng này lên!</div>';
             } else {
-              function getYouTubeId(url) {
-                if (!url) return null;
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-                const match = url.match(regExp);
-                return (match && match[2].length === 11) ? match[2] : null;
-              }
-
               multimediaProjects.forEach(project => {
                 const cardDiv = document.createElement('div');
                 cardDiv.className = 'multimedia-card';
 
-                let thumbUrl = (project.coverImage && (project.coverImage.startsWith('http') || project.coverImage.startsWith('data:'))) ? project.coverImage : '';
-
-                if (!thumbUrl) {
+                let thumbUrl = '';
+                const ytId = project.videoUrl ? getYouTubeId(project.videoUrl) : null;
+                if (ytId) {
+                  thumbUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+                } else {
                   let imageList = [];
                   if (project.images) {
                     if (Array.isArray(project.images)) {
@@ -686,13 +693,8 @@
                   const firstValidImage = imageList.find(img => img.startsWith('http') || img.startsWith('data:'));
                   if (firstValidImage) {
                     thumbUrl = firstValidImage;
-                  }
-                }
-
-                if (!thumbUrl && project.videoUrl) {
-                  const ytId = getYouTubeId(project.videoUrl);
-                  if (ytId) {
-                    thumbUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+                  } else if (project.coverImage && (project.coverImage.startsWith('http') || project.coverImage.startsWith('data:'))) {
+                    thumbUrl = project.coverImage;
                   }
                 }
 
