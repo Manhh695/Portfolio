@@ -344,74 +344,7 @@
           <h2 class="works-title">Selected works</h2>
 
           <div class="work-cards-list">
-            <!-- Card 1 -->
-            <div class="work-card" id="work-card-1">
-              <a href="pages/project-selected.html?project=ssi" class="work-card-inner"
-                style="text-decoration: none; color: inherit;">
-                <div class="work-card-left">
-                  <div class="work-card-num">01</div>
-                  <h3 class="work-card-title">SSI Keyvisual</h3>
-                  <p class="work-card-desc">Thiết kế các ấn phẩm truyền thông Marketing (Keyvisual, Social media post
-                    ,POSM, leaflets, Motion Graphic Explaining Video) cho NgânLượng.vn, hỗ trợ truyền thông xây dựng
-                    hình ảnh cho fanpage Shark Nguyễn Hòa Bình (quotes, infographics, viral video...)</p>
-                  <div class="work-card-tags">
-                    <span class="work-card-tag">Graphic Design</span>
-                    <span class="work-card-tag">Key Visual</span>
-                  </div>
-                </div>
-                <div class="work-card-right">
-                  <div class="work-preview work-preview-1">
-                    <!-- Premium geometric details using CSS lines -->
-                    <div class="preview-pattern"></div>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="work-card" id="work-card-2">
-              <a href="pages/project-selected.html?project=mineverse" class="work-card-inner"
-                style="text-decoration: none; color: inherit;">
-                <div class="work-card-left">
-                  <div class="work-card-num">02</div>
-                  <h3 class="work-card-title">Mineverse Website</h3>
-                  <p class="work-card-desc">Thiết kế các ấn phẩm truyền thông Marketing (Keyvisual, Social media post
-                    ,POSM, leaflets, Motion Graphic Explaining Video) cho NgânLượng.vn, hỗ trợ truyền thông xây dựng
-                    hình ảnh cho fanpage Shark Nguyễn Hòa Bình (quotes, infographics, viral video...)</p>
-                  <div class="work-card-tags">
-                    <span class="work-card-tag">Web Design</span>
-                    <span class="work-card-tag">Branding</span>
-                  </div>
-                </div>
-                <div class="work-card-right">
-                  <div class="work-preview work-preview-2">
-                    <div class="preview-pattern"></div>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="work-card" id="work-card-3">
-              <a href="pages/project-selected.html?project=vietnam-airline" class="work-card-inner"
-                style="text-decoration: none; color: inherit;">
-                <div class="work-card-left">
-                  <div class="work-card-num">03</div>
-                  <h3 class="work-card-title">Vietnam Airline Keyvisual</h3>
-                  <p class="work-card-desc">Thiết kế các ấn phẩm truyền thông Marketing (Keyvisual, Social media post
-                    ,POSM, leaflets</p>
-                  <div class="work-card-tags">
-                    <span class="work-card-tag">Web Design</span>
-                    <span class="work-card-tag">Branding</span>
-                  </div>
-                </div>
-                <div class="work-card-right">
-                  <div class="work-preview work-preview-3">
-                    <div class="preview-pattern"></div>
-                  </div>
-                </div>
-              </a>
-            </div>
+            <!-- Dynamically populated selected works -->
           </div>
 
           <!-- Footer / See all link -->
@@ -548,179 +481,254 @@
 
     document.addEventListener('DOMContentLoaded', async () => {
       // 0. RENDER ABOUT ME & TIMELINE
-      try {
-        const aboutData = await getAboutData();
-        const introTextEl = document.getElementById('about-intro-text');
-        const timelineTrackEl = document.getElementById('timeline-track');
-
-        if (introTextEl && timelineTrackEl && aboutData) {
-          introTextEl.innerText = aboutData.aboutIntro || '';
-
-          // Clear any dynamic items except the timeline-line
-          const existingLine = timelineTrackEl.querySelector('.timeline-line');
-          timelineTrackEl.innerHTML = '';
-          if (existingLine) {
-            timelineTrackEl.appendChild(existingLine);
-          } else {
-            const newLine = document.createElement('div');
-            newLine.className = 'timeline-line';
-            timelineTrackEl.appendChild(newLine);
-          }
-
-          if (aboutData.timeline && aboutData.timeline.length > 0) {
-            aboutData.timeline.forEach(item => {
-              const itemDiv = document.createElement('div');
-              itemDiv.className = 'timeline-item';
-              itemDiv.innerHTML = `
-                <div class="timeline-year">${item.year || ''}</div>
-                <div class="timeline-node"></div>
-                <div class="timeline-content">
-                  <h3 class="company-name">${item.company || ''}</h3>
-                  <h4 class="company-role">${item.role || ''}</h4>
-                  <p class="company-desc">${item.desc || ''}</p>
-                </div>
-              `;
-              timelineTrackEl.appendChild(itemDiv);
-            });
-          }
-
-          // Re-initialize scroll animations after dynamic rendering
-          if (typeof window.initAboutScroll === 'function') {
-            window.initAboutScroll();
-          }
-        }
-      } catch (err) {
-        console.error('Failed to render about me section:', err);
-      }
-
-      // 1. RENDER INFINITE MARQUEE CARDS
-      const track1 = document.getElementById('marquee-track-1');
-      const track2 = document.getElementById('marquee-track-2');
-      if (track1 && track2) {
+      let aboutMEPromise = (async () => {
         try {
-          const cards = await getAllMarqueeCards();
-          const cardArray = Object.values(cards);
+          const aboutData = await getAboutData();
+          const introTextEl = document.getElementById('about-intro-text');
+          const timelineTrackEl = document.getElementById('timeline-track');
 
-          // Filter cards by row
-          const row1Cards = cardArray.filter(card => Number(card.row) === 1);
-          const row2Cards = cardArray.filter(card => Number(card.row) === 2);
+          if (introTextEl && timelineTrackEl && aboutData) {
+            introTextEl.innerText = aboutData.aboutIntro || '';
 
-          // Render Row 1
-          renderTrack(track1, row1Cards);
-          // Render Row 2
-          renderTrack(track2, row2Cards);
-
-          function renderTrack(trackElement, cardsList) {
-            trackElement.innerHTML = ''; // clear
-            if (cardsList.length === 0) {
-              trackElement.innerHTML = '<div style="color: rgba(255,255,255,0.3); padding: 1rem;">No items</div>';
-              return;
+            // Clear any dynamic items except the timeline-line
+            const existingLine = timelineTrackEl.querySelector('.timeline-line');
+            timelineTrackEl.innerHTML = '';
+            if (existingLine) {
+              timelineTrackEl.appendChild(existingLine);
+            } else {
+              const newLine = document.createElement('div');
+              newLine.className = 'timeline-line';
+              timelineTrackEl.appendChild(newLine);
             }
 
-            // Render main elements
-            const cardElements = cardsList.map(card => {
-              const cardDiv = document.createElement('div');
-              cardDiv.className = 'project-card';
-              let bgStyle = '';
-              if (card.imageUrl) {
-                bgStyle = `style="background-image: url('${card.imageUrl}'); background-size: cover; background-position: center;"`;
-              }
-              cardDiv.innerHTML = `
-                <div class="card-inner">
-                  <div class="card-header">${card.title}</div>
-                  <div class="card-image-wrapper">
-                    <div class="card-image ${card.imageUrl ? '' : card.imageClass}" ${bgStyle}></div>
+            if (aboutData.timeline && aboutData.timeline.length > 0) {
+              aboutData.timeline.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'timeline-item';
+                itemDiv.innerHTML = `
+                  <div class="timeline-year">${item.year || ''}</div>
+                  <div class="timeline-node"></div>
+                  <div class="timeline-content">
+                    <h3 class="company-name">${item.company || ''}</h3>
+                    <h4 class="company-role">${item.role || ''}</h4>
+                    <p class="company-desc">${item.desc || ''}</p>
                   </div>
-                </div>
-              `;
-              return cardDiv;
-            });
-
-            // Append main elements
-            cardElements.forEach(el => trackElement.appendChild(el));
-            // Duplicate elements for seamless infinite loop scroll
-            cardElements.forEach(el => trackElement.appendChild(el.cloneNode(true)));
+                `;
+                timelineTrackEl.appendChild(itemDiv);
+              });
+            }
           }
         } catch (err) {
-          console.error('Failed to render dynamic marquee:', err);
+          console.error('Failed to render about me section:', err);
         }
-      }
+      })();
 
-      // 2. DYNAMICALLY RENDER MULTIMEDIA WORK CARDS
-      const multimediaGrid = document.getElementById('multimedia-grid');
-      if (multimediaGrid) {
+      // 1. RENDER INFINITE MARQUEE CARDS
+      let marqueePromise = (async () => {
+        const track1 = document.getElementById('marquee-track-1');
+        const track2 = document.getElementById('marquee-track-2');
+        if (track1 && track2) {
+          try {
+            const cards = await getAllMarqueeCards();
+            const cardArray = Object.values(cards);
+
+            // Filter cards by row
+            const row1Cards = cardArray.filter(card => Number(card.row) === 1);
+            const row2Cards = cardArray.filter(card => Number(card.row) === 2);
+
+            // Render Row 1
+            renderTrack(track1, row1Cards);
+            // Render Row 2
+            renderTrack(track2, row2Cards);
+
+            function renderTrack(trackElement, cardsList) {
+              trackElement.innerHTML = ''; // clear
+              if (cardsList.length === 0) {
+                trackElement.innerHTML = '<div style="color: rgba(255,255,255,0.3); padding: 1rem;">No items</div>';
+                return;
+              }
+
+              // Render main elements
+              const cardElements = cardsList.map(card => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'project-card';
+                let bgStyle = '';
+                if (card.imageUrl) {
+                  bgStyle = `style="background-image: url('${card.imageUrl}'); background-size: cover; background-position: center;"`;
+                }
+                cardDiv.innerHTML = `
+                  <div class="card-inner">
+                    <div class="card-header">${card.title}</div>
+                    <div class="card-image-wrapper">
+                      <div class="card-image ${card.imageUrl ? '' : card.imageClass}" ${bgStyle}></div>
+                    </div>
+                  </div>
+                `;
+                return cardDiv;
+              });
+
+              // Append main elements
+              cardElements.forEach(el => trackElement.appendChild(el));
+              // Duplicate elements for seamless infinite loop scroll
+              cardElements.forEach(el => trackElement.appendChild(el.cloneNode(true)));
+            }
+          } catch (err) {
+            console.error('Failed to render dynamic marquee:', err);
+          }
+        }
+      })();
+
+      // 2. DYNAMICALLY RENDER SELECTED WORKS & MULTIMEDIA
+      let projectsPromise = (async () => {
         try {
           const projects = await getAllProjects();
 
-          // Filter projects that have showInMultimedia === true
-          const multimediaProjects = Object.values(projects).filter(p => !!p.showInMultimedia);
+          // 2a. Render Selected Works
+          const selectedWorksContainer = document.querySelector('.work-cards-list');
+          if (selectedWorksContainer) {
+            const selectedProjects = Object.values(projects).filter(p => p.type === 'selected');
+            selectedWorksContainer.innerHTML = '';
 
-          multimediaGrid.innerHTML = ''; // clear
-
-          if (multimediaProjects.length === 0) {
-            multimediaGrid.innerHTML = '<div style="color: rgba(255,255,255,0.3); padding: 2rem; grid-column: span 3; text-align: center;">Chưa có video nào được cấu hình hiển thị ở đây. Vào CMS bật tính năng này lên!</div>';
-          } else {
-            function getYouTubeId(url) {
-              if (!url) return null;
-              const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-              const match = url.match(regExp);
-              return (match && match[2].length === 11) ? match[2] : null;
-            }
-
-            multimediaProjects.forEach(project => {
-              const cardDiv = document.createElement('div');
-              cardDiv.className = 'multimedia-card';
-
-              let thumbUrl = (project.coverImage && (project.coverImage.startsWith('http') || project.coverImage.startsWith('data:'))) ? project.coverImage : '';
-
-              if (!thumbUrl) {
-                let imageList = [];
-                if (project.images) {
-                  if (Array.isArray(project.images)) {
-                    imageList = project.images;
-                  } else if (typeof project.images === 'string') {
-                    imageList = project.images.split(',').map(img => img.trim()).filter(Boolean);
+            if (selectedProjects.length === 0) {
+              selectedWorksContainer.innerHTML = '<div style="color: rgba(255,255,255,0.3); padding: 3rem; text-align: center; width: 100%;">Chưa có Selected Work nào được cấu hình.</div>';
+            } else {
+              selectedProjects.forEach((project, index) => {
+                const numStr = String(index + 1).padStart(2, '0');
+                
+                // Cover image extraction
+                let coverSrc = (project.coverImage && (project.coverImage.startsWith('http') || project.coverImage.startsWith('data:'))) ? project.coverImage : '';
+                if (!coverSrc) {
+                  let imageList = [];
+                  if (project.images) {
+                    if (Array.isArray(project.images)) {
+                      imageList = project.images;
+                    } else if (typeof project.images === 'string') {
+                      imageList = project.images.split(',').map(img => img.trim()).filter(Boolean);
+                    }
+                  }
+                  const firstValidImage = imageList.find(img => img.startsWith('http') || img.startsWith('data:'));
+                  if (firstValidImage) {
+                    coverSrc = firstValidImage;
                   }
                 }
-                const firstValidImage = imageList.find(img => img.startsWith('http') || img.startsWith('data:'));
-                if (firstValidImage) {
-                  thumbUrl = firstValidImage;
+
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'work-card';
+                cardDiv.id = `work-card-${index + 1}`;
+
+                let previewContent = '<div class="preview-pattern"></div>';
+                if (coverSrc) {
+                  previewContent = `<img src="${coverSrc}" alt="${project.title}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; border-radius: inherit;">`;
                 }
-              }
 
-              if (!thumbUrl && project.videoUrl) {
-                const ytId = getYouTubeId(project.videoUrl);
-                if (ytId) {
-                  thumbUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-                }
-              }
+                const tagsHtml = project.tags && Array.isArray(project.tags)
+                  ? project.tags.map(tag => `<span class="work-card-tag">${tag}</span>`).join('')
+                  : '';
 
-              let bgStyle = '';
-              if (thumbUrl) {
-                bgStyle = `style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.7) 100%), url('${thumbUrl}'); background-size: cover; background-position: center;"`;
-              } else {
-                // Fallback: Use gradient theme class
-                bgStyle = `class="media-preview ${project.themeClass || 'bg-gradient-4'}" style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.7) 100%);"`;
-              }
+                // Replace HTML markup for clean description snippet
+                const cleanDesc = project.desc ? project.desc.replace(/<[^>]*>/g, '') : '';
+                const truncatedDesc = cleanDesc.length > 300 ? cleanDesc.substring(0, 300) + '...' : cleanDesc;
 
-              cardDiv.innerHTML = `
-                <a href="pages/project-simple.html?project=${project.id}" style="text-decoration: none; color: inherit;">
-                  <div ${bgStyle.includes('class=') ? bgStyle : `class="media-preview" ${bgStyle}`}>
-                    <div class="play-btn">
-                      <svg viewBox="0 0 24 24" fill="currentColor">
-                        <polygon points="5 3 19 12 5 21 5 3"/>
-                      </svg>
+                cardDiv.innerHTML = `
+                  <a href="pages/project-selected.html?project=${project.id}" class="work-card-inner"
+                    style="text-decoration: none; color: inherit;">
+                    <div class="work-card-left">
+                      <div class="work-card-num">${numStr}</div>
+                      <h3 class="work-card-title">${project.title}</h3>
+                      <p class="work-card-desc">${truncatedDesc}</p>
+                      <div class="work-card-tags">
+                        ${tagsHtml}
+                      </div>
                     </div>
-                  </div>
-                  <h3 class="media-title">${project.title}</h3>
-                </a>
-              `;
-              multimediaGrid.appendChild(cardDiv);
-            });
+                    <div class="work-card-right">
+                      <div class="work-preview ${project.themeClass || 'bg-gradient-4'}">
+                        ${previewContent}
+                      </div>
+                    </div>
+                  </a>
+                `;
+                selectedWorksContainer.appendChild(cardDiv);
+              });
+            }
+          }
+
+          // 2b. Render Multimedia Work Cards
+          const multimediaGrid = document.getElementById('multimedia-grid');
+          if (multimediaGrid) {
+            const multimediaProjects = Object.values(projects).filter(p => !!p.showInMultimedia);
+            multimediaGrid.innerHTML = '';
+
+            if (multimediaProjects.length === 0) {
+              multimediaGrid.innerHTML = '<div style="color: rgba(255,255,255,0.3); padding: 2rem; grid-column: span 3; text-align: center;">Chưa có video nào được cấu hình hiển thị ở đây. Vào CMS bật tính năng này lên!</div>';
+            } else {
+              function getYouTubeId(url) {
+                if (!url) return null;
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const match = url.match(regExp);
+                return (match && match[2].length === 11) ? match[2] : null;
+              }
+
+              multimediaProjects.forEach(project => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'multimedia-card';
+
+                let thumbUrl = (project.coverImage && (project.coverImage.startsWith('http') || project.coverImage.startsWith('data:'))) ? project.coverImage : '';
+
+                if (!thumbUrl) {
+                  let imageList = [];
+                  if (project.images) {
+                    if (Array.isArray(project.images)) {
+                      imageList = project.images;
+                    } else if (typeof project.images === 'string') {
+                      imageList = project.images.split(',').map(img => img.trim()).filter(Boolean);
+                    }
+                  }
+                  const firstValidImage = imageList.find(img => img.startsWith('http') || img.startsWith('data:'));
+                  if (firstValidImage) {
+                    thumbUrl = firstValidImage;
+                  }
+                }
+
+                if (!thumbUrl && project.videoUrl) {
+                  const ytId = getYouTubeId(project.videoUrl);
+                  if (ytId) {
+                    thumbUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+                  }
+                }
+
+                let bgStyle = '';
+                if (thumbUrl) {
+                  bgStyle = `style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.7) 100%), url('${thumbUrl}'); background-size: cover; background-position: center;"`;
+                } else {
+                  bgStyle = `class="media-preview ${project.themeClass || 'bg-gradient-4'}" style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.7) 100%);"`;
+                }
+
+                cardDiv.innerHTML = `
+                  <a href="pages/project-simple.html?project=${project.id}" style="text-decoration: none; color: inherit;">
+                    <div ${bgStyle.includes('class=') ? bgStyle : `class="media-preview" ${bgStyle}`}>
+                      <div class="play-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <polygon points="5 3 19 12 5 21 5 3"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <h3 class="media-title">${project.title}</h3>
+                  </a>
+                `;
+                multimediaGrid.appendChild(cardDiv);
+              });
+            }
           }
         } catch (err) {
-          console.error('Failed to render dynamic multimedia works:', err);
+          console.error('Failed to render projects:', err);
         }
+      })();
+
+      // Wait for all sections to be rendered into the DOM before initializing the scroll listeners
+      await Promise.all([aboutMEPromise, marqueePromise, projectsPromise]);
+
+      if (typeof window.initAboutScroll === 'function') {
+        window.initAboutScroll();
       }
     });
   </script>

@@ -283,28 +283,16 @@ async function getFirestoreDb() {
 // Gets local project map (initializes with defaults if empty)
 function getLocalProjects() {
   const localData = localStorage.getItem('portfolio_projects');
-  let projects = {};
-  if (localData) {
-    try {
-      projects = JSON.parse(localData) || {};
-    } catch (e) {
-      console.error('Corrupted portfolio_projects JSON in localStorage, resetting:', e);
-    }
+  if (localData === null) {
+    localStorage.setItem('portfolio_projects', JSON.stringify(DEFAULT_PROJECTS));
+    return DEFAULT_PROJECTS;
   }
-  
-  // Merge missing defaults so the user always has them
-  let updated = false;
-  Object.keys(DEFAULT_PROJECTS).forEach(key => {
-    if (!projects[key]) {
-      projects[key] = DEFAULT_PROJECTS[key];
-      updated = true;
-    }
-  });
-  
-  if (updated || !localData || Object.keys(projects).length === 0) {
-    localStorage.setItem('portfolio_projects', JSON.stringify(projects));
+  try {
+    return JSON.parse(localData) || {};
+  } catch (e) {
+    console.error('Corrupted portfolio_projects JSON in localStorage, resetting:', e);
+    return {};
   }
-  return projects;
 }
 
 // Retrieves all projects (Firestore with LocalStorage fallback)
@@ -319,22 +307,20 @@ export async function getAllProjects() {
         projects[doc.id] = doc.data();
       });
       
-      // Auto-merge missing default projects directly into Firestore
-      let updated = false;
-      const defaultKeys = Object.keys(DEFAULT_PROJECTS);
-      for (const key of defaultKeys) {
-        if (!projects[key]) {
+      if (querySnapshot.empty) {
+        const defaultKeys = Object.keys(DEFAULT_PROJECTS);
+        for (const key of defaultKeys) {
           projects[key] = DEFAULT_PROJECTS[key];
           try {
             await setDoc(doc(db, 'projects', key), DEFAULT_PROJECTS[key]);
-            updated = true;
           } catch (e) {
             console.error(`Failed to write default project ${key} to Firestore:`, e);
           }
         }
+        localStorage.setItem('portfolio_projects', JSON.stringify(projects));
+      } else {
+        localStorage.setItem('portfolio_projects', JSON.stringify(projects));
       }
-      
-      localStorage.setItem('portfolio_projects', JSON.stringify(projects));
       return projects;
     } catch (err) {
       console.warn('Firestore fetch failed, falling back to local storage cache:', err);
@@ -443,27 +429,16 @@ const DEFAULT_MARQUEE_CARDS = {
 
 function getLocalMarqueeCards() {
   const localData = localStorage.getItem('portfolio_marquee_cards');
-  let cards = {};
-  if (localData) {
-    try {
-      cards = JSON.parse(localData) || {};
-    } catch (e) {
-      console.error('Corrupted portfolio_marquee_cards JSON in localStorage, resetting:', e);
-    }
+  if (localData === null) {
+    localStorage.setItem('portfolio_marquee_cards', JSON.stringify(DEFAULT_MARQUEE_CARDS));
+    return DEFAULT_MARQUEE_CARDS;
   }
-  
-  let updated = false;
-  Object.keys(DEFAULT_MARQUEE_CARDS).forEach(key => {
-    if (!cards[key]) {
-      cards[key] = DEFAULT_MARQUEE_CARDS[key];
-      updated = true;
-    }
-  });
-  
-  if (updated || !localData || Object.keys(cards).length === 0) {
-    localStorage.setItem('portfolio_marquee_cards', JSON.stringify(cards));
+  try {
+    return JSON.parse(localData) || {};
+  } catch (e) {
+    console.error('Corrupted portfolio_marquee_cards JSON in localStorage, resetting:', e);
+    return {};
   }
-  return cards;
 }
 
 export async function getAllMarqueeCards() {
@@ -477,22 +452,20 @@ export async function getAllMarqueeCards() {
         cards[doc.id] = doc.data();
       });
       
-      // Auto-merge missing default marquee cards directly into Firestore
-      let updated = false;
-      const defaultKeys = Object.keys(DEFAULT_MARQUEE_CARDS);
-      for (const key of defaultKeys) {
-        if (!cards[key]) {
+      if (querySnapshot.empty) {
+        const defaultKeys = Object.keys(DEFAULT_MARQUEE_CARDS);
+        for (const key of defaultKeys) {
           cards[key] = DEFAULT_MARQUEE_CARDS[key];
           try {
             await setDoc(doc(db, 'marquee', key), DEFAULT_MARQUEE_CARDS[key]);
-            updated = true;
           } catch (e) {
             console.error(`Failed to write default marquee ${key} to Firestore:`, e);
           }
         }
+        localStorage.setItem('portfolio_marquee_cards', JSON.stringify(cards));
+      } else {
+        localStorage.setItem('portfolio_marquee_cards', JSON.stringify(cards));
       }
-      
-      localStorage.setItem('portfolio_marquee_cards', JSON.stringify(cards));
       return cards;
     } catch (err) {
       console.warn('Firestore marquee fetch failed, falling back to local storage cache:', err);

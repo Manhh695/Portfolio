@@ -192,11 +192,15 @@ window.initAboutScroll = function() {
   // Cập nhật lại danh sách các phần tử mới được render động vào DOM
   revealWords = document.querySelectorAll('.reveal-word');
   timelineItems = document.querySelectorAll('.timeline-item');
+  worksCardsList = document.querySelectorAll('.work-card');
   
   // Cập nhật kích thước Lenis để tính toán cuộn trang chính xác
   if (lenis) {
     lenis.resize();
   }
+  
+  // Re-run mobile check
+  initMobileReveal();
   
   // Chạy lại các hàm cập nhật vị trí
   updateTimeline();
@@ -265,7 +269,7 @@ window.addEventListener('DOMContentLoaded', updateTimeline);
 
 // --- SELECTED WORKS SCROLL & REVEAL LOGIC ---
 const worksSection = document.getElementById('selected-works');
-const worksCardsList = document.querySelectorAll('.work-card');
+let worksCardsList = document.querySelectorAll('.work-card');
 
 // IntersectionObserver for mobile scroll reveal
 const workObserver = new IntersectionObserver((entries) => {
