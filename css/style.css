@@ -25,8 +25,8 @@ html.lenis body {
 :root {
   /* System Fonts */
   --font-primary: Inter, sans-serif;
-  /* Font cho tiêu đề: Sử dụng 'Montserrat' (Black) */
-  --font-heading: impact, sans-serif;
+  /* Default fallback */
+  --font-heading: Bebas Neue, impact, sans-serif;
   /* Color Palette */
   --color-bg: #231F20;
   --color-bg-secondary: #2d292a;
@@ -44,6 +44,14 @@ html.lenis body {
   /* Motion & Transitions */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[lang=en] {
+  --font-heading: Bebas Neue, impact, sans-serif;
+}
+
+html[lang=vi] {
+  --font-heading: Anton, impact, sans-serif;
 }
 
 /* CSS Reset */
@@ -134,13 +142,14 @@ select {
   border: none;
   border-radius: 50px;
   cursor: pointer;
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .btn:hover {
   background-color: var(--color-accent-hover);
   color: var(--color-bg);
   transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(239, 147, 17, 0.6), 0 0 25px rgba(239, 147, 17, 0.3);
 }
 
 .btn:active {
@@ -186,7 +195,8 @@ select {
   font-weight: 500;
 }
 
-.status-badge .dot {
+.status-badge .dot,
+.tw-status-badge .dot {
   width: 8px;
   height: 8px;
   background-color: #39B54A;
@@ -206,6 +216,23 @@ select {
   padding: 0.35rem;
   border-radius: 50px;
   backdrop-filter: blur(10px);
+  position: relative; /* Keep absolute pill inside */
+}
+
+/* Sliding Magic Pill Indicator */
+.nav-indicator {
+  position: absolute;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  left: 0;
+  width: 0; /* Updated via JS */
+  background-color: rgba(239, 147, 17, 0.15);
+  border: 1px solid rgba(239, 147, 17, 0.4);
+  border-radius: 50px;
+  box-shadow: 0 0 20px rgba(239, 147, 17, 0.15), inset 0 0 10px rgba(239, 147, 17, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .nav-link {
@@ -215,17 +242,25 @@ select {
   font-size: 0.9rem;
   font-weight: 500;
   border: 1px solid transparent;
-  transition: all var(--transition-fast);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1; /* Stay above the sliding pill */
 }
 
 .nav-link:hover {
   color: var(--color-text);
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.nav-link:active {
+  transform: scale(0.95);
 }
 
 .nav-link.active {
-  background-color: #5D4224;
-  border: 1px solid var(--color-accent);
+  background-color: transparent; /* Pill handles the background now */
+  border: 1px solid transparent;
   color: #FFFFFF;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
 }
 
 /* Contact Button */
@@ -240,13 +275,14 @@ select {
   font-weight: 600;
   border-radius: 50px;
   font-size: 0.9rem;
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .btn-contact:hover {
   background-color: var(--color-accent-hover);
   color: #FFFFFF;
   transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(239, 147, 17, 0.6), 0 0 25px rgba(239, 147, 17, 0.3);
 }
 
 .btn-contact:active {
@@ -513,12 +549,29 @@ select {
     right: 0;
     height: 70px;
   }
-  .status-badge {
-    order: unset;
-  }
-  .header .nav-bar,
-  .header .btn-contact {
+  /* Mobile: ẩn status badge và nav-bar */
+  .header .tw-status-badge,
+  .header .status-badge {
     display: none;
+  }
+  .header .nav-bar {
+    display: none;
+  }
+  /* Mobile: hiện nút Contact me ra ngoài header, vị trí bên trái */
+  .header .btn-contact {
+    display: inline-flex;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.8rem;
+    gap: 0.4rem;
+    order: 0; /* Xuất hiện đầu tiên (bên trái) */
+  }
+  .header .btn-contact .phone-icon {
+    width: 14px;
+    height: 14px;
+  }
+  /* Hamburger menu nằm cuối (bên phải) */
+  .header .menu-toggle {
+    order: 1;
   }
   .hero-section {
     height: calc(100vh - 180px);
@@ -945,12 +998,39 @@ select {
   gap: 3rem;
   width: 100%;
   overflow: hidden;
+  position: relative;
 }
 
+/* Đường line uốn lượn (Wavy Line) */
+.marquee-wavy-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  transform: translateY(-50%);
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 200' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C166,-20 333,-20 500,100 C666,220 833,220 1000,100' fill='none' stroke='%23ef9311' stroke-width='2.5'/%3E%3C/svg%3E");
+  background-size: 1000px 100%;
+  background-repeat: repeat-x;
+  animation: waveMove 12s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes waveMove {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -1000px;
+  }
+}
 .marquee-row {
   display: flex;
   width: 100%;
   overflow: hidden;
+  z-index: 1; /* Để thẻ card đè lên line */
 }
 
 .marquee-track {
@@ -1376,6 +1456,30 @@ select {
   background-color: rgba(239, 147, 17, 0.03);
 }
 
+/* Bootstrap 5 form-control override for contact section */
+.contact-input.form-control {
+  padding: 1.1rem 1.5rem;
+  background-color: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  color: #1a1a1a;
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  box-shadow: none;
+}
+
+.contact-input.form-control::placeholder {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.contact-input.form-control:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  background-color: rgba(239, 147, 17, 0.03);
+  box-shadow: 0 0 0 0.2rem rgba(239, 147, 17, 0.15);
+}
+
 .btn-submit {
   width: 100%;
   padding: 1.2rem;
@@ -1388,13 +1492,14 @@ select {
   font-size: 1.05rem;
   cursor: pointer;
   text-align: center;
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
   margin-top: 1rem;
 }
 
 .btn-submit:hover {
   background-color: var(--color-accent-hover);
   transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(239, 147, 17, 0.6), 0 0 25px rgba(239, 147, 17, 0.3);
 }
 
 .btn-submit:active {
@@ -1426,6 +1531,32 @@ select {
   letter-spacing: 0.02em;
   line-height: 0.8;
   z-index: 1;
+}
+
+/* Language Switcher */
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  z-index: 5;
+  position: relative;
+}
+.lang-switcher .lang-btn {
+  background: none;
+  border: none;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 0;
+}
+.lang-switcher .lang-btn:hover, .lang-switcher .lang-btn.active {
+  color: var(--color-accent);
+}
+.lang-switcher .lang-sep {
+  color: rgba(0, 0, 0, 0.2);
 }
 
 .footer-bottom {
@@ -2680,12 +2811,14 @@ select {
   align-items: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  visibility: hidden;
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.4s;
 }
 
 .video-modal.active {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
 }
 
 .modal-close-btn {
@@ -2812,6 +2945,50 @@ select {
   .back-to-top-btn svg {
     width: 1.2rem;
     height: 1.2rem;
+  }
+}
+/* =========================================
+   CUSTOM CURSOR LOGIC
+   ========================================= */
+@media (hover: hover) and (pointer: fine) {
+  body, a, button, input, textarea, select, .cursor-pointer {
+    cursor: none !important;
+  }
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease, transform 0.1s ease;
+  }
+  .custom-cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(239, 147, 17, 0.5); /* Accent color matching */
+    background-color: rgba(239, 147, 17, 0.05);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
+  }
+  /* Hover state for follower */
+  .custom-cursor-follower.hover-active {
+    width: 60px;
+    height: 60px;
+    border-color: rgba(239, 147, 17, 0.8);
+    background-color: rgba(239, 147, 17, 0.15);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
   }
 }
 

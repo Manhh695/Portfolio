@@ -5,10 +5,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CMS Dashboard - Pham Duc Manh Portfolio</title>
-  <!-- Modern Typographies -->
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <!-- Google Fonts -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;900&display=swap"
     rel="stylesheet">
+  <!-- Tailwind CSS Output -->
+  <link rel="stylesheet" href="../css/tailwind-output.css">
   <!-- Core Design CSS -->
   <link rel="stylesheet" href="../css/style.css">
 
@@ -25,7 +30,7 @@
 
   <link rel="stylesheet" href="../css/admin.css">
 </head>
-</head>
+
 
 <body class="case-study-body">
 
@@ -138,8 +143,8 @@
         </div>
 
         <div class="projects-list-container">
-          <table class="projects-table">
-            <thead>
+          <table class="projects-table table table-dark table-hover">
+            <thead class="table-secondary">
               <tr>
                 <th>Title</th>
                 <th>Category</th>
@@ -238,6 +243,7 @@
               <div style="display: flex; gap: 0.8rem; margin-top: 1.2rem;">
                 <button class="btn-primary" id="save-img-settings-btn" style="max-width: 240px;">Save Optimization
                   Settings</button>
+                <button class="btn-secondary" id="optimize-existing-img-btn" style="max-width: 280px; background-color: var(--color-accent); color: #000; font-weight: 600; border: none;">Optimize Existing Database Images</button>
               </div>
               <p id="img-settings-status" class="status-msg" style="margin-top: 0.8rem;"></p>
             </div>
@@ -290,27 +296,43 @@
           <h2>Manage About Me &amp; Experience</h2>
         </div>
 
-        <div class="settings-grid" style="display: flex; flex-direction: column; gap: 2rem; max-width: 900px; margin-top: 1.5rem;">
+        <div class="settings-grid"
+          style="display: flex; flex-direction: column; gap: 2rem; max-width: 900px; margin-top: 1.5rem;">
           <!-- About Intro Text Card -->
           <div class="settings-card" style="width: 100%;">
             <h3>About Me Introduction</h3>
-            <p class="settings-desc">Đoạn văn ngắn giới thiệu về chuyên môn và kinh nghiệm của bạn ở phần đầu trang chủ.</p>
-            
-            <div class="form-group" style="margin-top: 1rem;">
-              <label>Introduction Paragraph</label>
-              <textarea id="about-intro-input" rows="4" style="font-family: inherit; font-size: 0.95rem; line-height: 1.5;" placeholder="Nhập đoạn giới thiệu ngắn..."></textarea>
+            <p class="settings-desc">Đoạn văn ngắn giới thiệu về chuyên môn và kinh nghiệm của bạn ở phần đầu trang chủ.
+            </p>
+
+            <div class="form-row">
+              <div class="form-group half">
+                <label>Introduction Paragraph (VN)</label>
+                <textarea id="about-intro-input" rows="4"
+                  style="font-family: inherit; font-size: 0.95rem; line-height: 1.5;"
+                  placeholder="Nhập đoạn giới thiệu tiếng Việt..."></textarea>
+              </div>
+              <div class="form-group half">
+                <label>Introduction Paragraph (EN)</label>
+                <textarea id="about-intro-en-input" rows="4"
+                  style="font-family: inherit; font-size: 0.95rem; line-height: 1.5;"
+                  placeholder="Enter English introduction..."></textarea>
+              </div>
             </div>
           </div>
 
           <!-- Timeline Experience List Card -->
           <div class="settings-card" style="width: 100%;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 1rem; flex-wrap: wrap;">
+            <div
+              style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 1rem; flex-wrap: wrap;">
               <h3 style="margin: 0;">Work Experience Timeline</h3>
-              <button type="button" class="btn-primary" id="add-timeline-item-btn" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">+ Add Experience Item</button>
+              <button type="button" class="btn-primary" id="add-timeline-item-btn"
+                style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">+ Add Experience Item</button>
             </div>
-            <p class="settings-desc">Danh sách các mốc thời gian kinh nghiệm làm việc hiển thị dạng timeline trượt ngang ở trang chủ.</p>
+            <p class="settings-desc">Danh sách các mốc thời gian kinh nghiệm làm việc hiển thị dạng timeline trượt ngang
+              ở trang chủ.</p>
 
-            <div id="timeline-items-list" style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem;">
+            <div id="timeline-items-list"
+              style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem;">
               <!-- Dynamic timeline list items will be injected here -->
             </div>
           </div>
@@ -330,8 +352,8 @@
         </div>
 
         <div class="projects-list-container">
-          <table class="projects-table">
-            <thead>
+          <table class="projects-table table table-dark table-hover">
+            <thead class="table-secondary">
               <tr>
                 <th>Title</th>
                 <th>Row</th>
@@ -362,12 +384,20 @@
           <form id="project-form" onsubmit="event.preventDefault();">
             <input type="hidden" id="form-mode" value="add"> <!-- 'add' or 'edit' -->
 
-            <!-- ─── ROW 1: Title & Category (merged) ─────────── -->
+            <!-- ─── ROW 1: Titles ─────────── -->
             <div class="form-row">
               <div class="form-group half">
-                <label>Title</label>
+                <label>Title (VN)</label>
                 <input type="text" id="p-title" required placeholder="Acme Identity Showcase">
               </div>
+              <div class="form-group half">
+                <label>Title (EN)</label>
+                <input type="text" id="p-title-en" placeholder="Acme Identity Showcase (EN)">
+              </div>
+            </div>
+
+            <!-- ─── ROW 1.5: Category ─────────── -->
+            <div class="form-row">
               <div class="form-group half">
                 <label>Category / Domain</label>
                 <select id="p-category" required>
@@ -464,12 +494,19 @@
                   <input type="text" id="p-client" placeholder="Acme Corporation">
                 </div>
                 <div class="form-group third">
-                  <label>Role</label>
-                  <input type="text" id="p-role" placeholder="Graphic Designer">
+                  <label>Role (VN)</label>
+                  <input type="text" id="p-role" placeholder="Thiết kế đồ họa">
                 </div>
                 <div class="form-group third">
                   <label>Date</label>
                   <input type="text" id="p-date" placeholder="Q3 2025">
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group half">
+                  <label>Role (EN)</label>
+                  <input type="text" id="p-role-en" placeholder="Graphic Designer">
                 </div>
               </div>
 
@@ -490,7 +527,11 @@
                 <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap;">
                   <button type="button" class="btn-secondary" id="btn-upload-video"
                     style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Video</button>
-                  <button type="button" class="btn-library" id="btn-library-video" data-target="p-videoUrl" data-folder="portfolio/videos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>Thư viện</button>
+                  <button type="button" class="btn-library" id="btn-library-video" data-target="p-videoUrl"
+                    data-folder="portfolio/videos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                    </svg>Thư viện</button>
                   <input type="file" id="p-video-file" accept="video/*" style="display: none;">
                   <span id="p-video-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
                 </div>
@@ -507,7 +548,8 @@
                   <span class="slider round"></span>
                 </label>
                 <span
-                  style="font-weight: 600; color: rgba(255, 255, 255, 0.85); text-transform: uppercase; letter-spacing: 0.03em; font-size: 0.85rem;">Hiển thị ở mục Multimedia Works</span>
+                  style="font-weight: 600; color: rgba(255, 255, 255, 0.85); text-transform: uppercase; letter-spacing: 0.03em; font-size: 0.85rem;">Hiển
+                  thị ở mục Multimedia Works</span>
               </div>
             </div>
 
@@ -662,9 +704,15 @@
                 <input type="file" id="p-desc-vid-file" accept="video/*" style="display: none;">
               </div>
               <textarea id="p-desc" rows="6" required
-                placeholder="Chi tiết câu chuyện giới thiệu dự án... Bạn có thể soạn thảo HTML hoặc dùng công cụ chèn đa phương tiện bên trên."></textarea>
+                placeholder="Chi tiết dự án (Tiếng Việt)..."></textarea>
               <span id="p-desc-upload-status" class="status-msg"
                 style="margin-top: 0.3rem; font-size: 0.8rem; display: none;"></span>
+            </div>
+            
+            <div class="form-group" style="margin-top: 1rem;">
+              <label>Project Story / Description (EN)</label>
+              <textarea id="p-desc-en" rows="6"
+                placeholder="Project details (English)..."></textarea>
             </div>
 
             <div class="form-group">
@@ -673,10 +721,13 @@
               <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap;">
                 <button type="button" class="btn-secondary" id="btn-upload-images"
                   style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Images</button>
-                <button type="button" class="btn-library" id="btn-library-images" data-target="p-images" data-folder="portfolio/images"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>Thư viện</button>
+                <button type="button" class="btn-library" id="btn-library-images" data-target="p-images"
+                  data-folder="portfolio/images"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                  </svg>Thư viện</button>
                 <input type="file" id="p-images-file" accept="image/*" multiple style="display: none;">
-                <span id="p-images-upload-status" class="status-msg"
-                  style="margin-top: 0; font-size: 0.85rem;"></span>
+                <span id="p-images-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
               </div>
               <div id="p-images-preview" class="form-field-preview-grid" style="display: none;"></div>
             </div>
@@ -769,7 +820,11 @@
           <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap;">
             <button type="button" class="btn-secondary" id="btn-upload-marquee"
               style="padding: 0.5rem 1.2rem; font-size: 0.85rem; border-radius: 8px;">Upload Image</button>
-            <button type="button" class="btn-library" id="btn-library-marquee" data-target="m-imageUrl" data-folder="portfolio/marquee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>Thư viện</button>
+            <button type="button" class="btn-library" id="btn-library-marquee" data-target="m-imageUrl"
+              data-folder="portfolio/marquee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+              </svg>Thư viện</button>
             <input type="file" id="m-image-file" accept="image/*" style="display: none;">
             <span id="m-image-upload-status" class="status-msg" style="margin-top: 0; font-size: 0.85rem;"></span>
           </div>
@@ -886,9 +941,11 @@
     const imgCompressQuality = document.getElementById('img-compress-quality');
     const imgQualityVal = document.getElementById('img-quality-val');
     const saveImgSettingsBtn = document.getElementById('save-img-settings-btn');
+    const optimizeExistingImgBtn = document.getElementById('optimize-existing-img-btn');
     const imgSettingsStatus = document.getElementById('img-settings-status');
 
     const aboutIntroInput = document.getElementById('about-intro-input');
+    const aboutIntroEnInput = document.getElementById('about-intro-en-input');
     const addTimelineItemBtn = document.getElementById('add-timeline-item-btn');
     const timelineItemsList = document.getElementById('timeline-items-list');
     const saveAboutBtn = document.getElementById('save-about-btn');
@@ -1084,10 +1141,12 @@
       syncTypeCards(projectType);
       pShowInMultimediaInput.checked = !!project.showInMultimedia;
 
-      document.getElementById('p-title').value = project.title;
+      document.getElementById('p-title').value = project.title || '';
+      document.getElementById('p-title-en').value = project.title_en || '';
       document.getElementById('p-category').value = project.category || 'graphic';
       document.getElementById('p-themeClass').value = project.themeClass || 'bg-gradient-4';
       document.getElementById('p-desc').value = project.desc || '';
+      document.getElementById('p-desc-en').value = project.desc_en || '';
       document.getElementById('p-images').value = project.images ? project.images.join(', ') : '';
 
       // Populate tag checkboxes
@@ -1102,6 +1161,7 @@
       // All fields populated regardless of type (unified form)
       document.getElementById('p-client').value = project.client || '';
       document.getElementById('p-role').value = project.role || '';
+      document.getElementById('p-role-en').value = project.role_en || '';
       document.getElementById('p-date').value = project.date || '';
       document.getElementById('p-nextProject').value = project.nextProject || '';
       document.getElementById('p-nextTitle').value = project.nextTitle || '';
@@ -1135,11 +1195,13 @@
 
       const data = {
         title: document.getElementById('p-title').value.trim(),
+        title_en: document.getElementById('p-title-en').value.trim(),
         subtitle: selectedSubtitle,
         category: selectedCategory,
         themeClass: document.getElementById('p-themeClass').value,
         tags: selectedTags,
         desc: document.getElementById('p-desc').value.trim(),
+        desc_en: document.getElementById('p-desc-en').value.trim(),
         images: document.getElementById('p-images').value.split(',').map(img => img.trim()).filter(Boolean),
         type: type,
         showInMultimedia: supportsVideo ? pShowInMultimediaInput.checked : false
@@ -1148,6 +1210,7 @@
       // All fields saved regardless of type (unified form)
       data.client = document.getElementById('p-client').value.trim();
       data.role = document.getElementById('p-role').value.trim();
+      data.role_en = document.getElementById('p-role-en').value.trim();
       data.date = document.getElementById('p-date').value.trim();
       data.nextProject = document.getElementById('p-nextProject').value.trim();
       data.nextTitle = document.getElementById('p-nextTitle').value.trim();
@@ -1258,6 +1321,7 @@
       try {
         cachedAboutData = await db.getAboutData();
         aboutIntroInput.value = cachedAboutData.aboutIntro || '';
+        aboutIntroEnInput.value = cachedAboutData.aboutIntro_en || '';
         renderTimelineFormItems(cachedAboutData.timeline || []);
       } catch (err) {
         console.error('Failed to load about me data:', err);
@@ -1277,7 +1341,7 @@
         const itemCard = document.createElement('div');
         itemCard.className = 'timeline-form-item';
         itemCard.style.cssText = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; position: relative;';
-        
+
         itemCard.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.6rem; gap: 1rem; flex-wrap: wrap;">
             <h4 style="margin: 0; font-family: Outfit; font-weight: 500; font-size: 0.95rem; color: #ef9311;">Mốc kinh nghiệm #${index + 1}</h4>
@@ -1288,22 +1352,32 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group third">
+            <div class="form-group half">
               <label>Year / Duration</label>
               <input type="text" class="timeline-year-input" value="${item.year || ''}" placeholder="e.g. 2024 - Present">
             </div>
-            <div class="form-group third">
+            <div class="form-group half">
               <label>Company / Organization</label>
               <input type="text" class="timeline-company-input" value="${item.company || ''}" placeholder="e.g. Aura Digital Consult">
             </div>
-            <div class="form-group third">
-              <label>Job Role / Title</label>
+          </div>
+          <div class="form-row">
+            <div class="form-group half">
+              <label>Job Role (VN)</label>
               <input type="text" class="timeline-role-input" value="${item.role || ''}" placeholder="e.g. Product Designer">
+            </div>
+            <div class="form-group half">
+              <label>Job Role (EN)</label>
+              <input type="text" class="timeline-role-en-input" value="${item.role_en || ''}" placeholder="e.g. Product Designer">
             </div>
           </div>
           <div class="form-group">
-            <label>Role Description</label>
+            <label>Role Description (VN)</label>
             <textarea class="timeline-desc-input" rows="2" placeholder="Mô tả các công việc chính đã làm...">${item.desc || ''}</textarea>
+          </div>
+          <div class="form-group" style="margin-top: 0.8rem;">
+            <label>Role Description (EN)</label>
+            <textarea class="timeline-desc-en-input" rows="2" placeholder="English role description...">${item.desc_en || ''}</textarea>
           </div>
         `;
         timelineItemsList.appendChild(itemCard);
@@ -1354,7 +1428,9 @@
           year: block.querySelector('.timeline-year-input').value.trim(),
           company: block.querySelector('.timeline-company-input').value.trim(),
           role: block.querySelector('.timeline-role-input').value.trim(),
-          desc: block.querySelector('.timeline-desc-input').value.trim()
+          role_en: block.querySelector('.timeline-role-en-input').value.trim(),
+          desc: block.querySelector('.timeline-desc-input').value.trim(),
+          desc_en: block.querySelector('.timeline-desc-en-input').value.trim()
         });
       });
       return items;
@@ -1362,16 +1438,17 @@
 
     addTimelineItemBtn.addEventListener('click', () => {
       const currentList = getTimelineDataFromForm();
-      currentList.push({ year: '', company: '', role: '', desc: '' });
+      currentList.push({ year: '', company: '', role: '', role_en: '', desc: '', desc_en: '' });
       renderTimelineFormItems(currentList);
     });
 
     saveAboutBtn.addEventListener('click', async () => {
       showLoading(true);
       aboutStatusMsg.innerText = '';
-      
+
       const newAboutData = {
         aboutIntro: aboutIntroInput.value.trim(),
+        aboutIntro_en: aboutIntroEnInput.value.trim(),
         timeline: getTimelineDataFromForm()
       };
 
@@ -1422,835 +1499,933 @@
           fbStatusMessage.className = 'status-msg error';
         });
       }
-        // Load Image Optimization Settings
-        const optSettingsRaw = localStorage.getItem('portfolio_img_compress_settings');
-        let optSettings = { enabled: true, maxDimension: 1920, quality: 0.8 };
-        if (optSettingsRaw) {
-          try {
-            optSettings = JSON.parse(optSettingsRaw);
-          } catch (e) {
-            console.error('Error parsing portfolio_img_compress_settings, resetting:', e);
-          }
+      // Load Image Optimization Settings
+      const optSettingsRaw = localStorage.getItem('portfolio_img_compress_settings');
+      let optSettings = { enabled: true, maxDimension: 1920, quality: 0.8 };
+      if (optSettingsRaw) {
+        try {
+          optSettings = JSON.parse(optSettingsRaw);
+        } catch (e) {
+          console.error('Error parsing portfolio_img_compress_settings, resetting:', e);
         }
-
-        imgCompressToggle.checked = optSettings.enabled;
-        imgCompressFields.style.display = optSettings.enabled ? 'block' : 'none';
-        imgMaxDimension.value = optSettings.maxDimension || 1920;
-        imgCompressQuality.value = optSettings.quality !== undefined ? optSettings.quality : 0.8;
-        imgQualityVal.innerText = `${Math.round(imgCompressQuality.value * 100)}%`;
       }
 
-      fbSyncToggle.addEventListener('change', () => {
-        if (fbSyncToggle.checked) {
-          fbConfigFields.style.display = 'block';
-        } else {
-          fbConfigFields.style.display = 'none';
-          syncLocalBtn.style.display = 'none';
+      imgCompressToggle.checked = optSettings.enabled;
+      imgCompressFields.style.display = optSettings.enabled ? 'block' : 'none';
+      imgMaxDimension.value = optSettings.maxDimension || 1920;
+      imgCompressQuality.value = optSettings.quality !== undefined ? optSettings.quality : 0.8;
+      imgQualityVal.innerText = `${Math.round(imgCompressQuality.value * 100)}%`;
+    }
 
-          const settings = db.getDbSettings();
-          settings.firebaseEnabled = false;
-          db.saveDbSettings(settings);
+    fbSyncToggle.addEventListener('change', () => {
+      if (fbSyncToggle.checked) {
+        fbConfigFields.style.display = 'block';
+      } else {
+        fbConfigFields.style.display = 'none';
+        syncLocalBtn.style.display = 'none';
 
-          fbStatusMessage.innerText = 'Đồng bộ Firebase đã tắt. Hệ thống chuyển về sử dụng LocalStorage.';
-          fbStatusMessage.className = 'status-msg info';
-        }
-      });
+        const settings = db.getDbSettings();
+        settings.firebaseEnabled = false;
+        db.saveDbSettings(settings);
 
-      imgCompressToggle.addEventListener('change', () => {
-        imgCompressFields.style.display = imgCompressToggle.checked ? 'block' : 'none';
-      });
+        fbStatusMessage.innerText = 'Đồng bộ Firebase đã tắt. Hệ thống chuyển về sử dụng LocalStorage.';
+        fbStatusMessage.className = 'status-msg info';
+      }
+    });
 
-      imgCompressQuality.addEventListener('input', () => {
-        imgQualityVal.innerText = `${Math.round(imgCompressQuality.value * 100)}%`;
-      });
+    imgCompressToggle.addEventListener('change', () => {
+      imgCompressFields.style.display = imgCompressToggle.checked ? 'block' : 'none';
+    });
 
-      saveImgSettingsBtn.addEventListener('click', () => {
-        const enabled = imgCompressToggle.checked;
-        const maxDimension = parseInt(imgMaxDimension.value, 10);
-        const quality = parseFloat(imgCompressQuality.value);
+    imgCompressQuality.addEventListener('input', () => {
+      imgQualityVal.innerText = `${Math.round(imgCompressQuality.value * 100)}%`;
+    });
 
-        if (isNaN(maxDimension) || maxDimension < 400 || maxDimension > 4000) {
-          imgSettingsStatus.innerText = '❌ Chiều rộng/cao tối đa phải nằm trong khoảng từ 400 đến 4000 pixel.';
-          imgSettingsStatus.className = 'status-msg error';
-          return;
-        }
+    saveImgSettingsBtn.addEventListener('click', () => {
+      const enabled = imgCompressToggle.checked;
+      const maxDimension = parseInt(imgMaxDimension.value, 10);
+      const quality = parseFloat(imgCompressQuality.value);
 
-        if (isNaN(quality) || quality < 0.1 || quality > 1.0) {
-          imgSettingsStatus.innerText = '❌ Chất lượng nén phải nằm trong khoảng từ 0.1 đến 1.0.';
-          imgSettingsStatus.className = 'status-msg error';
-          return;
-        }
-
-        const optSettings = { enabled, maxDimension, quality };
-        localStorage.setItem('portfolio_img_compress_settings', JSON.stringify(optSettings));
-
-        imgSettingsStatus.innerText = '✅ Cấu hình tối ưu ảnh đã được lưu thành công!';
-        imgSettingsStatus.className = 'status-msg success';
-        setTimeout(() => {
-          imgSettingsStatus.innerText = '';
-        }, 3000);
-      });
-
-      saveFbSettingsBtn.addEventListener('click', async () => {
-        const configStr = fbConfigInput.value.trim();
-        if (!configStr) {
-          fbStatusMessage.innerText = 'Vui lòng nhập chuỗi JSON cấu hình Firebase SDK.';
-          fbStatusMessage.className = 'status-msg error';
-          return;
-        }
-
-        showLoading(true);
-        fbStatusMessage.innerText = '';
-
-        try {
-          const config = JSON.parse(configStr);
-          if (!config.apiKey || !config.projectId) {
-            throw new Error('Cấu hình JSON thiếu các trường bắt buộc (apiKey, projectId).');
-          }
-
-          const settings = {
-            firebaseEnabled: true,
-            firebaseConfig: config
-          };
-
-          db.saveDbSettings(settings);
-
-          // Re-initialize database to verify connection
-          const testData = await db.getAllProjects();
-          cachedProjects = testData;
-          await loadProjectsGrid();
-          await loadMarqueeGrid();
-
-          fbStatusMessage.innerText = 'Kết nối Firebase thành công! Cơ sở dữ liệu đã đồng bộ đám mây.';
-          fbStatusMessage.className = 'status-msg success';
-          syncLocalBtn.style.display = 'inline-block';
-        } catch (err) {
-          fbStatusMessage.innerText = `Lỗi cấu hình: ${err.message}. Đảm bảo chuỗi JSON hợp lệ.`;
-          fbStatusMessage.className = 'status-msg error';
-        } finally {
-          showLoading(false);
-        }
-      });
-
-      syncLocalBtn.addEventListener('click', async () => {
-        if (!confirm('Bạn có muốn đẩy toàn bộ dữ liệu trong LocalStorage lên đám mây Firestore không?')) {
-          return;
-        }
-
-        showLoading(true);
-        fbStatusMessage.innerText = '';
-
-        try {
-          await db.syncLocalToFirebase();
-          fbStatusMessage.innerText = 'Đồng bộ dữ liệu LocalStorage lên Firestore hoàn tất!';
-          fbStatusMessage.className = 'status-msg success';
-        } catch (err) {
-          fbStatusMessage.innerText = `Đồng bộ thất bại: ${err.message}`;
-          fbStatusMessage.className = 'status-msg error';
-        } finally {
-          showLoading(false);
-        }
-      });
-
-      // 5. IMPORT / EXPORT DATA (Unified JSON Backup)
-      function refreshExportJson() {
-        const localProjects = localStorage.getItem('portfolio_projects') || '{}';
-        const localMarquee = localStorage.getItem('portfolio_marquee_cards') || '{}';
-        const localAbout = localStorage.getItem('portfolio_about') || null;
-
-        const combined = {
-          projects: JSON.parse(localProjects),
-          marquee: JSON.parse(localMarquee),
-          about: localAbout ? JSON.parse(localAbout) : null
-        };
-
-        rawJsonTextarea.value = JSON.stringify(combined, null, 2);
+      if (isNaN(maxDimension) || maxDimension < 400 || maxDimension > 4000) {
+        imgSettingsStatus.innerText = '❌ Chiều rộng/cao tối đa phải nằm trong khoảng từ 400 đến 4000 pixel.';
+        imgSettingsStatus.className = 'status-msg error';
+        return;
       }
 
-      exportBtn.addEventListener('click', () => {
-        refreshExportJson();
-        importStatusMessage.innerText = 'Dữ liệu xuất đã làm mới thành công.';
-        importStatusMessage.className = 'status-msg success';
-      });
-
-      importBtn.addEventListener('click', async () => {
-        const jsonStr = rawJsonTextarea.value.trim();
-        if (!jsonStr) {
-          importStatusMessage.innerText = 'Vui lòng dán chuỗi JSON thô vào khung văn bản.';
-          importStatusMessage.className = 'status-msg error';
-          return;
-        }
-
-        if (!confirm('Hành động này sẽ xóa và dán đè toàn bộ dự án & marquee hiện tại của bạn trong bộ nhớ LocalStorage. Bạn có muốn tiếp tục?')) {
-          return;
-        }
-
-        showLoading(true);
-        importStatusMessage.innerText = '';
-
-        try {
-          const data = JSON.parse(jsonStr);
-
-          if (data.projects) {
-            // Schema verification
-            Object.keys(data.projects).forEach(key => {
-              if (!data.projects[key].title || !data.projects[key].subtitle) {
-                throw new Error(`Dự án '${key}' thiếu các trường bắt buộc (title, subtitle).`);
-              }
-            });
-            localStorage.setItem('portfolio_projects', JSON.stringify(data.projects));
-          }
-
-          if (data.marquee) {
-            // Schema verification
-            Object.keys(data.marquee).forEach(key => {
-              if (!data.marquee[key].title || !data.marquee[key].row) {
-                throw new Error(`Thẻ Marquee '${key}' thiếu các trường bắt buộc (title, row).`);
-              }
-            });
-            localStorage.setItem('portfolio_marquee_cards', JSON.stringify(data.marquee));
-          }
-
-          if (data.about) {
-            localStorage.setItem('portfolio_about', JSON.stringify(data.about));
-            // Save to Firebase too if sync active
-            const settings = db.getDbSettings();
-            if (settings.firebaseEnabled) {
-              await db.saveAboutData(data.about);
-            }
-          }
-
-          // Sync to Firebase if sync is active
-          const settings = db.getDbSettings();
-          if (settings.firebaseEnabled) {
-            await db.syncLocalToFirebase();
-          }
-
-          await loadProjectsGrid();
-          await loadMarqueeGrid();
-
-          importStatusMessage.innerText = 'Nhập tệp dữ liệu hoàn tất! Toàn bộ cơ sở dữ liệu đã được thay thế.';
-          importStatusMessage.className = 'status-msg success';
-        } catch (err) {
-          importStatusMessage.innerText = `Lỗi nhập JSON: ${err.message}.`;
-          importStatusMessage.className = 'status-msg error';
-        } finally {
-          showLoading(false);
-        }
-      });
-
-      // 6. UTILITY LOADER
-      function showLoading(show) {
-        loadingOverlay.style.display = show ? 'flex' : 'none';
+      if (isNaN(quality) || quality < 0.1 || quality > 1.0) {
+        imgSettingsStatus.innerText = '❌ Chất lượng nén phải nằm trong khoảng từ 0.1 đến 1.0.';
+        imgSettingsStatus.className = 'status-msg error';
+        return;
       }
 
-      // 7. FILE UPLOAD CONTROLLERS
-      async function compressImage(file, maxDimension = 1920, quality = 0.8) {
-        if (!file.type.startsWith('image/') || file.type === 'image/gif' || file.type === 'image/svg+xml') {
-          return file;
-        }
+      const optSettings = { enabled, maxDimension, quality };
+      localStorage.setItem('portfolio_img_compress_settings', JSON.stringify(optSettings));
 
+      imgSettingsStatus.innerText = '✅ Cấu hình tối ưu ảnh đã được lưu thành công!';
+      imgSettingsStatus.className = 'status-msg success';
+      setTimeout(() => {
+        imgSettingsStatus.innerText = '';
+      }, 3000);
+    });
+
+    optimizeExistingImgBtn.addEventListener('click', async () => {
+      if (!confirm('Bạn có chắc chắn muốn quét và tối ưu hóa TOÀN BỘ hình ảnh (chuyển đổi sang WebP/giảm dung lượng) trong Database không? Quá trình này có thể mất vài phút tuỳ thuộc vào số lượng ảnh.')) return;
+      
+      showLoading(true);
+      imgSettingsStatus.innerText = 'Đang tiến hành tối ưu ảnh... Vui lòng không đóng trang.';
+      imgSettingsStatus.className = 'status-msg';
+
+      let optimizedCount = 0;
+      let optSettings = { maxDimension: 1920, quality: 0.8 };
+      try {
+        const stored = localStorage.getItem('portfolio_img_compress_settings');
+        if (stored) optSettings = { ...optSettings, ...JSON.parse(stored) };
+      } catch (e) {}
+      
+      const maxDim = optSettings.maxDimension || 1920;
+      const q = optSettings.quality || 0.8;
+
+      const compressBase64 = (base64, isMarquee = false) => {
         return new Promise((resolve) => {
+          if (!base64 || typeof base64 !== 'string' || !base64.startsWith('data:image/') || base64.startsWith('data:image/webp') || base64.startsWith('data:image/svg')) {
+            return resolve(base64);
+          }
           const img = new Image();
-          const url = URL.createObjectURL(file);
           img.onload = () => {
-            URL.revokeObjectURL(url);
             let { width, height } = img;
-
-            const needsResize = width > maxDimension || height > maxDimension;
-            if (!needsResize && file.size < 200 * 1024) {
-              resolve(file); // Small file and doesn't need resize, keep original
-              return;
-            }
-
+            // Marquee images can be smaller
+            const targetMaxDim = isMarquee ? Math.min(maxDim, 1000) : maxDim;
+            const needsResize = width > targetMaxDim || height > targetMaxDim;
+            
             if (needsResize) {
-              const scale = maxDimension / Math.max(width, height);
+              const scale = targetMaxDim / Math.max(width, height);
               width = Math.round(width * scale);
               height = Math.round(height * scale);
             }
-
             const canvas = document.createElement('canvas');
             canvas.width = width;
             canvas.height = height;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
+            const optimized = canvas.toDataURL('image/webp', q);
+            resolve(optimized.length < base64.length || needsResize ? optimized : base64);
+          };
+          img.onerror = () => resolve(base64);
+          img.src = base64;
+        });
+      };
 
-            let outputType = file.type;
-            // Convert PNG to WebP to optimize file size while retaining transparency
-            if (file.type === 'image/png') {
-              outputType = 'image/webp';
+      try {
+        const marqueeCards = await db.getAllMarqueeCards();
+        for (const [id, card] of Object.entries(marqueeCards)) {
+          if (card.imageUrl && card.imageUrl.startsWith('data:image/')) {
+            const newUrl = await compressBase64(card.imageUrl, true);
+            if (newUrl !== card.imageUrl) {
+              card.imageUrl = newUrl;
+              await db.saveMarqueeCard(id, card);
+              optimizedCount++;
+            }
+          }
+        }
+
+        const projects = await db.getAllProjects();
+        for (const [id, proj] of Object.entries(projects)) {
+          let updated = false;
+          if (proj.images && proj.images.length > 0) {
+            for (let i = 0; i < proj.images.length; i++) {
+              if (proj.images[i].startsWith('data:image/')) {
+                const newImg = await compressBase64(proj.images[i], false);
+                if (newImg !== proj.images[i]) {
+                  proj.images[i] = newImg;
+                  updated = true;
+                }
+              }
+            }
+          }
+          if (proj.coverImage && proj.coverImage.startsWith('data:image/')) {
+            const newCover = await compressBase64(proj.coverImage, false);
+            if (newCover !== proj.coverImage) {
+              proj.coverImage = newCover;
+              updated = true;
+            }
+          }
+          if (updated) {
+            await db.saveProject(id, proj);
+            optimizedCount++;
+          }
+        }
+
+        imgSettingsStatus.innerText = `✅ Đã tối ưu hóa và giảm dung lượng thành công ${optimizedCount} mục!`;
+        imgSettingsStatus.className = 'status-msg success';
+      } catch (err) {
+        console.error('Lỗi khi tối ưu ảnh:', err);
+        imgSettingsStatus.innerText = '❌ Có lỗi xảy ra trong quá trình tối ưu ảnh.';
+        imgSettingsStatus.className = 'status-msg error';
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    saveFbSettingsBtn.addEventListener('click', async () => {
+      const configStr = fbConfigInput.value.trim();
+      if (!configStr) {
+        fbStatusMessage.innerText = 'Vui lòng nhập chuỗi JSON cấu hình Firebase SDK.';
+        fbStatusMessage.className = 'status-msg error';
+        return;
+      }
+
+      showLoading(true);
+      fbStatusMessage.innerText = '';
+
+      try {
+        const config = JSON.parse(configStr);
+        if (!config.apiKey || !config.projectId) {
+          throw new Error('Cấu hình JSON thiếu các trường bắt buộc (apiKey, projectId).');
+        }
+
+        const settings = {
+          firebaseEnabled: true,
+          firebaseConfig: config
+        };
+
+        db.saveDbSettings(settings);
+
+        // Re-initialize database to verify connection
+        const testData = await db.getAllProjects();
+        cachedProjects = testData;
+        await loadProjectsGrid();
+        await loadMarqueeGrid();
+
+        fbStatusMessage.innerText = 'Kết nối Firebase thành công! Cơ sở dữ liệu đã đồng bộ đám mây.';
+        fbStatusMessage.className = 'status-msg success';
+        syncLocalBtn.style.display = 'inline-block';
+      } catch (err) {
+        fbStatusMessage.innerText = `Lỗi cấu hình: ${err.message}. Đảm bảo chuỗi JSON hợp lệ.`;
+        fbStatusMessage.className = 'status-msg error';
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    syncLocalBtn.addEventListener('click', async () => {
+      if (!confirm('Bạn có muốn đẩy toàn bộ dữ liệu trong LocalStorage lên đám mây Firestore không?')) {
+        return;
+      }
+
+      showLoading(true);
+      fbStatusMessage.innerText = '';
+
+      try {
+        await db.syncLocalToFirebase();
+        fbStatusMessage.innerText = 'Đồng bộ dữ liệu LocalStorage lên Firestore hoàn tất!';
+        fbStatusMessage.className = 'status-msg success';
+      } catch (err) {
+        fbStatusMessage.innerText = `Đồng bộ thất bại: ${err.message}`;
+        fbStatusMessage.className = 'status-msg error';
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    // 5. IMPORT / EXPORT DATA (Unified JSON Backup)
+    function refreshExportJson() {
+      const localProjects = localStorage.getItem('portfolio_projects') || '{}';
+      const localMarquee = localStorage.getItem('portfolio_marquee_cards') || '{}';
+      const localAbout = localStorage.getItem('portfolio_about') || null;
+
+      const combined = {
+        projects: JSON.parse(localProjects),
+        marquee: JSON.parse(localMarquee),
+        about: localAbout ? JSON.parse(localAbout) : null
+      };
+
+      rawJsonTextarea.value = JSON.stringify(combined, null, 2);
+    }
+
+    exportBtn.addEventListener('click', () => {
+      refreshExportJson();
+      importStatusMessage.innerText = 'Dữ liệu xuất đã làm mới thành công.';
+      importStatusMessage.className = 'status-msg success';
+    });
+
+    importBtn.addEventListener('click', async () => {
+      const jsonStr = rawJsonTextarea.value.trim();
+      if (!jsonStr) {
+        importStatusMessage.innerText = 'Vui lòng dán chuỗi JSON thô vào khung văn bản.';
+        importStatusMessage.className = 'status-msg error';
+        return;
+      }
+
+      if (!confirm('Hành động này sẽ xóa và dán đè toàn bộ dự án & marquee hiện tại của bạn trong bộ nhớ LocalStorage. Bạn có muốn tiếp tục?')) {
+        return;
+      }
+
+      showLoading(true);
+      importStatusMessage.innerText = '';
+
+      try {
+        const data = JSON.parse(jsonStr);
+
+        if (data.projects) {
+          // Schema verification
+          Object.keys(data.projects).forEach(key => {
+            if (!data.projects[key].title || !data.projects[key].subtitle) {
+              throw new Error(`Dự án '${key}' thiếu các trường bắt buộc (title, subtitle).`);
+            }
+          });
+          localStorage.setItem('portfolio_projects', JSON.stringify(data.projects));
+        }
+
+        if (data.marquee) {
+          // Schema verification
+          Object.keys(data.marquee).forEach(key => {
+            if (!data.marquee[key].title || !data.marquee[key].row) {
+              throw new Error(`Thẻ Marquee '${key}' thiếu các trường bắt buộc (title, row).`);
+            }
+          });
+          localStorage.setItem('portfolio_marquee_cards', JSON.stringify(data.marquee));
+        }
+
+        if (data.about) {
+          localStorage.setItem('portfolio_about', JSON.stringify(data.about));
+          // Save to Firebase too if sync active
+          const settings = db.getDbSettings();
+          if (settings.firebaseEnabled) {
+            await db.saveAboutData(data.about);
+          }
+        }
+
+        // Sync to Firebase if sync is active
+        const settings = db.getDbSettings();
+        if (settings.firebaseEnabled) {
+          await db.syncLocalToFirebase();
+        }
+
+        await loadProjectsGrid();
+        await loadMarqueeGrid();
+
+        importStatusMessage.innerText = 'Nhập tệp dữ liệu hoàn tất! Toàn bộ cơ sở dữ liệu đã được thay thế.';
+        importStatusMessage.className = 'status-msg success';
+      } catch (err) {
+        importStatusMessage.innerText = `Lỗi nhập JSON: ${err.message}.`;
+        importStatusMessage.className = 'status-msg error';
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    // 6. UTILITY LOADER
+    function showLoading(show) {
+      loadingOverlay.style.display = show ? 'flex' : 'none';
+    }
+
+    // 7. FILE UPLOAD CONTROLLERS
+    async function compressImage(file, maxDimension = 1920, quality = 0.8) {
+      if (!file.type.startsWith('image/') || file.type === 'image/gif' || file.type === 'image/svg+xml') {
+        return file;
+      }
+
+      return new Promise((resolve) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          let { width, height } = img;
+
+          const needsResize = width > maxDimension || height > maxDimension;
+          if (!needsResize && file.size < 200 * 1024) {
+            resolve(file); // Small file and doesn't need resize, keep original
+            return;
+          }
+
+          if (needsResize) {
+            const scale = maxDimension / Math.max(width, height);
+            width = Math.round(width * scale);
+            height = Math.round(height * scale);
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          let outputType = file.type;
+          // Convert PNG to WebP to optimize file size while retaining transparency
+          if (file.type === 'image/png') {
+            outputType = 'image/webp';
+          }
+
+          canvas.toBlob((blob) => {
+            if (!blob) {
+              resolve(file);
+              return;
             }
 
-            canvas.toBlob((blob) => {
-              if (!blob) {
-                resolve(file);
-                return;
-              }
+            if (blob.size >= file.size && !needsResize) {
+              resolve(file); // If compressed blob is larger and didn't resize, keep original
+              return;
+            }
 
-              if (blob.size >= file.size && !needsResize) {
-                resolve(file); // If compressed blob is larger and didn't resize, keep original
-                return;
-              }
+            let newName = file.name;
+            const dotIdx = newName.lastIndexOf('.');
+            if (outputType === 'image/webp' && !newName.endsWith('.webp')) {
+              newName = (dotIdx !== -1 ? newName.substring(0, dotIdx) : newName) + '.webp';
+            }
 
-              let newName = file.name;
-              const dotIdx = newName.lastIndexOf('.');
-              if (outputType === 'image/webp' && !newName.endsWith('.webp')) {
-                newName = (dotIdx !== -1 ? newName.substring(0, dotIdx) : newName) + '.webp';
-              }
+            const compressedFile = new File([blob], newName, { type: outputType, lastModified: Date.now() });
+            resolve(compressedFile);
+          }, outputType, quality);
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          resolve(file);
+        };
+        img.src = url;
+      });
+    }
 
-              const compressedFile = new File([blob], newName, { type: outputType, lastModified: Date.now() });
-              resolve(compressedFile);
-            }, outputType, quality);
+    async function processUpload(file, folder, statusSpan) {
+      statusSpan.className = 'status-msg info';
+
+      let uploadFile = file;
+      const optSettingsRaw = localStorage.getItem('portfolio_img_compress_settings');
+      let optSettings = { enabled: true, maxDimension: 1920, quality: 0.8 };
+      if (optSettingsRaw) {
+        try { optSettings = JSON.parse(optSettingsRaw); } catch (e) { }
+      }
+
+      if (optSettings.enabled && file.type.startsWith('image/')) {
+        statusSpan.innerText = '⚙️ Đang tối ưu hóa hình ảnh...';
+        const originalSize = file.size;
+        uploadFile = await compressImage(file, optSettings.maxDimension, optSettings.quality);
+        const compressedSize = uploadFile.size;
+        if (compressedSize < originalSize) {
+          const originalKB = (originalSize / 1024).toFixed(0);
+          const compressedKB = (compressedSize / 1024).toFixed(0);
+          statusSpan.innerText = `⚡ Đã nén: ${originalKB}KB → ${compressedKB}KB. Đang kết nối...`;
+        } else {
+          statusSpan.innerText = `⚙️ Ảnh đã tối ưu. Đang kết nối...`;
+        }
+      } else {
+        statusSpan.innerText = 'Đang kiểm tra kết nối Firebase...';
+      }
+
+      // Step 1: Check Firebase settings
+      const settings = db.getDbSettings();
+      console.log('[Upload] Firebase settings:', settings);
+
+      if (!settings.firebaseEnabled || !settings.firebaseConfig) {
+        // Fallback to Base64 local conversion
+        console.log('[Upload] Firebase not enabled, using base64 fallback');
+        statusSpan.innerText = 'Firebase chưa kết nối – đang chuyển đổi ảnh thành Base64...';
+        if (uploadFile.size > 2 * 1024 * 1024) {
+          statusSpan.innerText = `⚠️ File quá lớn (${(uploadFile.size / 1024 / 1024).toFixed(1)}MB). Firebase Storage chưa kết nối nên dùng Base64.`;
+          statusSpan.className = 'status-msg error';
+        }
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            statusSpan.innerText = '✓ Đã chuyển đổi thành Base64 (local)';
+            statusSpan.className = 'status-msg success';
+            resolve(reader.result);
           };
-          img.onerror = () => {
-            URL.revokeObjectURL(url);
-            resolve(file);
+          reader.onerror = (err) => {
+            statusSpan.innerText = '✗ Chuyển đổi Base64 thất bại';
+            statusSpan.className = 'status-msg error';
+            reject(err);
           };
-          img.src = url;
+          reader.readAsDataURL(uploadFile);
         });
       }
 
-      async function processUpload(file, folder, statusSpan) {
-        statusSpan.className = 'status-msg info';
+      // Step 2: Try Firebase Storage
+      statusSpan.innerText = `Đang kết nối Firebase Storage... (${uploadFile.name})`;
+      console.log('[Upload] Attempting Firebase Storage upload:', uploadFile.name, '->', folder);
 
-        let uploadFile = file;
-        const optSettingsRaw = localStorage.getItem('portfolio_img_compress_settings');
-        let optSettings = { enabled: true, maxDimension: 1920, quality: 0.8 };
-        if (optSettingsRaw) {
-          try { optSettings = JSON.parse(optSettingsRaw); } catch (e) { }
+      try {
+        // Initialize storage
+        const storage = await db.getFirebaseStorage();
+        console.log('[Upload] Storage instance:', storage);
+
+        if (!storage) {
+          throw new Error('Không lấy được Firebase Storage instance. Kiểm tra Firebase Console → Storage đã được kích hoạt chưa?');
         }
 
-        if (optSettings.enabled && file.type.startsWith('image/')) {
-          statusSpan.innerText = '⚙️ Đang tối ưu hóa hình ảnh...';
-          const originalSize = file.size;
-          uploadFile = await compressImage(file, optSettings.maxDimension, optSettings.quality);
-          const compressedSize = uploadFile.size;
-          if (compressedSize < originalSize) {
-            const originalKB = (originalSize / 1024).toFixed(0);
-            const compressedKB = (compressedSize / 1024).toFixed(0);
-            statusSpan.innerText = `⚡ Đã nén: ${originalKB}KB → ${compressedKB}KB. Đang kết nối...`;
-          } else {
-            statusSpan.innerText = `⚙️ Ảnh đã tối ưu. Đang kết nối...`;
-          }
-        } else {
-          statusSpan.innerText = 'Đang kiểm tra kết nối Firebase...';
+        statusSpan.innerText = `Đang tải lên... ${uploadFile.name}`;
+
+        const url = await db.uploadFileToFirebase(uploadFile, folder);
+
+        console.log('[Upload] Success! URL:', url);
+        statusSpan.innerText = `✓ Upload thành công!`;
+        statusSpan.className = 'status-msg success';
+        return url;
+
+      } catch (err) {
+        console.error('[Upload] Firebase Storage ERROR:', err);
+
+        // Show specific error guidance
+        let errMsg = err.message || String(err);
+        if (errMsg.includes('storage/unauthorized') || errMsg.includes('permission')) {
+          errMsg = '🔒 Lỗi phân quyền Storage. Vào Firebase Console → Storage → Rules và cho phép read/write.';
+        } else if (errMsg.includes('storage/unknown') || errMsg.includes('Firebase Storage')) {
+          errMsg = '⚠️ Firebase Storage chưa được kích hoạt. Vào Firebase Console → Build → Storage và nhấn "Get Started".';
+        } else if (errMsg.includes('Failed to fetch') || errMsg.includes('network')) {
+          errMsg = '🌐 Lỗi mạng – kiểm tra kết nối internet.';
         }
 
-        // Step 1: Check Firebase settings
-        const settings = db.getDbSettings();
-        console.log('[Upload] Firebase settings:', settings);
+        statusSpan.innerText = errMsg;
+        statusSpan.className = 'status-msg error';
 
-        if (!settings.firebaseEnabled || !settings.firebaseConfig) {
-          // Fallback to Base64 local conversion
-          console.log('[Upload] Firebase not enabled, using base64 fallback');
-          statusSpan.innerText = 'Firebase chưa kết nối – đang chuyển đổi ảnh thành Base64...';
-          if (uploadFile.size > 2 * 1024 * 1024) {
-            statusSpan.innerText = `⚠️ File quá lớn (${(uploadFile.size / 1024 / 1024).toFixed(1)}MB). Firebase Storage chưa kết nối nên dùng Base64.`;
-            statusSpan.className = 'status-msg error';
-          }
+        // Offer Base64 fallback
+        const useFallback = confirm(`Firebase Storage lỗi:\n${err.message}\n\nBạn có muốn lưu ảnh dưới dạng Base64 (local) thay thế không?`);
+        if (useFallback) {
+          statusSpan.innerText = 'Đang chuyển đổi Base64...';
+          statusSpan.className = 'status-msg info';
           return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = () => {
-              statusSpan.innerText = '✓ Đã chuyển đổi thành Base64 (local)';
+              statusSpan.innerText = '✓ Đã lưu Base64 (local fallback)';
               statusSpan.className = 'status-msg success';
               resolve(reader.result);
             };
-            reader.onerror = (err) => {
-              statusSpan.innerText = '✗ Chuyển đổi Base64 thất bại';
-              statusSpan.className = 'status-msg error';
-              reject(err);
-            };
+            reader.onerror = (e) => reject(e);
             reader.readAsDataURL(uploadFile);
           });
         }
 
-        // Step 2: Try Firebase Storage
-        statusSpan.innerText = `Đang kết nối Firebase Storage... (${uploadFile.name})`;
-        console.log('[Upload] Attempting Firebase Storage upload:', uploadFile.name, '->', folder);
+        throw err;
+      }
+    }
 
-        try {
-          // Initialize storage
-          const storage = await db.getFirebaseStorage();
-          console.log('[Upload] Storage instance:', storage);
 
-          if (!storage) {
-            throw new Error('Không lấy được Firebase Storage instance. Kiểm tra Firebase Console → Storage đã được kích hoạt chưa?');
-          }
+    // Toggle video upload feature visibility based on tags
+    function checkVideoFeature() {
+      const selectedTags = Array.from(document.querySelectorAll('input[name="p-tags-cb"]:checked'))
+        .map(cb => cb.value.toLowerCase());
 
-          statusSpan.innerText = `Đang tải lên... ${uploadFile.name}`;
+      const compositingTags = [
+        'intro / outro video',
+        'editing video',
+        'motion graphic',
+        'logo animation'
+      ];
 
-          const url = await db.uploadFileToFirebase(uploadFile, folder);
+      const supportsVideo = selectedTags.some(tag => compositingTags.includes(tag));
 
-          console.log('[Upload] Success! URL:', url);
-          statusSpan.innerText = `✓ Upload thành công!`;
-          statusSpan.className = 'status-msg success';
-          return url;
+      if (supportsVideo) {
+        pVideoUploadGroup.style.display = 'block';
+        pMultimediaToggleGroup.style.display = 'block';
+      } else {
+        pVideoUploadGroup.style.display = 'none';
+        pMultimediaToggleGroup.style.display = 'none';
+        pShowInMultimediaInput.checked = false;
+      }
+    }
 
-        } catch (err) {
-          console.error('[Upload] Firebase Storage ERROR:', err);
+    // Bind change listeners to the tag checkboxes
+    document.querySelectorAll('input[name="p-tags-cb"]').forEach(cb => {
+      cb.addEventListener('change', checkVideoFeature);
+    });
 
-          // Show specific error guidance
-          let errMsg = err.message || String(err);
-          if (errMsg.includes('storage/unauthorized') || errMsg.includes('permission')) {
-            errMsg = '🔒 Lỗi phân quyền Storage. Vào Firebase Console → Storage → Rules và cho phép read/write.';
-          } else if (errMsg.includes('storage/unknown') || errMsg.includes('Firebase Storage')) {
-            errMsg = '⚠️ Firebase Storage chưa được kích hoạt. Vào Firebase Console → Build → Storage và nhấn "Get Started".';
-          } else if (errMsg.includes('Failed to fetch') || errMsg.includes('network')) {
-            errMsg = '🌐 Lỗi mạng – kiểm tra kết nối internet.';
-          }
+    // Bind triggers to click of hidden selectors
+    btnUploadImages.addEventListener('click', () => pImagesFileInput.click());
+    btnUploadVideo.addEventListener('click', () => pVideoFileInput.click());
+    btnUploadMarquee.addEventListener('click', () => mImageFileInput.click());
 
-          statusSpan.innerText = errMsg;
-          statusSpan.className = 'status-msg error';
+    // Project Showcase Images Upload
+    pImagesFileInput.addEventListener('change', async () => {
+      const files = Array.from(pImagesFileInput.files);
+      if (!files.length) return;
 
-          // Offer Base64 fallback
-          const useFallback = confirm(`Firebase Storage lỗi:\n${err.message}\n\nBạn có muốn lưu ảnh dưới dạng Base64 (local) thay thế không?`);
-          if (useFallback) {
-            statusSpan.innerText = 'Đang chuyển đổi Base64...';
-            statusSpan.className = 'status-msg info';
-            return new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onload = () => {
-                statusSpan.innerText = '✓ Đã lưu Base64 (local fallback)';
-                statusSpan.className = 'status-msg success';
-                resolve(reader.result);
-              };
-              reader.onerror = (e) => reject(e);
-              reader.readAsDataURL(uploadFile);
-            });
-          }
+      pImagesUploadStatus.innerText = 'Processing images...';
+      pImagesUploadStatus.className = 'status-msg info';
 
-          throw err;
+      const urls = [];
+      try {
+        for (const file of files) {
+          const url = await processUpload(file, 'portfolio/images', pImagesUploadStatus);
+          urls.push(url);
         }
+
+        const currentVal = document.getElementById('p-images').value.trim();
+        const existing = currentVal ? currentVal.split(',').map(s => s.trim()).filter(Boolean) : [];
+        const combined = [...existing, ...urls];
+        document.getElementById('p-images').value = combined.join(', ');
+
+        pImagesUploadStatus.innerText = `Processed ${files.length} images.`;
+        pImagesUploadStatus.className = 'status-msg success';
+        updatePreview();
+      } catch (err) {
+        console.error(err);
+        pImagesUploadStatus.innerText = 'Error processing some images';
+        pImagesUploadStatus.className = 'status-msg error';
+      }
+    });
+
+    // Project Video Upload
+    pVideoFileInput.addEventListener('change', async () => {
+      const file = pVideoFileInput.files[0];
+      if (!file) return;
+
+      pVideoUploadStatus.innerText = 'Processing video...';
+      pVideoUploadStatus.className = 'status-msg info';
+
+      try {
+        const url = await processUpload(file, 'portfolio/videos', pVideoUploadStatus);
+        pVideoUrlInput.value = url;
+        pVideoUploadStatus.innerText = 'Video processed successfully';
+        pVideoUploadStatus.className = 'status-msg success';
+        updatePreview();
+      } catch (err) {
+        console.error(err);
+        pVideoUploadStatus.innerText = 'Error processing video';
+        pVideoUploadStatus.className = 'status-msg error';
+      }
+    });
+
+    // Marquee Image Upload
+    mImageFileInput.addEventListener('change', async () => {
+      const file = mImageFileInput.files[0];
+      if (!file) return;
+
+      mImageUploadStatus.innerText = 'Processing marquee image...';
+      mImageUploadStatus.className = 'status-msg info';
+
+      try {
+        const url = await processUpload(file, 'portfolio/marquee', mImageUploadStatus);
+        document.getElementById('m-imageUrl').value = url;
+        mImageUploadStatus.innerText = 'Image processed successfully';
+        mImageUploadStatus.className = 'status-msg success';
+        updatePreview();
+      } catch (err) {
+        console.error(err);
+        mImageUploadStatus.innerText = 'Error processing image';
+        mImageUploadStatus.className = 'status-msg error';
+      }
+    });
+
+
+    // Helper to insert text at textarea cursor position
+    function insertAtCursor(myField, myValue) {
+      if (myField.selectionStart || myField.selectionStart === 0) {
+        const startPos = myField.selectionStart;
+        const endPos = myField.selectionEnd;
+        myField.value = myField.value.substring(0, startPos)
+          + myValue
+          + myField.value.substring(endPos, myField.value.length);
+        myField.focus();
+        myField.selectionStart = startPos + myValue.length;
+        myField.selectionEnd = startPos + myValue.length;
+      } else {
+        myField.value += myValue;
+      }
+    }
+
+    // Helper to extract YouTube video ID from various link formats
+    function getYouTubeId(url) {
+      if (!url) return null;
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      const match = url.match(regExp);
+      return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    // Form Inline Previews rendering helper (interactive with delete buttons)
+    function updateFormInlinePreviews() {
+      // Helper: create a deletable media wrapper
+      function createDeletableThumb(src, alt, onDelete, badgeText) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'media-thumb-wrapper';
+
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = alt || 'Media';
+        wrapper.appendChild(img);
+
+        const delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'media-delete-btn';
+        delBtn.innerHTML = '✕';
+        delBtn.title = 'Xoá media này';
+        delBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          onDelete();
+        });
+        wrapper.appendChild(delBtn);
+
+        if (badgeText) {
+          const badge = document.createElement('span');
+          badge.className = 'media-thumb-badge';
+          badge.innerText = badgeText;
+          wrapper.appendChild(badge);
+        }
+
+        return wrapper;
       }
 
 
-      // Toggle video upload feature visibility based on tags
-      function checkVideoFeature() {
-        const selectedTags = Array.from(document.querySelectorAll('input[name="p-tags-cb"]:checked'))
-          .map(cb => cb.value.toLowerCase());
-
-        const compositingTags = [
-          'intro / outro video',
-          'editing video',
-          'motion graphic',
-          'logo animation'
-        ];
-
-        const supportsVideo = selectedTags.some(tag => compositingTags.includes(tag));
-
-        if (supportsVideo) {
-          pVideoUploadGroup.style.display = 'block';
-          pMultimediaToggleGroup.style.display = 'block';
-        } else {
-          pVideoUploadGroup.style.display = 'none';
-          pMultimediaToggleGroup.style.display = 'none';
-          pShowInMultimediaInput.checked = false;
-        }
+      // 2. Marquee Custom Image (with delete)
+      const mVal = document.getElementById('m-imageUrl') ? document.getElementById('m-imageUrl').value.trim() : '';
+      if (mVal && (mVal.startsWith('http://') || mVal.startsWith('https://') || mVal.startsWith('data:'))) {
+        mImageUrlPreview.innerHTML = '';
+        const thumb = createDeletableThumb(mVal, 'Marquee image', () => {
+          document.getElementById('m-imageUrl').value = '';
+          updateFormInlinePreviews();
+        });
+        thumb.querySelector('img').style.cssText = 'max-height: 90px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);';
+        mImageUrlPreview.appendChild(thumb);
+        const infoText = document.createElement('span');
+        infoText.className = 'preview-info-text';
+        infoText.innerText = mVal;
+        mImageUrlPreview.appendChild(infoText);
+        mImageUrlPreview.style.display = 'inline-flex';
+      } else {
+        mImageUrlPreview.style.display = 'none';
       }
 
-      // Bind change listeners to the tag checkboxes
-      document.querySelectorAll('input[name="p-tags-cb"]').forEach(cb => {
-        cb.addEventListener('change', checkVideoFeature);
-      });
-
-      // Bind triggers to click of hidden selectors
-      btnUploadImages.addEventListener('click', () => pImagesFileInput.click());
-      btnUploadVideo.addEventListener('click', () => pVideoFileInput.click());
-      btnUploadMarquee.addEventListener('click', () => mImageFileInput.click());
-
-      // Project Showcase Images Upload
-      pImagesFileInput.addEventListener('change', async () => {
-        const files = Array.from(pImagesFileInput.files);
-        if (!files.length) return;
-
-        pImagesUploadStatus.innerText = 'Processing images...';
-        pImagesUploadStatus.className = 'status-msg info';
-
-        const urls = [];
-        try {
-          for (const file of files) {
-            const url = await processUpload(file, 'portfolio/images', pImagesUploadStatus);
-            urls.push(url);
-          }
-
-          const currentVal = document.getElementById('p-images').value.trim();
-          const existing = currentVal ? currentVal.split(',').map(s => s.trim()).filter(Boolean) : [];
-          const combined = [...existing, ...urls];
-          document.getElementById('p-images').value = combined.join(', ');
-
-          pImagesUploadStatus.innerText = `Processed ${files.length} images.`;
-          pImagesUploadStatus.className = 'status-msg success';
-          updatePreview();
-        } catch (err) {
-          console.error(err);
-          pImagesUploadStatus.innerText = 'Error processing some images';
-          pImagesUploadStatus.className = 'status-msg error';
-        }
-      });
-
-      // Project Video Upload
-      pVideoFileInput.addEventListener('change', async () => {
-        const file = pVideoFileInput.files[0];
-        if (!file) return;
-
-        pVideoUploadStatus.innerText = 'Processing video...';
-        pVideoUploadStatus.className = 'status-msg info';
-
-        try {
-          const url = await processUpload(file, 'portfolio/videos', pVideoUploadStatus);
-          pVideoUrlInput.value = url;
-          pVideoUploadStatus.innerText = 'Video processed successfully';
-          pVideoUploadStatus.className = 'status-msg success';
-          updatePreview();
-        } catch (err) {
-          console.error(err);
-          pVideoUploadStatus.innerText = 'Error processing video';
-          pVideoUploadStatus.className = 'status-msg error';
-        }
-      });
-
-      // Marquee Image Upload
-      mImageFileInput.addEventListener('change', async () => {
-        const file = mImageFileInput.files[0];
-        if (!file) return;
-
-        mImageUploadStatus.innerText = 'Processing marquee image...';
-        mImageUploadStatus.className = 'status-msg info';
-
-        try {
-          const url = await processUpload(file, 'portfolio/marquee', mImageUploadStatus);
-          document.getElementById('m-imageUrl').value = url;
-          mImageUploadStatus.innerText = 'Image processed successfully';
-          mImageUploadStatus.className = 'status-msg success';
-          updatePreview();
-        } catch (err) {
-          console.error(err);
-          mImageUploadStatus.innerText = 'Error processing image';
-          mImageUploadStatus.className = 'status-msg error';
-        }
-      });
-
-
-      // Helper to insert text at textarea cursor position
-      function insertAtCursor(myField, myValue) {
-        if (myField.selectionStart || myField.selectionStart === 0) {
-          const startPos = myField.selectionStart;
-          const endPos = myField.selectionEnd;
-          myField.value = myField.value.substring(0, startPos)
-            + myValue
-            + myField.value.substring(endPos, myField.value.length);
-          myField.focus();
-          myField.selectionStart = startPos + myValue.length;
-          myField.selectionEnd = startPos + myValue.length;
-        } else {
-          myField.value += myValue;
-        }
-      }
-
-      // Helper to extract YouTube video ID from various link formats
-      function getYouTubeId(url) {
-        if (!url) return null;
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-        const match = url.match(regExp);
-        return (match && match[2].length === 11) ? match[2] : null;
-      }
-
-      // Form Inline Previews rendering helper (interactive with delete buttons)
-      function updateFormInlinePreviews() {
-        // Helper: create a deletable media wrapper
-        function createDeletableThumb(src, alt, onDelete, badgeText) {
+      // 3. Project Video (with delete)
+      const videoVal = pVideoUrlInput ? pVideoUrlInput.value.trim() : '';
+      if (videoVal) {
+        const ytId = getYouTubeId(videoVal);
+        if (ytId) {
+          pVideoUrlPreview.innerHTML = '';
           const wrapper = document.createElement('div');
           wrapper.className = 'media-thumb-wrapper';
-
-          const img = document.createElement('img');
-          img.src = src;
-          img.alt = alt || 'Media';
-          wrapper.appendChild(img);
-
+          wrapper.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}" style="max-height: 90px; width: 160px; border: none; border-radius: 6px; pointer-events: none;"></iframe>`;
           const delBtn = document.createElement('button');
           delBtn.type = 'button';
           delBtn.className = 'media-delete-btn';
           delBtn.innerHTML = '✕';
-          delBtn.title = 'Xoá media này';
-          delBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            onDelete();
+          delBtn.title = 'Xoá video';
+          delBtn.style.opacity = '1';
+          delBtn.addEventListener('click', () => {
+            pVideoUrlInput.value = '';
+            updateFormInlinePreviews();
+            updatePreview();
           });
           wrapper.appendChild(delBtn);
-
-          if (badgeText) {
-            const badge = document.createElement('span');
-            badge.className = 'media-thumb-badge';
-            badge.innerText = badgeText;
-            wrapper.appendChild(badge);
-          }
-
-          return wrapper;
-        }
-
-
-        // 2. Marquee Custom Image (with delete)
-        const mVal = document.getElementById('m-imageUrl') ? document.getElementById('m-imageUrl').value.trim() : '';
-        if (mVal && (mVal.startsWith('http://') || mVal.startsWith('https://') || mVal.startsWith('data:'))) {
-          mImageUrlPreview.innerHTML = '';
-          const thumb = createDeletableThumb(mVal, 'Marquee image', () => {
-            document.getElementById('m-imageUrl').value = '';
-            updateFormInlinePreviews();
-          });
-          thumb.querySelector('img').style.cssText = 'max-height: 90px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);';
-          mImageUrlPreview.appendChild(thumb);
+          pVideoUrlPreview.appendChild(wrapper);
           const infoText = document.createElement('span');
           infoText.className = 'preview-info-text';
-          infoText.innerText = mVal;
-          mImageUrlPreview.appendChild(infoText);
-          mImageUrlPreview.style.display = 'inline-flex';
-        } else {
-          mImageUrlPreview.style.display = 'none';
-        }
-
-        // 3. Project Video (with delete)
-        const videoVal = pVideoUrlInput ? pVideoUrlInput.value.trim() : '';
-        if (videoVal) {
-          const ytId = getYouTubeId(videoVal);
-          if (ytId) {
-            pVideoUrlPreview.innerHTML = '';
-            const wrapper = document.createElement('div');
-            wrapper.className = 'media-thumb-wrapper';
-            wrapper.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}" style="max-height: 90px; width: 160px; border: none; border-radius: 6px; pointer-events: none;"></iframe>`;
-            const delBtn = document.createElement('button');
-            delBtn.type = 'button';
-            delBtn.className = 'media-delete-btn';
-            delBtn.innerHTML = '✕';
-            delBtn.title = 'Xoá video';
-            delBtn.style.opacity = '1';
-            delBtn.addEventListener('click', () => {
-              pVideoUrlInput.value = '';
-              updateFormInlinePreviews();
-              updatePreview();
-            });
-            wrapper.appendChild(delBtn);
-            pVideoUrlPreview.appendChild(wrapper);
-            const infoText = document.createElement('span');
-            infoText.className = 'preview-info-text';
-            infoText.innerText = videoVal;
-            pVideoUrlPreview.appendChild(infoText);
-            pVideoUrlPreview.style.display = 'inline-flex';
-          } else if (videoVal.startsWith('http://') || videoVal.startsWith('https://') || videoVal.startsWith('data:')) {
-            pVideoUrlPreview.innerHTML = '';
-            const thumb = createDeletableThumb(videoVal, 'Video', () => {
-              pVideoUrlInput.value = '';
-              updateFormInlinePreviews();
-              updatePreview();
-            });
-            // Replace img with video element
-            const img = thumb.querySelector('img');
-            const video = document.createElement('video');
-            video.src = videoVal;
-            video.muted = true;
-            video.autoplay = true;
-            video.loop = true;
-            video.style.cssText = 'max-height: 90px; border-radius: 6px;';
-            img.replaceWith(video);
-            pVideoUrlPreview.appendChild(thumb);
-            const infoText = document.createElement('span');
-            infoText.className = 'preview-info-text';
-            infoText.innerText = videoVal;
-            pVideoUrlPreview.appendChild(infoText);
-            pVideoUrlPreview.style.display = 'inline-flex';
-          } else {
-            pVideoUrlPreview.style.display = 'none';
-          }
+          infoText.innerText = videoVal;
+          pVideoUrlPreview.appendChild(infoText);
+          pVideoUrlPreview.style.display = 'inline-flex';
+        } else if (videoVal.startsWith('http://') || videoVal.startsWith('https://') || videoVal.startsWith('data:')) {
+          pVideoUrlPreview.innerHTML = '';
+          const thumb = createDeletableThumb(videoVal, 'Video', () => {
+            pVideoUrlInput.value = '';
+            updateFormInlinePreviews();
+            updatePreview();
+          });
+          // Replace img with video element
+          const img = thumb.querySelector('img');
+          const video = document.createElement('video');
+          video.src = videoVal;
+          video.muted = true;
+          video.autoplay = true;
+          video.loop = true;
+          video.style.cssText = 'max-height: 90px; border-radius: 6px;';
+          img.replaceWith(video);
+          pVideoUrlPreview.appendChild(thumb);
+          const infoText = document.createElement('span');
+          infoText.className = 'preview-info-text';
+          infoText.innerText = videoVal;
+          pVideoUrlPreview.appendChild(infoText);
+          pVideoUrlPreview.style.display = 'inline-flex';
         } else {
           pVideoUrlPreview.style.display = 'none';
         }
+      } else {
+        pVideoUrlPreview.style.display = 'none';
+      }
 
-        // 4. Showcase Images Grid (with individual delete buttons)
-        const imagesInput = document.getElementById('p-images');
-        const imagesVal = imagesInput ? imagesInput.value.trim() : '';
-        if (imagesVal) {
-          const parts = imagesVal.split(',').map(s => s.trim()).filter(Boolean);
-          const imgUrls = parts.filter(part => part.startsWith('http://') || part.startsWith('https://') || part.startsWith('data:'));
-          if (imgUrls.length > 0) {
-            pImagesPreview.innerHTML = '';
-            imgUrls.forEach((url, index) => {
-              const thumb = createDeletableThumb(url, `Showcase ${index + 1}`, () => {
-                // Remove this URL from the comma-separated list
-                const current = imagesInput.value.split(',').map(s => s.trim()).filter(Boolean);
-                const urlIndex = current.indexOf(url);
-                if (urlIndex > -1) {
-                  current.splice(urlIndex, 1);
-                }
-                imagesInput.value = current.join(', ');
-                updateFormInlinePreviews();
-                updatePreview();
-              }, index === 0 ? '★ Thumb' : `#${index + 1}`);
-              pImagesPreview.appendChild(thumb);
-            });
-            pImagesPreview.style.display = 'grid';
-          } else {
-            pImagesPreview.style.display = 'none';
-          }
+      // 4. Showcase Images Grid (with individual delete buttons)
+      const imagesInput = document.getElementById('p-images');
+      const imagesVal = imagesInput ? imagesInput.value.trim() : '';
+      if (imagesVal) {
+        const parts = imagesVal.split(',').map(s => s.trim()).filter(Boolean);
+        const imgUrls = parts.filter(part => part.startsWith('http://') || part.startsWith('https://') || part.startsWith('data:'));
+        if (imgUrls.length > 0) {
+          pImagesPreview.innerHTML = '';
+          imgUrls.forEach((url, index) => {
+            const thumb = createDeletableThumb(url, `Showcase ${index + 1}`, () => {
+              // Remove this URL from the comma-separated list
+              const current = imagesInput.value.split(',').map(s => s.trim()).filter(Boolean);
+              const urlIndex = current.indexOf(url);
+              if (urlIndex > -1) {
+                current.splice(urlIndex, 1);
+              }
+              imagesInput.value = current.join(', ');
+              updateFormInlinePreviews();
+              updatePreview();
+            }, index === 0 ? '★ Thumb' : `#${index + 1}`);
+            pImagesPreview.appendChild(thumb);
+          });
+          pImagesPreview.style.display = 'grid';
         } else {
           pImagesPreview.style.display = 'none';
         }
+      } else {
+        pImagesPreview.style.display = 'none';
       }
+    }
 
-      // Trigger Description upload selections
-      if (btnDescUploadImg) btnDescUploadImg.addEventListener('click', () => pDescImgFileInput.click());
-      if (btnDescUploadVid) btnDescUploadVid.addEventListener('click', () => pDescVidFileInput.click());
+    // Trigger Description upload selections
+    if (btnDescUploadImg) btnDescUploadImg.addEventListener('click', () => pDescImgFileInput.click());
+    if (btnDescUploadVid) btnDescUploadVid.addEventListener('click', () => pDescVidFileInput.click());
 
-      // YouTube video embedding prompt event
-      if (btnDescYoutube) {
-        btnDescYoutube.addEventListener('click', () => {
-          const ytUrl = prompt('Nhập đường dẫn video YouTube (ví dụ: https://www.youtube.com/watch?v=... hoặc https://youtu.be/...):');
-          if (!ytUrl) return;
+    // YouTube video embedding prompt event
+    if (btnDescYoutube) {
+      btnDescYoutube.addEventListener('click', () => {
+        const ytUrl = prompt('Nhập đường dẫn video YouTube (ví dụ: https://www.youtube.com/watch?v=... hoặc https://youtu.be/...):');
+        if (!ytUrl) return;
 
-          const ytId = getYouTubeId(ytUrl.trim());
-          if (ytId) {
-            const htmlTag = `\n<iframe width="100%" height="450" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius:12px; margin: 1.5rem 0; display:block; border: 1px solid rgba(255,255,255,0.1);"></iframe>\n`;
-            insertAtCursor(pDescInput, htmlTag);
-            updatePreview();
-          } else {
-            alert('Đường dẫn YouTube không hợp lệ. Vui lòng kiểm tra lại.');
-          }
-        });
-      }
-
-      // Description image upload event
-      if (pDescImgFileInput) {
-        pDescImgFileInput.addEventListener('change', async () => {
-          const file = pDescImgFileInput.files[0];
-          if (!file) return;
-
-          pDescUploadStatus.style.display = 'block';
-          pDescUploadStatus.innerText = 'Uploading image to description...';
-          pDescUploadStatus.className = 'status-msg info';
-
-          try {
-            const url = await processUpload(file, 'portfolio/description_images', pDescUploadStatus);
-            const htmlTag = `\n<img src="${url}" alt="Project Showcase Image" style="width:100%; border-radius:12px; margin: 1.5rem 0; display:block; border: 1px solid rgba(255,255,255,0.1);">\n`;
-            insertAtCursor(pDescInput, htmlTag);
-            pDescUploadStatus.innerText = 'Image uploaded and inserted successfully';
-            pDescUploadStatus.className = 'status-msg success';
-            updatePreview();
-          } catch (err) {
-            console.error(err);
-            pDescUploadStatus.innerText = 'Error uploading image to description';
-            pDescUploadStatus.className = 'status-msg error';
-          }
-        });
-      }
-
-      // Description video upload event
-      if (pDescVidFileInput) {
-        pDescVidFileInput.addEventListener('change', async () => {
-          const file = pDescVidFileInput.files[0];
-          if (!file) return;
-
-          pDescUploadStatus.style.display = 'block';
-          pDescUploadStatus.innerText = 'Uploading video to description...';
-          pDescUploadStatus.className = 'status-msg info';
-
-          try {
-            const url = await processUpload(file, 'portfolio/description_videos', pDescUploadStatus);
-            const htmlTag = `\n<video src="${url}" controls style="width:100%; border-radius:12px; margin: 1.5rem 0; display:block; border: 1px solid rgba(255,255,255,0.1);"></video>\n`;
-            insertAtCursor(pDescInput, htmlTag);
-            pDescUploadStatus.innerText = 'Video uploaded and inserted successfully';
-            pDescUploadStatus.className = 'status-msg success';
-            updatePreview();
-          } catch (err) {
-            console.error(err);
-            pDescUploadStatus.innerText = 'Error uploading video to description';
-            pDescUploadStatus.className = 'status-msg error';
-          }
-        });
-      }
-
-
-      // ========================================
-      // 7b. MEDIA LIBRARY CONTROLLER
-      // ========================================
-      const mediaLibraryModal = document.getElementById('media-library-modal');
-      const mediaLibraryCloseBtn = document.getElementById('media-library-close-btn');
-      const mediaLibraryContent = document.getElementById('media-library-content');
-      const mediaLibraryStatus = document.getElementById('media-library-status');
-      const mediaLibraryTabs = document.getElementById('media-library-tabs');
-      let mediaLibraryTargetField = null; // Which form field to insert selected media into
-      let mediaLibraryCurrentFolder = 'portfolio/images';
-
-      function formatFileSize(bytes) {
-        if (!bytes || bytes === 0) return '0 B';
-        const k = 1024;
-        const sizes = ['B', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
-      }
-
-      async function openMediaLibrary(targetFieldId, defaultFolder) {
-        mediaLibraryTargetField = targetFieldId;
-        mediaLibraryCurrentFolder = defaultFolder || 'portfolio/images';
-
-        // Set active tab
-        mediaLibraryTabs.querySelectorAll('.media-library-tab').forEach(tab => {
-          tab.classList.toggle('active', tab.getAttribute('data-folder') === mediaLibraryCurrentFolder);
-        });
-
-        mediaLibraryModal.style.display = 'flex';
-        await loadMediaLibraryFiles(mediaLibraryCurrentFolder);
-      }
-
-      function closeMediaLibrary() {
-        mediaLibraryModal.style.display = 'none';
-        mediaLibraryTargetField = null;
-      }
-
-      mediaLibraryCloseBtn.addEventListener('click', closeMediaLibrary);
-      mediaLibraryModal.addEventListener('click', (e) => {
-        if (e.target === mediaLibraryModal) closeMediaLibrary();
+        const ytId = getYouTubeId(ytUrl.trim());
+        if (ytId) {
+          const htmlTag = `\n<iframe width="100%" height="450" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius:12px; margin: 1.5rem 0; display:block; border: 1px solid rgba(255,255,255,0.1);"></iframe>\n`;
+          insertAtCursor(pDescInput, htmlTag);
+          updatePreview();
+        } else {
+          alert('Đường dẫn YouTube không hợp lệ. Vui lòng kiểm tra lại.');
+        }
       });
+    }
 
-      // Tab navigation
-      mediaLibraryTabs.querySelectorAll('.media-library-tab').forEach(tab => {
-        tab.addEventListener('click', async () => {
-          const folder = tab.getAttribute('data-folder');
-          mediaLibraryCurrentFolder = folder;
-          mediaLibraryTabs.querySelectorAll('.media-library-tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          await loadMediaLibraryFiles(folder);
-        });
-      });
+    // Description image upload event
+    if (pDescImgFileInput) {
+      pDescImgFileInput.addEventListener('change', async () => {
+        const file = pDescImgFileInput.files[0];
+        if (!file) return;
 
-      async function loadMediaLibraryFiles(folder) {
-        mediaLibraryContent.innerHTML = '<div class="media-library-loading"><span class="dot"></span><span>Đang tải danh sách file...</span></div>';
-        mediaLibraryStatus.innerText = 'Đang tải...';
+        pDescUploadStatus.style.display = 'block';
+        pDescUploadStatus.innerText = 'Uploading image to description...';
+        pDescUploadStatus.className = 'status-msg info';
 
         try {
-          const files = await db.listAllFiles(folder);
+          const url = await processUpload(file, 'portfolio/description_images', pDescUploadStatus);
+          const htmlTag = `\n<img src="${url}" alt="Project Showcase Image" style="width:100%; border-radius:12px; margin: 1.5rem 0; display:block; border: 1px solid rgba(255,255,255,0.1);">\n`;
+          insertAtCursor(pDescInput, htmlTag);
+          pDescUploadStatus.innerText = 'Image uploaded and inserted successfully';
+          pDescUploadStatus.className = 'status-msg success';
+          updatePreview();
+        } catch (err) {
+          console.error(err);
+          pDescUploadStatus.innerText = 'Error uploading image to description';
+          pDescUploadStatus.className = 'status-msg error';
+        }
+      });
+    }
 
-          if (files.length === 0) {
-            mediaLibraryContent.innerHTML = '<div class="media-library-empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg><span>Chưa có file nào trong thư mục này</span></div>';
-            mediaLibraryStatus.innerText = `${folder} — 0 files`;
-            return;
-          }
+    // Description video upload event
+    if (pDescVidFileInput) {
+      pDescVidFileInput.addEventListener('change', async () => {
+        const file = pDescVidFileInput.files[0];
+        if (!file) return;
 
-          const totalSize = files.reduce((sum, f) => sum + (f.size || 0), 0);
-          mediaLibraryStatus.innerText = `${folder} — ${files.length} file${files.length > 1 ? 's' : ''} · ${formatFileSize(totalSize)}`;
+        pDescUploadStatus.style.display = 'block';
+        pDescUploadStatus.innerText = 'Uploading video to description...';
+        pDescUploadStatus.className = 'status-msg info';
 
-          const grid = document.createElement('div');
-          grid.className = 'media-library-grid';
+        try {
+          const url = await processUpload(file, 'portfolio/description_videos', pDescUploadStatus);
+          const htmlTag = `\n<video src="${url}" controls style="width:100%; border-radius:12px; margin: 1.5rem 0; display:block; border: 1px solid rgba(255,255,255,0.1);"></video>\n`;
+          insertAtCursor(pDescInput, htmlTag);
+          pDescUploadStatus.innerText = 'Video uploaded and inserted successfully';
+          pDescUploadStatus.className = 'status-msg success';
+          updatePreview();
+        } catch (err) {
+          console.error(err);
+          pDescUploadStatus.innerText = 'Error uploading video to description';
+          pDescUploadStatus.className = 'status-msg error';
+        }
+      });
+    }
 
-          files.forEach(file => {
-            const card = document.createElement('div');
-            card.className = 'media-library-card';
 
-            const isVideo = file.name.match(/\.(mp4|mov|webm|avi)$/i);
-            const isImage = !isVideo;
+    // ========================================
+    // 7b. MEDIA LIBRARY CONTROLLER
+    // ========================================
+    const mediaLibraryModal = document.getElementById('media-library-modal');
+    const mediaLibraryCloseBtn = document.getElementById('media-library-close-btn');
+    const mediaLibraryContent = document.getElementById('media-library-content');
+    const mediaLibraryStatus = document.getElementById('media-library-status');
+    const mediaLibraryTabs = document.getElementById('media-library-tabs');
+    let mediaLibraryTargetField = null; // Which form field to insert selected media into
+    let mediaLibraryCurrentFolder = 'portfolio/images';
 
-            card.innerHTML = `
+    function formatFileSize(bytes) {
+      if (!bytes || bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    async function openMediaLibrary(targetFieldId, defaultFolder) {
+      mediaLibraryTargetField = targetFieldId;
+      mediaLibraryCurrentFolder = defaultFolder || 'portfolio/images';
+
+      // Set active tab
+      mediaLibraryTabs.querySelectorAll('.media-library-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.getAttribute('data-folder') === mediaLibraryCurrentFolder);
+      });
+
+      mediaLibraryModal.style.display = 'flex';
+      await loadMediaLibraryFiles(mediaLibraryCurrentFolder);
+    }
+
+    function closeMediaLibrary() {
+      mediaLibraryModal.style.display = 'none';
+      mediaLibraryTargetField = null;
+    }
+
+    mediaLibraryCloseBtn.addEventListener('click', closeMediaLibrary);
+    mediaLibraryModal.addEventListener('click', (e) => {
+      if (e.target === mediaLibraryModal) closeMediaLibrary();
+    });
+
+    // Tab navigation
+    mediaLibraryTabs.querySelectorAll('.media-library-tab').forEach(tab => {
+      tab.addEventListener('click', async () => {
+        const folder = tab.getAttribute('data-folder');
+        mediaLibraryCurrentFolder = folder;
+        mediaLibraryTabs.querySelectorAll('.media-library-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        await loadMediaLibraryFiles(folder);
+      });
+    });
+
+    async function loadMediaLibraryFiles(folder) {
+      mediaLibraryContent.innerHTML = '<div class="media-library-loading"><span class="dot"></span><span>Đang tải danh sách file...</span></div>';
+      mediaLibraryStatus.innerText = 'Đang tải...';
+
+      try {
+        const files = await db.listAllFiles(folder);
+
+        if (files.length === 0) {
+          mediaLibraryContent.innerHTML = '<div class="media-library-empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg><span>Chưa có file nào trong thư mục này</span></div>';
+          mediaLibraryStatus.innerText = `${folder} — 0 files`;
+          return;
+        }
+
+        const totalSize = files.reduce((sum, f) => sum + (f.size || 0), 0);
+        mediaLibraryStatus.innerText = `${folder} — ${files.length} file${files.length > 1 ? 's' : ''} · ${formatFileSize(totalSize)}`;
+
+        const grid = document.createElement('div');
+        grid.className = 'media-library-grid';
+
+        files.forEach(file => {
+          const card = document.createElement('div');
+          card.className = 'media-library-card';
+
+          const isVideo = file.name.match(/\.(mp4|mov|webm|avi)$/i);
+          const isImage = !isVideo;
+
+          card.innerHTML = `
               ${isImage
-                ? `<img class="media-library-card-img" src="${file.url}" alt="${file.name}" loading="lazy">`
-                : `<div class="media-library-card-img" style="display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>`
-              }
+              ? `<img class="media-library-card-img" src="${file.url}" alt="${file.name}" loading="lazy">`
+              : `<div class="media-library-card-img" style="display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>`
+            }
               <div class="media-library-card-info">
                 <div class="media-library-card-name" title="${file.name}">${file.name}</div>
                 <div class="media-library-card-size">${formatFileSize(file.size)}</div>
@@ -2261,315 +2436,318 @@
               </div>
             `;
 
-            grid.appendChild(card);
-          });
-
-          mediaLibraryContent.innerHTML = '';
-          mediaLibraryContent.appendChild(grid);
-
-          // Bind select buttons
-          grid.querySelectorAll('.ml-btn-select').forEach(btn => {
-            btn.addEventListener('click', () => {
-              const url = btn.getAttribute('data-url');
-              selectMediaFile(url);
-            });
-          });
-
-          // Bind delete buttons
-          grid.querySelectorAll('.ml-btn-delete').forEach(btn => {
-            btn.addEventListener('click', async () => {
-              const fullPath = btn.getAttribute('data-path');
-              const fileName = btn.getAttribute('data-name');
-              await deleteMediaFile(fullPath, fileName);
-            });
-          });
-
-        } catch (err) {
-          console.error('Media Library load error:', err);
-          mediaLibraryContent.innerHTML = `<div class="media-library-empty"><span style="color: #e74c3c;">❌ Lỗi tải thư viện: ${err.message}</span></div>`;
-          mediaLibraryStatus.innerText = 'Lỗi kết nối';
-        }
-      }
-
-      function selectMediaFile(url) {
-        if (!mediaLibraryTargetField) {
-          closeMediaLibrary();
-          return;
-        }
-
-        const targetInput = document.getElementById(mediaLibraryTargetField);
-        if (!targetInput) {
-          closeMediaLibrary();
-          return;
-        }
-
-        // For comma-separated fields (p-images), append. For single fields, replace.
-        if (mediaLibraryTargetField === 'p-images') {
-          const currentVal = targetInput.value.trim();
-          const existing = currentVal ? currentVal.split(',').map(s => s.trim()).filter(Boolean) : [];
-          if (!existing.includes(url)) {
-            existing.push(url);
-          }
-          targetInput.value = existing.join(', ');
-        } else {
-          targetInput.value = url;
-        }
-
-        // Refresh previews
-        updateFormInlinePreviews();
-        updatePreview();
-
-        // Visual feedback
-        mediaLibraryStatus.innerText = '✅ Đã chọn file thành công!';
-        setTimeout(() => {
-          mediaLibraryStatus.innerText = `${mediaLibraryCurrentFolder} — Đã cập nhật`;
-        }, 1500);
-      }
-
-      async function deleteMediaFile(fullPath, fileName) {
-        if (!confirm(`Bạn có chắc chắn muốn xoá file "${fileName}" khỏi cloud?\n\nHành động này không thể hoàn tác!`)) {
-          return;
-        }
-
-        mediaLibraryStatus.innerText = `🗑️ Đang xoá ${fileName}...`;
-
-        try {
-          await db.deleteFileFromFirebase(fullPath);
-          mediaLibraryStatus.innerText = `✅ Đã xoá ${fileName} thành công!`;
-          // Refresh the grid
-          await loadMediaLibraryFiles(mediaLibraryCurrentFolder);
-        } catch (err) {
-          console.error('Delete file error:', err);
-          mediaLibraryStatus.innerText = `❌ Lỗi xoá file: ${err.message}`;
-        }
-      }
-
-      // Bind library buttons
-      document.querySelectorAll('.btn-library').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const targetField = btn.getAttribute('data-target');
-          const folder = btn.getAttribute('data-folder');
-          openMediaLibrary(targetField, folder);
+          grid.appendChild(card);
         });
-      });
 
-      // ========================================
-      // 8. LIVE PREVIEW ENGINE
-      // ========================================
-      const GRADIENT_CLASSES = [
-        'bg-gradient-1', 'bg-gradient-2', 'bg-gradient-3', 'bg-gradient-4',
-        'bg-gradient-5', 'bg-gradient-6', 'bg-gradient-7', 'bg-gradient-8', 'bg-gradient-9'
-      ];
+        mediaLibraryContent.innerHTML = '';
+        mediaLibraryContent.appendChild(grid);
 
-      function updatePreview() {
-        const title = document.getElementById('p-title').value.trim() || 'Project Title';
-        const categorySelect = document.getElementById('p-category');
-        const subtitle = categorySelect ? categorySelect.options[categorySelect.selectedIndex].text : 'Subtitle';
-        const desc = document.getElementById('p-desc').value.trim() || 'Project description will appear here...';
-        const themeClass = document.getElementById('p-themeClass').value || 'bg-gradient-4';
-        const type = document.getElementById('p-type').value || 'simple';
+        // Bind select buttons
+        grid.querySelectorAll('.ml-btn-select').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const url = btn.getAttribute('data-url');
+            selectMediaFile(url);
+          });
+        });
 
-        const selectedTags = Array.from(document.querySelectorAll('input[name="p-tags-cb"]:checked'))
-          .map(cb => cb.value);
+        // Bind delete buttons
+        grid.querySelectorAll('.ml-btn-delete').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const fullPath = btn.getAttribute('data-path');
+            const fileName = btn.getAttribute('data-name');
+            await deleteMediaFile(fullPath, fileName);
+          });
+        });
 
-        // Determine preview image source
-        let previewImgSrc = null;
-        const videoVal = document.getElementById('p-videoUrl') ? document.getElementById('p-videoUrl').value.trim() : '';
-        const ytId = getYouTubeId(videoVal);
-        if (ytId) {
-          previewImgSrc = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-        } else {
-          const imagesVal = document.getElementById('p-images') ? document.getElementById('p-images').value.trim() : '';
-          const firstImg = imagesVal.split(',')[0] ? imagesVal.split(',')[0].trim() : '';
-          if (firstImg && (firstImg.startsWith('http') || firstImg.startsWith('data:'))) {
-            previewImgSrc = firstImg;
-          }
-        }
+      } catch (err) {
+        console.error('Media Library load error:', err);
+        mediaLibraryContent.innerHTML = `<div class="media-library-empty"><span style="color: #e74c3c;">❌ Lỗi tải thư viện: ${err.message}</span></div>`;
+        mediaLibraryStatus.innerText = 'Lỗi kết nối';
+      }
+    }
 
-        // Update hero card preview
-        const previewVisual = document.getElementById('preview-visual');
-        GRADIENT_CLASSES.forEach(cls => previewVisual.classList.remove(cls));
-        previewVisual.classList.add(themeClass);
-        // Show image or clear it
-        const existingImg = previewVisual.querySelector('img');
-        if (previewImgSrc) {
-          if (existingImg) {
-            existingImg.src = previewImgSrc;
-          } else {
-            const img = document.createElement('img');
-            img.src = previewImgSrc;
-            img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;';
-            previewVisual.insertBefore(img, previewVisual.firstChild);
-          }
-        } else {
-          if (existingImg) existingImg.remove();
-        }
-
-        document.getElementById('preview-title').innerText = title;
-        document.getElementById('preview-subtitle').innerText = subtitle;
-        document.getElementById('preview-desc').innerText = desc;
-
-        // Tag chips
-        const tagsContainer = document.getElementById('preview-tags');
-        tagsContainer.innerHTML = selectedTags.length
-          ? selectedTags.map(t => `<span class="preview-tag">${t}</span>`).join('')
-          : '<span style="font-size:0.75rem; color:rgba(255,255,255,0.25);">No tags selected</span>';
-
-        // Render all inline previews in the form
-        updateFormInlinePreviews();
+    function selectMediaFile(url) {
+      if (!mediaLibraryTargetField) {
+        closeMediaLibrary();
+        return;
       }
 
+      const targetInput = document.getElementById(mediaLibraryTargetField);
+      if (!targetInput) {
+        closeMediaLibrary();
+        return;
+      }
 
-      // Wire live preview to all relevant form fields
-      ['p-title', 'p-desc', 'p-images', 'p-videoUrl', 'm-imageUrl'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('input', updatePreview);
-      });
-      document.getElementById('p-themeClass').addEventListener('change', updatePreview);
-      document.getElementById('p-category').addEventListener('change', updatePreview);
-      document.getElementById('p-type').addEventListener('change', updatePreview);
-      document.querySelectorAll('input[name="p-tags-cb"]').forEach(cb => {
-        cb.addEventListener('change', updatePreview);
-      });
+      // For comma-separated fields (p-images), append. For single fields, replace.
+      if (mediaLibraryTargetField === 'p-images') {
+        const currentVal = targetInput.value.trim();
+        const existing = currentVal ? currentVal.split(',').map(s => s.trim()).filter(Boolean) : [];
+        if (!existing.includes(url)) {
+          existing.push(url);
+        }
+        targetInput.value = existing.join(', ');
+      } else {
+        targetInput.value = url;
+      }
 
-      // Run once immediately to set initial state
+      // Refresh previews
+      updateFormInlinePreviews();
       updatePreview();
 
+      // Visual feedback
+      mediaLibraryStatus.innerText = '✅ Đã chọn file thành công!';
+      setTimeout(() => {
+        mediaLibraryStatus.innerText = `${mediaLibraryCurrentFolder} — Đã cập nhật`;
+      }, 1500);
+    }
 
-      // =========================================
-      // AUTO-SLUG GENERATOR
-      // =========================================
-      let slugLocked = false; // false = auto, true = user is editing manually
-
-      function toSlug(str) {
-        return str
-          .toLowerCase()
-          .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove diacritics
-          .replace(/đ/g, 'd')
-          .replace(/[^a-z0-9\s-]/g, '')
-          .trim()
-          .replace(/\s+/g, '-')
-          .replace(/-+/g, '-')
-          .substring(0, 60);
+    async function deleteMediaFile(fullPath, fileName) {
+      if (!confirm(`Bạn có chắc chắn muốn xoá file "${fileName}" khỏi cloud?\n\nHành động này không thể hoàn tác!`)) {
+        return;
       }
 
-      const pTitleInput = document.getElementById('p-title');
-      const pIdInput2 = document.getElementById('p-id');
-      const unlockBtn = document.getElementById('p-id-unlock');
+      mediaLibraryStatus.innerText = `🗑️ Đang xoá ${fileName}...`;
 
-      pTitleInput.addEventListener('input', () => {
-        if (!slugLocked) {
-          pIdInput2.value = toSlug(pTitleInput.value);
-          updatePreview();
+      try {
+        await db.deleteFileFromFirebase(fullPath);
+        mediaLibraryStatus.innerText = `✅ Đã xoá ${fileName} thành công!`;
+        // Refresh the grid
+        await loadMediaLibraryFiles(mediaLibraryCurrentFolder);
+      } catch (err) {
+        console.error('Delete file error:', err);
+        mediaLibraryStatus.innerText = `❌ Lỗi xoá file: ${err.message}`;
+      }
+    }
+
+    // Bind library buttons
+    document.querySelectorAll('.btn-library').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetField = btn.getAttribute('data-target');
+        const folder = btn.getAttribute('data-folder');
+        openMediaLibrary(targetField, folder);
+      });
+    });
+
+    // ========================================
+    // 8. LIVE PREVIEW ENGINE
+    // ========================================
+    const GRADIENT_CLASSES = [
+      'bg-gradient-1', 'bg-gradient-2', 'bg-gradient-3', 'bg-gradient-4',
+      'bg-gradient-5', 'bg-gradient-6', 'bg-gradient-7', 'bg-gradient-8', 'bg-gradient-9'
+    ];
+
+    function updatePreview() {
+      const title = document.getElementById('p-title').value.trim() || 'Project Title';
+      const categorySelect = document.getElementById('p-category');
+      const subtitle = categorySelect ? categorySelect.options[categorySelect.selectedIndex].text : 'Subtitle';
+      const desc = document.getElementById('p-desc').value.trim() || 'Project description will appear here...';
+      const themeClass = document.getElementById('p-themeClass').value || 'bg-gradient-4';
+      const type = document.getElementById('p-type').value || 'simple';
+
+      const selectedTags = Array.from(document.querySelectorAll('input[name="p-tags-cb"]:checked'))
+        .map(cb => cb.value);
+
+      // Determine preview image source
+      let previewImgSrc = null;
+      const videoVal = document.getElementById('p-videoUrl') ? document.getElementById('p-videoUrl').value.trim() : '';
+      const ytId = getYouTubeId(videoVal);
+      if (ytId) {
+        previewImgSrc = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+      } else {
+        const imagesVal = document.getElementById('p-images') ? document.getElementById('p-images').value.trim() : '';
+        const firstImg = imagesVal.split(',')[0] ? imagesVal.split(',')[0].trim() : '';
+        if (firstImg && (firstImg.startsWith('http') || firstImg.startsWith('data:'))) {
+          previewImgSrc = firstImg;
         }
-      });
-
-      unlockBtn.addEventListener('click', () => {
-        slugLocked = !slugLocked;
-        pIdInput2.readOnly = !slugLocked;
-        pIdInput2.style.color = slugLocked ? '#FFFFFF' : 'rgba(255,255,255,0.55)';
-        // Toggle lock/unlock icon
-        unlockBtn.innerHTML = slugLocked
-          ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef9311" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>`
-          : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`;
-        if (slugLocked) pIdInput2.focus();
-      });
-
-      // Reset slug lock when modal closes or is opened for new project
-      function resetSlugLock() {
-        slugLocked = false;
-        pIdInput2.readOnly = true;
-        pIdInput2.style.color = 'rgba(255,255,255,0.55)';
-        unlockBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`;
       }
 
-      // =========================================
-      // TYPE TOGGLE CARDS SYNC
-      // =========================================
-      const typeCards = document.querySelectorAll('.type-toggle-card');
-      const typeRadios = document.querySelectorAll('input[name="p-type-radio"]');
-      const pTypeSelect2 = document.getElementById('p-type');
-
-      function syncTypeCards(value) {
-        typeCards.forEach(card => {
-          const radio = card.querySelector('input[type="radio"]');
-          card.classList.toggle('active', radio.value === value);
-          radio.checked = radio.value === value;
-        });
-        pTypeSelect2.value = value;
-        // Trigger the existing pTypeSelect change logic
-        pTypeSelect2.dispatchEvent(new Event('change'));
+      // Update hero card preview
+      const previewVisual = document.getElementById('preview-visual');
+      GRADIENT_CLASSES.forEach(cls => previewVisual.classList.remove(cls));
+      previewVisual.classList.add(themeClass);
+      // Show image or clear it
+      const existingImg = previewVisual.querySelector('img');
+      if (previewImgSrc) {
+        if (existingImg) {
+          existingImg.src = previewImgSrc;
+        } else {
+          const img = document.createElement('img');
+          img.src = previewImgSrc;
+          img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;';
+          previewVisual.insertBefore(img, previewVisual.firstChild);
+        }
+      } else {
+        if (existingImg) existingImg.remove();
       }
 
+      document.getElementById('preview-title').innerText = title;
+      document.getElementById('preview-subtitle').innerText = subtitle;
+      document.getElementById('preview-desc').innerText = desc;
+
+      // Tag chips
+      const tagsContainer = document.getElementById('preview-tags');
+      tagsContainer.innerHTML = selectedTags.length
+        ? selectedTags.map(t => `<span class="preview-tag">${t}</span>`).join('')
+        : '<span style="font-size:0.75rem; color:rgba(255,255,255,0.25);">No tags selected</span>';
+
+      // Render all inline previews in the form
+      updateFormInlinePreviews();
+    }
+
+
+    // Wire live preview to all relevant form fields
+    ['p-title', 'p-desc', 'p-images', 'p-videoUrl', 'm-imageUrl'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', updatePreview);
+    });
+    document.getElementById('p-themeClass').addEventListener('change', updatePreview);
+    document.getElementById('p-category').addEventListener('change', updatePreview);
+    document.getElementById('p-type').addEventListener('change', updatePreview);
+    document.querySelectorAll('input[name="p-tags-cb"]').forEach(cb => {
+      cb.addEventListener('change', updatePreview);
+    });
+
+    // Run once immediately to set initial state
+    updatePreview();
+
+
+    // =========================================
+    // AUTO-SLUG GENERATOR
+    // =========================================
+    let slugLocked = false; // false = auto, true = user is editing manually
+
+    function toSlug(str) {
+      return str
+        .toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove diacritics
+        .replace(/đ/g, 'd')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .substring(0, 60);
+    }
+
+    const pTitleInput = document.getElementById('p-title');
+    const pIdInput2 = document.getElementById('p-id');
+    const unlockBtn = document.getElementById('p-id-unlock');
+
+    pTitleInput.addEventListener('input', () => {
+      if (!slugLocked) {
+        pIdInput2.value = toSlug(pTitleInput.value);
+        updatePreview();
+      }
+    });
+
+    unlockBtn.addEventListener('click', () => {
+      slugLocked = !slugLocked;
+      pIdInput2.readOnly = !slugLocked;
+      pIdInput2.style.color = slugLocked ? '#FFFFFF' : 'rgba(255,255,255,0.55)';
+      // Toggle lock/unlock icon
+      unlockBtn.innerHTML = slugLocked
+        ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef9311" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>`
+        : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`;
+      if (slugLocked) pIdInput2.focus();
+    });
+
+    // Reset slug lock when modal closes or is opened for new project
+    function resetSlugLock() {
+      slugLocked = false;
+      pIdInput2.readOnly = true;
+      pIdInput2.style.color = 'rgba(255,255,255,0.55)';
+      unlockBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`;
+    }
+
+    // =========================================
+    // TYPE TOGGLE CARDS SYNC
+    // =========================================
+    const typeCards = document.querySelectorAll('.type-toggle-card');
+    const typeRadios = document.querySelectorAll('input[name="p-type-radio"]');
+    const pTypeSelect2 = document.getElementById('p-type');
+
+    function syncTypeCards(value) {
       typeCards.forEach(card => {
-        card.addEventListener('click', () => {
-          const radio = card.querySelector('input[type="radio"]');
-          syncTypeCards(radio.value);
-        });
+        const radio = card.querySelector('input[type="radio"]');
+        card.classList.toggle('active', radio.value === value);
+        radio.checked = radio.value === value;
       });
+      pTypeSelect2.value = value;
+      // Trigger the existing pTypeSelect change logic
+      pTypeSelect2.dispatchEvent(new Event('change'));
+    }
 
-      // Set initial active state
-      syncTypeCards('simple');
+    typeCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const radio = card.querySelector('input[type="radio"]');
+        syncTypeCards(radio.value);
+      });
+    });
 
-      // INITIALIZE DASHBOARD DIRECTLY
-      initDashboard();
+    // Set initial active state
+    syncTypeCards('simple');
+
+    // INITIALIZE DASHBOARD DIRECTLY
+    initDashboard();
 
 
-      // Set modular script loaded flag
-      // CHANGE PASSWORD HANDLER
-      async function sha256(msg) {
-        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
-        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    // Set modular script loaded flag
+    // CHANGE PASSWORD HANDLER
+    async function sha256(msg) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    document.getElementById('change-pwd-btn').addEventListener('click', async () => {
+      const newPwd = document.getElementById('new-pwd').value.trim();
+      const confirmPwd = document.getElementById('confirm-pwd').value.trim();
+      const statusEl = document.getElementById('pwd-status-msg');
+
+      if (!newPwd || !confirmPwd) {
+        statusEl.innerText = 'Vui lòng nhập đầy đủ cả hai trường.';
+        statusEl.className = 'status-msg error';
+        return;
       }
-      document.getElementById('change-pwd-btn').addEventListener('click', async () => {
-        const newPwd = document.getElementById('new-pwd').value.trim();
-        const confirmPwd = document.getElementById('confirm-pwd').value.trim();
-        const statusEl = document.getElementById('pwd-status-msg');
+      if (newPwd.length < 6) {
+        statusEl.innerText = 'Mật khẩu phải có ít nhất 6 ký tự.';
+        statusEl.className = 'status-msg error';
+        return;
+      }
+      if (newPwd !== confirmPwd) {
+        statusEl.innerText = 'Mật khẩu xác nhận không khớp.';
+        statusEl.className = 'status-msg error';
+        return;
+      }
 
-        if (!newPwd || !confirmPwd) {
-          statusEl.innerText = 'Vui lòng nhập đầy đủ cả hai trường.';
-          statusEl.className = 'status-msg error';
-          return;
-        }
-        if (newPwd.length < 6) {
-          statusEl.innerText = 'Mật khẩu phải có ít nhất 6 ký tự.';
-          statusEl.className = 'status-msg error';
-          return;
-        }
-        if (newPwd !== confirmPwd) {
-          statusEl.innerText = 'Mật khẩu xác nhận không khớp.';
-          statusEl.className = 'status-msg error';
-          return;
-        }
+      const hash = await sha256(newPwd);
+      localStorage.setItem('portfolio_admin_pwd_hash', hash);
+      document.getElementById('new-pwd').value = '';
+      document.getElementById('confirm-pwd').value = '';
+      statusEl.innerText = '✅ Mật khẩu đã được cập nhật thành công!';
+      statusEl.className = 'status-msg success';
+    });
 
-        const hash = await sha256(newPwd);
-        localStorage.setItem('portfolio_admin_pwd_hash', hash);
-        document.getElementById('new-pwd').value = '';
-        document.getElementById('confirm-pwd').value = '';
-        statusEl.innerText = '✅ Mật khẩu đã được cập nhật thành công!';
-        statusEl.className = 'status-msg success';
-      });
-
-      window.moduleScriptLoaded = true;
+    window.moduleScriptLoaded = true;
 
   </script>
 
   <!-- Script to verify ES modules are allowed by browser (CORS policy under file:// protocol) -->
   <script>
-      window.addEventListener('DOMContentLoaded', () => {
-        // Check if modular script was loaded after a short delay
-        setTimeout(() => {
-          if (!window.moduleScriptLoaded) {
-            const banner = document.getElementById('cors-warning-banner');
-            if (banner) {
-              banner.style.display = 'block';
-            }
+    window.addEventListener('DOMContentLoaded', () => {
+      // Check if modular script was loaded after a short delay
+      setTimeout(() => {
+        if (!window.moduleScriptLoaded) {
+          const banner = document.getElementById('cors-warning-banner');
+          if (banner) {
+            banner.style.display = 'block';
           }
-        }, 500);
-      });
+        }
+      }, 500);
+    });
   </script>
 
   <!-- External Script to run floating color blobs (Reusing main visual assets) -->
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmTi8eFa2M/aFyHmwS/PQFZ3EXQ" crossorigin="anonymous"></script>
   <script src="../js/script.js" defer></script>
 
 </body>

@@ -2,13 +2,13 @@
 let lenis;
 if (typeof Lenis !== 'undefined') {
   lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutQuart
+    duration: 1.5, // Tăng duration để mượt hơn
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     direction: 'vertical',
     gestureDirection: 'vertical',
     smooth: true,
-    mouseMultiplier: 1,
-    smoothTouch: false,
+    mouseMultiplier: 0.9, // Giảm độ nhạy chuột một chút để cuộn đầm hơn
+    smoothTouch: true, // Bật mượt trên cảm ứng
     touchMultiplier: 2,
     infinite: false,
   });
@@ -404,11 +404,18 @@ function updateHeaderAndSpy() {
   });
 
   if (currentSectionId) {
-    // Update Desktop Nav Links
+    // Update Desktop Nav Links and Indicator
     navLinks.forEach(link => {
       link.classList.remove('active');
       if (link.getAttribute('href') === `#${currentSectionId}`) {
         link.classList.add('active');
+        
+        // Sync Magic Pill Indicator
+        const indicator = document.querySelector('.nav-indicator');
+        if (indicator) {
+          indicator.style.width = `${link.offsetWidth}px`;
+          indicator.style.left = `${link.offsetLeft}px`;
+        }
       }
     });
 
@@ -640,6 +647,81 @@ window.addEventListener('DOMContentLoaded', () => {
   updateHeaderAndSpy();
   initArchiveFilters();
   initVideoModal();
+});
+
+// --- CUSTOM CURSOR LOGIC ---
+function initCustomCursor() {
+  // Only init on non-touch devices (e.g. desktops with mice)
+  if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
+    return;
+  }
+
+  // Create cursor elements dynamically
+  const cursor = document.createElement('div');
+  cursor.classList.add('custom-cursor');
+  document.body.appendChild(cursor);
+
+  const follower = document.createElement('div');
+  follower.classList.add('custom-cursor-follower');
+  document.body.appendChild(follower);
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let followerX = mouseX;
+  let followerY = mouseY;
+
+  // Track mouse movement
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    // Update main cursor instantly (using translate3d for GPU acceleration)
+    cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+  });
+
+  // Smooth animation loop for the follower
+  function animateFollower() {
+    followerX += (mouseX - followerX) * 0.15; // Smooth easing factor
+    followerY += (mouseY - followerY) * 0.15;
+    follower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0) translate(-50%, -50%)`;
+    requestAnimationFrame(animateFollower);
+  }
+  animateFollower();
+
+  // Add interactive hover states
+  function attachHoverEvents() {
+    const interactiveSelectors = 'a, button, input, textarea, select, .work-card, .portfolio-card, .service-row, .social-icon, .nav-link, .mobile-link, .multimedia-card, .project-card';
+    const interactiveElements = document.querySelectorAll(interactiveSelectors);
+    
+    interactiveElements.forEach(el => {
+      // Avoid attaching multiple times
+      if (!el.dataset.cursorHoverAttached) {
+        el.dataset.cursorHoverAttached = "true";
+        el.addEventListener('mouseenter', () => {
+          follower.classList.add('hover-active');
+          cursor.style.opacity = '0'; // Hide the inner dot
+        });
+        el.addEventListener('mouseleave', () => {
+          follower.classList.remove('hover-active');
+          cursor.style.opacity = '1'; // Show the inner dot
+        });
+      }
+    });
+  }
+
+  // Initial attach
+  attachHoverEvents();
+
+  // Listen for dynamic DOM changes (e.g., when portfolio cards are filtered or CMS loads data)
+  const observer = new MutationObserver((mutations) => {
+    attachHoverEvents();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
+// Run custom cursor init
+window.addEventListener('DOMContentLoaded', () => {
+  initCustomCursor();
 });
 
 
