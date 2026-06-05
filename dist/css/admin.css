@@ -1,4 +1,36 @@
 /* CMS Custom Style System (Ensuring High-Fidelity Glassmorphic Theme Specific to Admin Panel) */
+
+/* =============================================
+   CURSOR OVERRIDE
+   style.css sets cursor:none for the portfolio's custom cursor system.
+   The admin panel does not use a custom cursor — restore default cursors.
+   ============================================= */
+@media (hover: hover) and (pointer: fine) {
+  body, a, button, input, textarea, select, label {
+    cursor: auto !important;
+  }
+
+  button, a, .sidebar-link, .btn-primary, .btn-secondary,
+  .btn-action-edit, .btn-action-delete, .btn-logout, .modal-close,
+  .type-toggle-card, .slider, .toggle-password, [role="button"] {
+    cursor: pointer !important;
+  }
+
+  input[type="text"], input[type="password"], input[type="email"],
+  input[type="number"], input[type="search"], input[type="url"],
+  textarea {
+    cursor: text !important;
+  }
+
+  input[type="range"] {
+    cursor: ew-resize !important;
+  }
+
+  button:disabled, input:disabled {
+    cursor: not-allowed !important;
+  }
+}
+
 body {
   background-color: #121010;
   color: #FFFFFF;
