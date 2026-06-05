@@ -1,5 +1,6 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@900&family=Unica+One&display=swap");
+
 /* --- Lenis Smooth Scroll Integration --- */
 html.lenis,
 html.lenis body {
@@ -28,7 +29,9 @@ html.lenis body {
   /* Default fallback */
   --font-heading: Bebas Neue, impact, sans-serif;
   /* Color Palette */
-  --color-bg: #231F20;
+  --color-bg: #060606;
+  --color-bg-rgb: 6, 6, 6;
+  --color-spotlight: #151210;
   --color-bg-secondary: #2d292a;
   --color-text: #FFFFFF;
   --color-text-muted: #a09d9e;
@@ -44,6 +47,30 @@ html.lenis body {
   /* Motion & Transitions */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --gradient-angle-offset {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --gradient-percent {
+  syntax: "<percentage>";
+  initial-value: 5%;
+  inherits: false;
+}
+
+@property --gradient-shine {
+  syntax: "<color>";
+  initial-value: white;
+  inherits: false;
 }
 
 html[lang=en] {
@@ -175,12 +202,13 @@ select {
   .header.scrolled {
     padding-top: 1.2rem;
     padding-bottom: 1.2rem;
-    background-color: rgba(35, 31, 32, 0.85);
+    background-color: rgba(var(--color-bg-rgb), 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 }
+
 /* Status Badge */
 .status-badge {
   display: flex;
@@ -211,12 +239,13 @@ select {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  background-color: rgba(62, 54, 51, 0.4);
+  background-color: rgba(var(--color-bg-rgb), 0.4);
   border: 1px solid rgba(255, 255, 255, 0.05);
   padding: 0.35rem;
   border-radius: 50px;
   backdrop-filter: blur(10px);
-  position: relative; /* Keep absolute pill inside */
+  position: relative;
+  /* Keep absolute pill inside */
 }
 
 /* Sliding Magic Pill Indicator */
@@ -225,7 +254,8 @@ select {
   top: 0.35rem;
   bottom: 0.35rem;
   left: 0;
-  width: 0; /* Updated via JS */
+  width: 0;
+  /* Updated via JS */
   background-color: rgba(239, 147, 17, 0.15);
   border: 1px solid rgba(239, 147, 17, 0.4);
   border-radius: 50px;
@@ -244,7 +274,8 @@ select {
   border: 1px solid transparent;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  z-index: 1; /* Stay above the sliding pill */
+  z-index: 1;
+  /* Stay above the sliding pill */
 }
 
 .nav-link:hover {
@@ -257,7 +288,8 @@ select {
 }
 
 .nav-link.active {
-  background-color: transparent; /* Pill handles the background now */
+  background-color: transparent;
+  /* Pill handles the background now */
   border: 1px solid transparent;
   color: #FFFFFF;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
@@ -269,16 +301,19 @@ select {
   align-items: center;
   gap: 0.6rem;
   padding: 0.7rem 1.6rem;
-  background-color: var(--color-accent);
   color: #FFFFFF;
   font-family: var(--font-primary);
   font-weight: 600;
   border-radius: 50px;
   font-size: 0.9rem;
+}
+
+.btn-contact:not(.shiny-cta) {
+  background-color: var(--color-accent);
   transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.btn-contact:hover {
+.btn-contact:not(.shiny-cta):hover {
   background-color: var(--color-accent-hover);
   color: #FFFFFF;
   transform: translateY(-2px);
@@ -287,6 +322,155 @@ select {
 
 .btn-contact:active {
   transform: translateY(0);
+}
+
+/* Shiny Border CTA Button Styling */
+.shiny-cta {
+  --shiny-cta-bg: #000000;
+  --shiny-cta-bg-subtle: #1a1818;
+  --shiny-cta-fg: #ffffff;
+  --shiny-cta-highlight: var(--color-accent);
+  --shiny-cta-highlight-subtle: #ffb84d;
+  --animation: gradient-angle linear infinite;
+  --duration: 3s;
+  --shadow-size: 2px;
+  --transition: 800ms cubic-bezier(0.25, 1, 0.5, 1);
+  
+  isolation: isolate;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  outline-offset: 4px;
+  padding: 0.7rem 1.6rem;
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  line-height: 1.2;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 360px;
+  color: var(--shiny-cta-fg);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(var(--shiny-cta-bg), var(--shiny-cta-bg)) padding-box,
+    conic-gradient(
+      from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+      transparent,
+      var(--shiny-cta-highlight) var(--gradient-percent),
+      var(--gradient-shine) calc(var(--gradient-percent) * 2),
+      var(--shiny-cta-highlight) calc(var(--gradient-percent) * 3),
+      transparent calc(var(--gradient-percent) * 4)
+    ) border-box;
+  box-shadow: inset 0 0 0 1px var(--shiny-cta-bg-subtle);
+  transition: var(--transition);
+  transition-property: --gradient-angle-offset, --gradient-percent, --gradient-shine, transform;
+}
+
+.shiny-cta::before,
+.shiny-cta::after,
+.shiny-cta > span::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: 50%;
+  translate: -50% -50%;
+  z-index: -1;
+}
+
+.shiny-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(239, 147, 17, 0.4), 0 0 25px rgba(239, 147, 17, 0.2), inset 0 0 0 1px var(--shiny-cta-bg-subtle);
+}
+
+.shiny-cta:active {
+  translate: 0 1px;
+  transform: translateY(0);
+}
+
+/* Dots pattern */
+.shiny-cta::before {
+  --size: calc(100% - var(--shadow-size) * 3);
+  --position: 2px;
+  --space: calc(var(--position) * 2);
+  width: var(--size);
+  height: var(--size);
+  background: radial-gradient(
+    circle at var(--position) var(--position),
+    white calc(var(--position) / 4),
+    transparent 0
+  ) padding-box;
+  background-size: var(--space) var(--space);
+  background-repeat: space;
+  mask-image: conic-gradient(
+    from calc(var(--gradient-angle) + 45deg),
+    black,
+    transparent 10% 90%,
+    black
+  );
+  border-radius: inherit;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+/* Inner shimmer */
+.shiny-cta::after {
+  --animation: shimmer linear infinite;
+  width: 100%;
+  aspect-ratio: 1;
+  background: linear-gradient(
+    -50deg,
+    transparent,
+    var(--shiny-cta-highlight),
+    transparent
+  );
+  mask-image: radial-gradient(circle at bottom, transparent 40%, black);
+  opacity: 0.4;
+}
+
+.shiny-cta > span {
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.shiny-cta > span::before {
+  --size: calc(100% + 1rem);
+  width: var(--size);
+  height: var(--size);
+  box-shadow: inset 0 -1ex 2rem 4px var(--shiny-cta-highlight);
+  opacity: 0;
+  transition: opacity var(--transition);
+  animation: calc(var(--duration) * 1.5) breathe linear infinite;
+}
+
+/* Animate */
+.shiny-cta,
+.shiny-cta::before,
+.shiny-cta::after {
+  animation: var(--animation) var(--duration),
+    var(--animation) calc(var(--duration) / 0.4) reverse paused;
+  animation-composition: add;
+}
+
+.shiny-cta:is(:hover, :focus-visible) {
+  --gradient-percent: 20%;
+  --gradient-angle-offset: 95deg;
+  --gradient-shine: var(--shiny-cta-highlight-subtle);
+  color: var(--shiny-cta-fg);
+  text-decoration: none;
+}
+
+.shiny-cta:is(:hover, :focus-visible),
+.shiny-cta:is(:hover, :focus-visible)::before,
+.shiny-cta:is(:hover, :focus-visible)::after {
+  animation-play-state: running;
+}
+
+.shiny-cta:is(:hover, :focus-visible) > span::before {
+  opacity: 0.8;
 }
 
 .phone-icon {
@@ -345,6 +529,7 @@ select {
   z-index: 0;
   pointer-events: none;
   filter: hue-rotate(40deg);
+  will-change: transform;
 }
 
 /* Left Sidebar: Scrolldown */
@@ -356,6 +541,7 @@ select {
   z-index: 10;
   animation: fadeIn 1s ease both;
   animation-delay: 0.8s;
+  will-change: transform, opacity;
 }
 
 .scrolldown {
@@ -384,19 +570,23 @@ select {
     transform: translateX(4px);
     opacity: 0;
   }
+
   30% {
     transform: translateX(0);
     opacity: 1;
   }
+
   60% {
     transform: translateX(-10px);
     opacity: 0;
   }
+
   100% {
     transform: translateX(-10px);
     opacity: 0;
   }
 }
+
 /* Main Hero Body */
 .hero-main {
   display: flex;
@@ -415,6 +605,7 @@ select {
   /* Đảm bảo chữ nằm trên lớp phủ Noise và Blobs */
   animation: scaleIn 1.2s cubic-bezier(0.25, 1, 0.5, 1) both;
   animation-delay: 0.2s;
+  will-change: transform, opacity;
 }
 
 .hero-title {
@@ -422,17 +613,21 @@ select {
   flex-direction: column;
   font-family: "Unica One", sans-serif;
   font-size: clamp(4rem, 13vw, 11rem);
-  font-weight: 400; /* Thiết lập đúng độ dày gốc 400 của Unica One */
+  font-weight: 400;
+  /* Thiết lập đúng độ dày gốc 400 của Unica One */
   line-height: 0.85;
   margin: 0;
   letter-spacing: 0.04em;
-  transform: none; /* Bỏ giãn ngang để giữ đúng tỷ lệ phông chữ gốc */
+  transform: none;
+  /* Bỏ giãn ngang để giữ đúng tỷ lệ phông chữ gốc */
 }
 
 .hero-title span {
   display: block;
-  color: #FFFFFF; /* Dùng màu trắng đặc thay vì rỗng viền để hiển thị Unica One rõ ràng */
-  -webkit-text-stroke: none; /* Bỏ viền */
+  color: #FFFFFF;
+  /* Dùng màu trắng đặc thay vì rỗng viền để hiển thị Unica One rõ ràng */
+  -webkit-text-stroke: none;
+  /* Bỏ viền */
 }
 
 .hero-name {
@@ -467,6 +662,7 @@ select {
   z-index: 10;
   animation: slideUp 1s cubic-bezier(0.25, 1, 0.5, 1) both;
   animation-delay: 0.4s;
+  will-change: transform, opacity;
 }
 
 .footer-item {
@@ -482,75 +678,90 @@ select {
     transform: translateY(-30px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
   }
 }
+
 @keyframes slideUp {
   from {
     transform: translateY(30px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
   }
 }
+
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
+
 @keyframes scaleIn {
   from {
     transform: scale(0.95);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
   }
 }
+
 @keyframes pulse {
   0% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(57, 181, 74, 0.7);
   }
+
   70% {
     transform: scale(1);
     box-shadow: 0 0 0 6px rgba(57, 181, 74, 0);
   }
+
   100% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(57, 181, 74, 0);
   }
 }
+
 /* --- Responsive Design --- */
 @media (max-width: 1024px) {
   .header {
     padding: 2rem 2.5rem;
   }
+
   .hero-section {
     padding: 0 2.5rem;
   }
+
   .scrolldown-container {
     left: 2.5rem;
   }
+
   .hero-footer {
     padding: 2rem 2.5rem;
   }
 }
+
 @media (max-width: 768px) {
   .header {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    background-color: rgba(35, 31, 32, 0.95);
+    background-color: rgba(var(--color-bg-rgb), 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--color-border);
@@ -560,30 +771,37 @@ select {
     right: 0;
     height: 70px;
   }
+
   /* Mobile: ẩn status badge và nav-bar */
   .header .tw-status-badge,
   .header .status-badge {
     display: none;
   }
+
   .header .nav-bar {
     display: none;
   }
+
   /* Mobile: hiện nút Contact me ra ngoài header, vị trí bên trái */
   .header .btn-contact {
     display: inline-flex;
     padding: 0.55rem 1.1rem;
     font-size: 0.8rem;
     gap: 0.4rem;
-    order: 0; /* Xuất hiện đầu tiên (bên trái) */
+    order: 0;
+    /* Xuất hiện đầu tiên (bên trái) */
   }
+
   .header .btn-contact .phone-icon {
     width: 14px;
     height: 14px;
   }
+
   /* Hamburger menu nằm cuối (bên phải) */
   .header .menu-toggle {
     order: 1;
   }
+
   .hero-section {
     height: 100vh;
     height: 100dvh;
@@ -591,22 +809,27 @@ select {
     padding: 70px 1.5rem 2rem 1.5rem;
     justify-content: space-between;
   }
+
   .scrolldown-container {
     display: none;
     /* Hide vertical scroll on small devices */
   }
+
   .hero-main {
     margin: auto 0;
   }
+
   .hero-title {
     font-size: clamp(3.5rem, 12vw, 6.5rem);
     align-items: center;
     width: 100%;
   }
+
   .hero-name {
     align-self: center;
     margin-top: 1.5rem;
   }
+
   .hero-footer {
     position: relative;
     padding: 1.5rem 0;
@@ -617,13 +840,14 @@ select {
     width: 100%;
   }
 }
+
 /* --- About & Sticky Timeline Section --- */
 .about-section {
   position: relative;
   width: 100%;
   height: 350vh;
   /* Độ cao cuộn để kích hoạt chuyển động ngang */
-  background-color: #FFFFFF;
+  background-color: var(--color-bg);
   z-index: 5;
 }
 
@@ -638,7 +862,7 @@ select {
   flex-direction: column;
   justify-content: space-between;
   padding: 6rem 0;
-  background-color: #FFFFFF;
+  background-color: var(--color-bg);
   z-index: 5;
 }
 
@@ -666,7 +890,7 @@ select {
   font-size: clamp(1.3rem, 2.4vw, 2rem);
   font-weight: 400;
   line-height: 1.5;
-  color: #1a1a1a;
+  color: var(--color-text);
   text-transform: none;
   letter-spacing: 0;
   margin: 0;
@@ -675,15 +899,15 @@ select {
 
 /* Hiệu ứng hiển thị chữ từng từ khi cuộn (Text Reveal) */
 .reveal-word {
-  color: rgba(0, 0, 0, 0.12);
-  /* Trạng thái mờ ban đầu trên nền trắng */
+  color: rgba(255, 255, 255, 0.15);
+  /* Trạng thái mờ ban đầu trên nền tối */
   transition: color 0.25s ease, text-shadow 0.25s ease;
   display: inline;
 }
 
 .reveal-word.revealed {
-  color: #1a1a1a;
-  /* Màu tối khi được cuộn tới */
+  color: var(--color-text);
+  /* Màu sáng khi được cuộn tới */
   text-shadow: none;
 }
 
@@ -716,7 +940,7 @@ select {
   width: 100%;
   /* Trải dài toàn bộ track */
   height: 2px;
-  background-color: rgba(0, 0, 0, 0.12);
+  background-color: rgba(255, 255, 255, 0.12);
   z-index: 1;
 }
 
@@ -738,7 +962,7 @@ select {
   font-family: var(--font-primary);
   font-size: 1.1rem;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.45);
+  color: rgba(255, 255, 255, 0.45);
   margin-bottom: 1.8rem;
   height: 25px;
   transition: color var(--transition-fast);
@@ -749,7 +973,7 @@ select {
   height: 14px;
   background-color: #c0bdbf;
   border-radius: 50%;
-  border: 3px solid #FFFFFF;
+  border: 3px solid var(--color-bg);
   z-index: 3;
   transition: all var(--transition-fast);
   margin-bottom: 2rem;
@@ -779,7 +1003,7 @@ select {
   font-family: var(--font-primary);
   font-size: 1.3rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--color-text);
   margin-bottom: 0.3rem;
   text-transform: none;
   letter-spacing: 0;
@@ -796,7 +1020,7 @@ select {
 .company-desc {
   font-family: var(--font-primary);
   font-size: 0.85rem;
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--color-text-muted);
   line-height: 1.6;
   max-width: 380px;
   text-align: center;
@@ -805,7 +1029,7 @@ select {
 
 /* Các thuộc tính thay đổi khi phần tử ở trạng thái hoạt động (Căn giữa) */
 .timeline-item.active .timeline-year {
-  color: #1a1a1a;
+  color: var(--color-text);
   font-weight: 600;
 }
 
@@ -826,11 +1050,18 @@ select {
 }
 
 /* --- Services Section --- */
+/* --- Shared Dark Background Theme Group --- */
+.services-section,
+.projects-section,
+.multimedia-section,
+.selected-works-section {
+  background-color: var(--color-bg);
+}
+
 .services-section {
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background-color: var(--color-bg);
   padding: 8rem 4rem;
   overflow: hidden;
   border-top: 1px solid var(--color-border);
@@ -975,7 +1206,6 @@ select {
   position: relative;
   width: 100%;
   padding: 150px 0 50px 0;
-  background-color: var(--color-bg);
   overflow: hidden;
   border-top: 1px solid var(--color-border);
   z-index: 5;
@@ -1035,15 +1265,18 @@ select {
   from {
     background-position-x: 0;
   }
+
   to {
     background-position-x: -1000px;
   }
 }
+
 .marquee-row {
   display: flex;
   width: 100%;
   overflow: hidden;
-  z-index: 1; /* Để thẻ card đè lên line */
+  z-index: 1;
+  /* Để thẻ card đè lên line */
 }
 
 .marquee-track {
@@ -1066,19 +1299,23 @@ select {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
     /* Dịch chuyển chính xác 50% tổng chiều rộng để lặp vô hạn */
   }
 }
+
 @keyframes marqueeRight {
   0% {
     transform: translateX(-50%);
   }
+
   100% {
     transform: translateX(0);
   }
 }
+
 /* Dừng chuyển động khi rê chuột qua hàng ảnh (Tạo tính tương tác thân thiện) */
 .marquee-row:hover .marquee-track {
   animation-play-state: paused;
@@ -1188,7 +1425,6 @@ select {
   position: relative;
   width: 100%;
   padding: 8rem 4rem;
-  background-color: var(--color-bg);
   overflow: hidden;
   border-top: none;
   z-index: 5;
@@ -1251,7 +1487,7 @@ select {
 .play-btn {
   width: 54px;
   height: 54px;
-  background-color: rgba(35, 31, 32, 0.8);
+  background-color: rgba(var(--color-bg-rgb), 0.8);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   display: flex;
@@ -1522,10 +1758,37 @@ select {
 /* Footer container */
 .site-footer {
   width: 100%;
+  background-color: #FFFFFF;
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 2;
+}
+
+.site-footer:not(.contact-section *) {
+  padding: 4rem 4rem 3rem 4rem;
+}
+@media (max-width: 768px) {
+  .site-footer:not(.contact-section *) {
+    padding: 3rem 1.5rem 2rem 1.5rem;
+  }
+}
+
+.contact-section .site-footer {
+  width: calc(100% + 8rem);
+  margin-left: -4rem;
+  margin-right: -4rem;
+  margin-bottom: -3rem;
+  padding: 4rem 4rem 3rem 4rem;
+}
+@media (max-width: 768px) {
+  .contact-section .site-footer {
+    width: calc(100% + 3rem);
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    margin-bottom: -2rem;
+    padding: 3rem 1.5rem 2rem 1.5rem;
+  }
 }
 
 /* Watermark chữ chạy nền mờ ảo */
@@ -1555,6 +1818,7 @@ select {
   z-index: 5;
   position: relative;
 }
+
 .lang-switcher .lang-btn {
   background: none;
   border: none;
@@ -1565,9 +1829,12 @@ select {
   transition: color 0.3s ease;
   padding: 0;
 }
-.lang-switcher .lang-btn:hover, .lang-switcher .lang-btn.active {
+
+.lang-switcher .lang-btn:hover,
+.lang-switcher .lang-btn.active {
   color: var(--color-accent);
 }
+
 .lang-switcher .lang-sep {
   color: rgba(0, 0, 0, 0.2);
 }
@@ -1587,7 +1854,6 @@ select {
 .selected-works-section {
   position: relative;
   width: 100%;
-  background-color: var(--color-bg);
   overflow: hidden;
   border-top: 1px solid var(--color-border);
   z-index: 5;
@@ -1599,6 +1865,7 @@ select {
     /* Scroll length for sequential card reveals */
     overflow: visible;
   }
+
   .works-sticky-container {
     position: sticky;
     top: 0;
@@ -1611,6 +1878,7 @@ select {
     justify-content: center;
   }
 }
+
 .works-container {
   position: relative;
   width: 100%;
@@ -1631,6 +1899,7 @@ select {
     padding: 2rem var(--spacing-lg);
   }
 }
+
 .works-title {
   font-family: var(--font-heading);
   font-weight: 900;
@@ -1648,6 +1917,7 @@ select {
     margin-bottom: 0;
   }
 }
+
 .work-cards-list {
   display: flex;
   flex-direction: column;
@@ -1661,6 +1931,7 @@ select {
     justify-content: center;
   }
 }
+
 .work-card {
   width: 100%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -1684,11 +1955,13 @@ select {
     padding: 0;
     border-bottom: none;
   }
+
   .work-card.active {
     opacity: 1;
     transform: translateY(-50%);
     pointer-events: auto;
   }
+
   /* Slide out past items up */
   .work-card.past {
     opacity: 0;
@@ -1696,6 +1969,7 @@ select {
     pointer-events: none;
   }
 }
+
 .work-card-inner {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -1840,154 +2114,194 @@ select {
     margin-top: 0;
   }
 }
+
 /* --- Responsive thiết kế cho Contact --- */
 @media (max-width: 768px) {
   .contact-section {
     padding: 6rem 1.5rem 2rem 1.5rem;
   }
+
   .contact-header {
     flex-direction: column;
     gap: 1.5rem;
     margin-bottom: 2.5rem;
   }
+
   .contact-info {
     max-width: 100%;
   }
+
   .form-row {
     flex-direction: column;
     gap: 1.2rem;
   }
+
   .form-row .half-width {
     width: 100%;
   }
+
   /* Responsive thiết kế cho Services */
   .services-section {
     padding: 6rem 1.5rem;
   }
+
   .services-title {
     margin-bottom: 4rem;
   }
+
   .services-list {
     gap: 3rem;
   }
+
   .service-row {
     grid-template-columns: 1fr;
     gap: 1.5rem;
     padding-bottom: 2.5rem;
   }
+
   .service-num {
     padding-top: 0;
     font-size: 1rem;
   }
+
   .service-pill {
     padding: 1.2rem 2rem;
   }
+
   .service-tags {
     grid-template-columns: 1fr;
     gap: 0.6rem;
   }
+
   /* Responsive thiết kế cho Projects */
   .projects-section {
     padding: 6rem 0;
   }
+
   .projects-header {
     margin-bottom: 3rem;
     padding: 0 1.5rem;
   }
+
   .marquee-container {
     gap: 1.5rem;
   }
+
   .marquee-track {
     gap: 0;
   }
+
   .project-card {
     width: 220px;
     height: auto;
     margin-right: 1rem;
     padding: 0.8rem;
   }
+
   .card-inner {
     gap: 0.6rem;
   }
+
   .card-image-wrapper {
     aspect-ratio: 4/3;
   }
+
   /* Responsive thiết kế cho Multimedia Works */
   .multimedia-section {
     padding: 6rem 1.5rem;
   }
+
   .multimedia-title {
     margin-bottom: 4rem;
   }
+
   .multimedia-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
     margin-bottom: 3.5rem;
   }
+
   .media-preview {
     margin-bottom: 1rem;
     aspect-ratio: 16/9;
   }
+
   .play-btn {
     width: 48px;
     height: 48px;
   }
+
   .play-btn svg {
     width: 16px;
     height: 16px;
   }
+
   /* Responsive thiết kế cho Selected Works */
   .selected-works-section {
     padding: 6rem 1.5rem;
   }
+
   .works-container {
     padding: 0;
   }
+
   .works-title {
     margin-bottom: 3rem;
   }
+
   .work-card {
     padding: 2rem 0;
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   }
+
   .work-card.revealed {
     opacity: 1;
     transform: translateY(0);
   }
+
   .work-card-inner {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
+
   .work-card-left {
     gap: 0.5rem;
     order: 2;
   }
+
   .work-card-right {
     order: 1;
   }
+
   .work-card-num {
     font-size: 2.5rem;
     margin-bottom: -0.5rem;
   }
+
   .work-card-title {
     font-size: 1.3rem;
   }
+
   .work-card-desc {
     -webkit-line-clamp: 3;
     font-size: 0.85rem;
   }
+
   .work-preview {
     aspect-ratio: 16/9;
   }
+
   .works-footer {
     margin-top: 3rem;
   }
+
   /* Responsive thiết kế cho Service Tags */
   .service-tags {
     gap: 0.5rem;
   }
+
   .tag {
     font-size: 0.8rem;
     padding: 0.6rem 0.8rem;
@@ -1996,87 +2310,109 @@ select {
 
 /* Extra Small Screens (max-width: 480px) */
 @media (max-width: 480px) {
+
   /* Project Cards — nhỏ hơn trên màn hình rất nhỏ */
   .project-card {
     width: 180px;
     margin-right: 0.8rem;
     padding: 0.7rem;
   }
+
   .card-header {
     font-size: 0.82rem;
   }
+
   .card-image-wrapper {
     aspect-ratio: 4/3;
   }
+
   .marquee-container {
     gap: 1rem;
   }
+
   /* Multimedia Grid — 1 cột, ảnh thumbnail nhỏ hơn */
   .multimedia-grid {
     gap: 1.5rem;
   }
+
   .media-preview {
     aspect-ratio: 16/9;
     margin-bottom: 0.8rem;
   }
+
   .media-title {
     font-size: 0.95rem;
   }
+
   /* Selected Works — tối ưu hóa cho màn hình siêu nhỏ */
   .work-card-inner {
     gap: 1.2rem;
   }
+
   .work-card-num {
     font-size: 2rem;
   }
+
   .work-card-title {
     font-size: 1.15rem;
   }
+
   .work-card-desc {
     -webkit-line-clamp: 2;
     font-size: 0.82rem;
   }
+
   .work-card-tag {
     font-size: 0.72rem;
     padding: 0.3rem 0.8rem;
   }
+
   .work-preview {
     aspect-ratio: 16/9;
   }
+
   /* Services — tối ưu trên màn hình nhỏ */
   .services-section {
     padding: 5rem 1rem;
   }
+
   .service-pill {
     padding: 1rem 1.5rem;
     font-size: 1.1rem;
   }
+
   .tag {
     font-size: 0.76rem;
     padding: 0.5rem 0.7rem;
   }
+
   /* Multimedia — Section title */
   .multimedia-title {
     font-size: clamp(2.5rem, 10vw, 4rem);
     margin-bottom: 2.5rem;
   }
+
   /* Projects header title */
   .projects-title {
     font-size: clamp(2.2rem, 9vw, 3.5rem);
   }
+
   /* Works title */
   .works-title {
     font-size: clamp(2.5rem, 10vw, 4rem);
     margin-bottom: 2rem;
   }
+
   /* Selected works section padding */
   .selected-works-section {
     padding: 5rem 1rem;
   }
+
   .projects-header {
     padding: 0 1rem;
   }
 }
+
 /* ==========================================================================
    MOBILE NAVIGATION STYLES
    ========================================================================== */
@@ -2120,7 +2456,7 @@ select {
   inset: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(35, 31, 32, 0.98);
+  background-color: rgba(var(--color-bg-rgb), 0.98);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   z-index: 150;
@@ -2241,6 +2577,7 @@ select {
     display: flex;
   }
 }
+
 /* ==========================================================================
    CASE STUDY SUB-PAGES STYLE SYSTEM
    ========================================================================== */
@@ -2251,7 +2588,8 @@ select {
 
 /* Custom Back Button */
 .back-btn-container {
-  margin-top: 100px; /* offset for fixed header */
+  margin-top: 100px;
+  /* offset for fixed header */
   padding: 2rem 4rem 1rem 4rem;
   max-width: 1200px;
   margin-left: auto;
@@ -2263,12 +2601,14 @@ select {
     padding: 2rem 2.5rem 1rem 2.5rem;
   }
 }
+
 @media (max-width: 768px) {
   .back-btn-container {
     margin-top: 80px;
     padding: 1.5rem 1.5rem 0.5rem 1.5rem;
   }
 }
+
 .back-home-link {
   display: inline-flex;
   align-items: center;
@@ -2299,11 +2639,13 @@ select {
     padding: 3rem 2.5rem;
   }
 }
+
 @media (max-width: 768px) {
   .cs-hero {
     padding: 2rem 1.5rem;
   }
 }
+
 .cs-subtitle {
   color: var(--color-accent);
   font-size: 0.85rem;
@@ -2356,6 +2698,7 @@ select {
     border-radius: 8px;
   }
 }
+
 /* Theme Colors for Project Banner Backgrounds (using beautiful high-end gradient patterns) */
 .banner-ssi {
   background: linear-gradient(135deg, #1e1e1e 0%, #d4800b 100%);
@@ -2404,6 +2747,7 @@ select {
     gap: 2rem;
   }
 }
+
 @media (max-width: 768px) {
   .cs-meta-grid {
     grid-template-columns: 1fr;
@@ -2412,6 +2756,7 @@ select {
     gap: 1.5rem;
   }
 }
+
 .cs-meta-item {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 1.5rem;
@@ -2449,12 +2794,14 @@ select {
     margin: 4rem auto;
   }
 }
+
 @media (max-width: 768px) {
   .cs-content-section {
     padding: 0 1.5rem;
     margin: 3rem auto;
   }
 }
+
 .cs-section-left h3 {
   font-family: var(--font-primary);
   font-size: 1.8rem;
@@ -2488,6 +2835,7 @@ select {
   margin: 6rem auto;
   padding: 0 4rem;
 }
+
 .cs-video-section h3 {
   font-family: var(--font-primary);
   font-size: 1.8rem;
@@ -2495,6 +2843,7 @@ select {
   color: #FFFFFF;
   margin-bottom: 1.5rem;
 }
+
 .cs-video-section .video-wrapper {
   width: 100%;
   aspect-ratio: 16/9;
@@ -2503,16 +2852,19 @@ select {
   background-color: #000000;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
+
 @media (max-width: 1024px) {
   .cs-video-section {
     padding: 0 2.5rem;
   }
 }
+
 @media (max-width: 768px) {
   .cs-video-section {
     padding: 0 1.5rem;
     margin: 4rem auto;
   }
+
   .cs-video-section h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
@@ -2539,6 +2891,7 @@ select {
     gap: 1.5rem;
   }
 }
+
 @media (max-width: 768px) {
   .cs-gallery {
     grid-template-columns: 1fr;
@@ -2546,10 +2899,12 @@ select {
     gap: 1rem;
     margin: 4rem auto;
   }
+
   .cs-gallery-full {
     grid-column: span 1;
   }
 }
+
 .cs-gallery-item {
   width: 100%;
   aspect-ratio: 16/10;
@@ -2586,6 +2941,12 @@ select {
 
 .bg-ssi-3 {
   background: linear-gradient(135deg, #d4800b, #f39c12);
+}
+
+body:not(.case-study-body) #main-content {
+  position: relative;
+  width: 100%;
+  background-color: var(--color-bg);
 }
 
 .bg-mine-1 {
@@ -2629,6 +2990,7 @@ select {
     padding: 6rem 1.5rem;
   }
 }
+
 .cs-next-container {
   max-width: 800px;
   margin: 0 auto;
@@ -2674,6 +3036,7 @@ select {
     padding: 4rem 1.5rem 1rem 1.5rem;
   }
 }
+
 .archive-title {
   font-size: clamp(3rem, 6vw, 5rem);
   font-family: var(--font-heading);
@@ -2705,6 +3068,7 @@ select {
     margin: 1.5rem auto;
   }
 }
+
 .filter-btn {
   background-color: rgba(62, 54, 51, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -2746,12 +3110,14 @@ select {
     margin-bottom: 6rem;
   }
 }
+
 @media (max-width: 768px) {
   .portfolio-grid-container {
     padding: 0 1.5rem;
     margin-bottom: 4rem;
   }
 }
+
 .portfolio-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2765,12 +3131,14 @@ select {
     gap: 1.5rem;
   }
 }
+
 @media (max-width: 768px) {
   .portfolio-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 }
+
 /* Portfolio Card */
 .portfolio-card {
   background-color: var(--color-bg-secondary);
@@ -3037,19 +3405,23 @@ select {
   transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
+
 .back-to-top-btn svg {
   width: 1.4rem;
   height: 1.4rem;
   transition: transform 0.3s ease;
 }
+
 .back-to-top-btn:hover {
   background: var(--color-accent);
   border-color: var(--color-accent);
   box-shadow: 0 15px 35px rgba(239, 147, 17, 0.3);
 }
+
 .back-to-top-btn:hover svg {
   transform: translateY(-3px);
 }
+
 .back-to-top-btn.visible {
   opacity: 1;
   visibility: visible;
@@ -3063,18 +3435,28 @@ select {
     width: 2.8rem;
     height: 2.8rem;
   }
+
   .back-to-top-btn svg {
     width: 1.2rem;
     height: 1.2rem;
   }
 }
+
 /* =========================================
    CUSTOM CURSOR LOGIC
    ========================================= */
 @media (hover: hover) and (pointer: fine) {
-  body, a, button, input, textarea, select, .cursor-pointer {
+
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  .cursor-pointer {
     cursor: none !important;
   }
+
   .custom-cursor {
     position: fixed;
     top: 0;
@@ -3088,13 +3470,15 @@ select {
     transform: translate(-50%, -50%);
     transition: opacity 0.3s ease, transform 0.1s ease;
   }
+
   .custom-cursor-follower {
     position: fixed;
     top: 0;
     left: 0;
     width: 40px;
     height: 40px;
-    border: 1px solid rgba(239, 147, 17, 0.5); /* Accent color matching */
+    border: 1px solid rgba(239, 147, 17, 0.5);
+    /* Accent color matching */
     background-color: rgba(239, 147, 17, 0.05);
     border-radius: 50%;
     pointer-events: none;
@@ -3102,6 +3486,7 @@ select {
     transform: translate(-50%, -50%);
     transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
   }
+
   /* Hover state for follower */
   .custom-cursor-follower.hover-active {
     width: 60px;

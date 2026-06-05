@@ -206,6 +206,7 @@ window.initAboutScroll = function() {
   updateTimeline();
   updateSelectedWorks();
   updateHeaderAndSpy();
+  updateHeroParallax();
 };
 
 function updateTimeline() {
@@ -731,5 +732,75 @@ function initCustomCursor() {
 window.addEventListener('DOMContentLoaded', () => {
   initCustomCursor();
 });
+
+// --- HERO BANNER PARALLAX EFFECT ---
+function updateHeroParallax() {
+  const heroSection = document.getElementById('hero');
+  if (!heroSection) return;
+
+  const scrollY = window.scrollY;
+  const heroHeight = heroSection.offsetHeight;
+
+  if (window.innerWidth > 768) {
+    if (scrollY <= heroHeight + 50) {
+      const bgUnicorn = document.getElementById('hero-unicorn');
+      const typography = document.querySelector('.hero-typography');
+      const footer = document.querySelector('.hero-footer');
+      const scrolldown = document.querySelector('.scrolldown-container');
+
+      // 1. Background parallax (WebGL moves down relative to viewport, scrolls slower)
+      if (bgUnicorn) {
+        bgUnicorn.style.transform = `translate3d(0, ${scrollY * 0.4}px, 0)`;
+      }
+
+      // 2. Typography parallax (drifts and fades out)
+      if (typography) {
+        const textY = scrollY * 0.15;
+        const opacity = Math.max(0, 1 - scrollY / (heroHeight * 0.85));
+        typography.style.transform = `translate3d(0, ${textY}px, 0)`;
+        typography.style.opacity = opacity;
+      }
+
+      // 3. Footer items fade out & drift down
+      if (footer) {
+        const footerOpacity = Math.max(0, 1 - scrollY / (heroHeight * 0.4));
+        footer.style.transform = `translate3d(0, ${scrollY * 0.25}px, 0)`;
+        footer.style.opacity = footerOpacity;
+      }
+
+      // 4. Scroll indicator fades out & drifts down
+      if (scrolldown) {
+        const scrollOpacity = Math.max(0, 1 - scrollY / (heroHeight * 0.3));
+        scrolldown.style.transform = `translateY(-50%) translate3d(0, ${scrollY * 0.2}px, 0)`;
+        scrolldown.style.opacity = scrollOpacity;
+      }
+    }
+  } else {
+    // Reset style on small devices
+    const bgUnicorn = document.getElementById('hero-unicorn');
+    const typography = document.querySelector('.hero-typography');
+    const footer = document.querySelector('.hero-footer');
+    const scrolldown = document.querySelector('.scrolldown-container');
+
+    if (bgUnicorn) bgUnicorn.style.transform = '';
+    if (typography) {
+      typography.style.transform = '';
+      typography.style.opacity = '';
+    }
+    if (footer) {
+      footer.style.transform = '';
+      footer.style.opacity = '';
+    }
+    if (scrolldown) {
+      scrolldown.style.transform = '';
+      scrolldown.style.opacity = '';
+    }
+  }
+}
+
+// Register hero parallax event listeners
+window.addEventListener('scroll', updateHeroParallax);
+window.addEventListener('resize', updateHeroParallax);
+window.addEventListener('DOMContentLoaded', updateHeroParallax);
 
 

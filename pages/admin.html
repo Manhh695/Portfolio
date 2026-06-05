@@ -243,7 +243,9 @@
               <div style="display: flex; gap: 0.8rem; margin-top: 1.2rem;">
                 <button class="btn-primary" id="save-img-settings-btn" style="max-width: 240px;">Save Optimization
                   Settings</button>
-                <button class="btn-secondary" id="optimize-existing-img-btn" style="max-width: 280px; background-color: var(--color-accent); color: #000; font-weight: 600; border: none;">Optimize Existing Database Images</button>
+                <button class="btn-secondary" id="optimize-existing-img-btn"
+                  style="max-width: 280px; background-color: var(--color-accent); color: #000; font-weight: 600; border: none;">Optimize
+                  Existing Database Images</button>
               </div>
               <p id="img-settings-status" class="status-msg" style="margin-top: 0.8rem;"></p>
             </div>
@@ -502,7 +504,7 @@
                   <input type="text" id="p-date" placeholder="Q3 2025">
                 </div>
               </div>
-              
+
               <div class="form-row">
                 <div class="form-group half">
                   <label>Role (EN)</label>
@@ -703,16 +705,14 @@
                 <input type="file" id="p-desc-img-file" accept="image/*" style="display: none;">
                 <input type="file" id="p-desc-vid-file" accept="video/*" style="display: none;">
               </div>
-              <textarea id="p-desc" rows="6" required
-                placeholder="Chi tiết dự án (Tiếng Việt)..."></textarea>
+              <textarea id="p-desc" rows="6" required placeholder="Chi tiết dự án (Tiếng Việt)..."></textarea>
               <span id="p-desc-upload-status" class="status-msg"
                 style="margin-top: 0.3rem; font-size: 0.8rem; display: none;"></span>
             </div>
-            
+
             <div class="form-group" style="margin-top: 1rem;">
               <label>Project Story / Description (EN)</label>
-              <textarea id="p-desc-en" rows="6"
-                placeholder="Project details (English)..."></textarea>
+              <textarea id="p-desc-en" rows="6" placeholder="Project details (English)..."></textarea>
             </div>
 
             <div class="form-group">
@@ -1109,7 +1109,6 @@
       // All fields always visible (unified form)
       pImagesUploadStatus.innerText = '';
       pVideoUploadStatus.innerText = '';
-      pCoverUploadStatus.innerText = '';
       pVideoUploadGroup.style.display = 'none';
       pShowInMultimediaInput.checked = false;
       resetSlugLock();
@@ -1570,7 +1569,7 @@
 
     optimizeExistingImgBtn.addEventListener('click', async () => {
       if (!confirm('Bạn có chắc chắn muốn quét và tối ưu hóa TOÀN BỘ hình ảnh (chuyển đổi sang WebP/giảm dung lượng) trong Database không? Quá trình này có thể mất vài phút tuỳ thuộc vào số lượng ảnh.')) return;
-      
+
       showLoading(true);
       imgSettingsStatus.innerText = 'Đang tiến hành tối ưu ảnh... Vui lòng không đóng trang.';
       imgSettingsStatus.className = 'status-msg';
@@ -1580,8 +1579,8 @@
       try {
         const stored = localStorage.getItem('portfolio_img_compress_settings');
         if (stored) optSettings = { ...optSettings, ...JSON.parse(stored) };
-      } catch (e) {}
-      
+      } catch (e) { }
+
       const maxDim = optSettings.maxDimension || 1920;
       const q = optSettings.quality || 0.8;
 
@@ -1596,7 +1595,7 @@
             // Marquee images can be smaller
             const targetMaxDim = isMarquee ? Math.min(maxDim, 1000) : maxDim;
             const needsResize = width > targetMaxDim || height > targetMaxDim;
-            
+
             if (needsResize) {
               const scale = targetMaxDim / Math.max(width, height);
               width = Math.round(width * scale);
