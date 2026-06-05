@@ -4,7 +4,7 @@ module.exports = {
   content: [
     './*.html',
     './pages/**/*.html',
-    './js/**/*.js',
+    './src/assets/js/**/*.js',
   ],
   // Disable Tailwind's preflight (CSS reset) to avoid conflict with Bootstrap's reboot
   corePlugins: {

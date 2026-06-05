@@ -4,12 +4,14 @@
   "description": "Portfolio styling — Tailwind CSS v3 + Bootstrap 5 + custom SCSS",
   "main": "index.html",
   "scripts": {
-    "scss:build": "sass scss:css",
-    "scss:watch": "sass --watch scss:css",
-    "tw:build": "tailwindcss -i ./scss/tailwind-input.css -o ./css/tailwind-output.css",
-    "tw:watch": "tailwindcss -i ./scss/tailwind-input.css -o ./css/tailwind-output.css --watch",
-    "build": "npm run scss:build && npm run tw:build",
-    "dev": "npm run scss:watch & npm run tw:watch"
+    "scss:build": "sass src/assets/scss:dist/css",
+    "scss:watch": "sass --watch src/assets/scss:dist/css",
+    "tw:build": "tailwindcss -i ./src/assets/css/tailwind-input.css -o ./dist/css/tailwind-output.css",
+    "tw:watch": "tailwindcss -i ./src/assets/css/tailwind-input.css -o ./dist/css/tailwind-output.css --watch",
+    "js:copy": "node -e \"const fs = require('fs'); fs.mkdirSync('dist/js', { recursive: true }); ['db.js', 'i18n.js', 'script.js'].forEach(f => fs.copyFileSync('src/assets/js/' + f, 'dist/js/' + f))\"",
+    "js:watch": "node -e \"const fs = require('fs'); const copy = () => ['db.js', 'i18n.js', 'script.js'].forEach(f => fs.copyFileSync('src/assets/js/' + f, 'dist/js/' + f)); fs.mkdirSync('dist/js', { recursive: true }); copy(); console.log('Watching JS files...'); fs.watch('src/assets/js', () => { copy(); console.log('JS files synced'); })\"",
+    "build": "npm run js:copy && npm run scss:build && npm run tw:build",
+    "dev": "npm run js:watch & npm run scss:watch & npm run tw:watch"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
