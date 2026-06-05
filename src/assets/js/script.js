@@ -403,6 +403,14 @@ function updateHeaderAndSpy() {
     }
   });
 
+  // Default to 'about' when at the top of the page (e.g., in the hero section)
+  if (!currentSectionId) {
+    const aboutSectionEl = document.getElementById('about');
+    if (aboutSectionEl && scrollPosition < aboutSectionEl.offsetTop) {
+      currentSectionId = 'about';
+    }
+  }
+
   if (currentSectionId) {
     // Update Desktop Nav Links and Indicator
     navLinks.forEach(link => {
