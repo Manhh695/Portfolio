@@ -336,6 +336,16 @@ select {
   opacity: 0.85;
 }
 
+/* Unicorn Studio Background - Nền tương tác 3D WebGL */
+.hero-bg-unicorn {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* Left Sidebar: Scrolldown */
 .scrolldown-container {
   position: absolute;

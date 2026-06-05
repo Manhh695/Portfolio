@@ -96,8 +96,8 @@
     <!-- Hero Section -->
     <section class="hero-section" id="hero">
 
-      <!-- Animated Wave Canvas -->
-      <canvas id="hero-canvas" class="hero-bg-canvas"></canvas>
+      <!-- Unicorn Studio Animated Background -->
+      <div id="hero-unicorn" class="hero-bg-unicorn" data-us-project="cbmTT38A0CcuYxeiyj5H"></div>
 
       <!-- Left Sidebar: Scrolldown -->
       <div class="scrolldown-container">
@@ -508,6 +508,32 @@
 
   <!-- Internationalization -->
   <script type="module" src="dist/js/i18n.js"></script>
+
+  <!-- Unicorn Studio SDK -->
+  <script type="text/javascript">
+    !function(){
+      var u = window.UnicornStudio;
+      if(u && u.init){
+        if(document.readyState === "loading"){
+          document.addEventListener("DOMContentLoaded", function(){ u.init() })
+        } else {
+          u.init()
+        }
+      } else {
+        window.UnicornStudio = { isInitialized: false };
+        var i = document.createElement("script");
+        i.src = "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.1.12/dist/unicornStudio.umd.js";
+        i.onload = function(){
+          if(document.readyState === "loading"){
+            document.addEventListener("DOMContentLoaded", function(){ UnicornStudio.init() })
+          } else {
+            UnicornStudio.init()
+          }
+        };
+        (document.head || document.body).appendChild(i)
+      }
+    }();
+  </script>
 
   <!-- Custom logic -->
   <script type="module" src="dist/js/script.js"></script>
