@@ -603,9 +603,10 @@ select {
 
 
   .hero-section {
-    height: calc(100vh - 180px);
+    height: 100vh;
+    height: 100dvh;
     min-height: auto;
-    padding: 2rem 1.5rem;
+    padding: 70px 1.5rem 2rem 1.5rem;
     justify-content: space-between;
   }
 
