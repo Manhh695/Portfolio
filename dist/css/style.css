@@ -344,6 +344,7 @@ select {
   height: 100%;
   z-index: 0;
   pointer-events: none;
+  filter: hue-rotate(40deg);
 }
 
 /* Left Sidebar: Scrolldown */
