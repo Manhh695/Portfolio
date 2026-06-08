@@ -435,7 +435,13 @@ export async function syncLocalToFirebase() {
     return setDoc(doc(db, 'marquee', key), marqueeCards[key]);
   });
 
-  await Promise.all([...projectPromises, ...marqueePromises]);
+  // 3. Sync bookings
+  const bookings = getLocalBookings();
+  const bookingPromises = Object.keys(bookings).map(key => {
+    return setDoc(doc(db, 'bookings', key), bookings[key]);
+  });
+
+  await Promise.all([...projectPromises, ...marqueePromises, ...bookingPromises]);
 }
 
 // --- MARQUEE DATABASE MANAGER ---
@@ -737,5 +743,80 @@ export async function deleteFileFromFirebase(fullPath) {
   } catch (err) {
     console.error(`Failed to delete ${fullPath}:`, err);
     throw err;
+  }
+}
+
+// --- BOOKINGS DATABASE LAYER ---
+
+function getLocalBookings() {
+  const localData = localStorage.getItem('portfolio_bookings');
+  if (localData === null) {
+    localStorage.setItem('portfolio_bookings', JSON.stringify({}));
+    return {};
+  }
+  try {
+    return JSON.parse(localData) || {};
+  } catch (e) {
+    console.error('Corrupted portfolio_bookings JSON in localStorage, resetting:', e);
+    return {};
+  }
+}
+
+export async function getAllBookings() {
+  const db = await getFirestoreDb();
+  if (db) {
+    try {
+      const { collection, getDocs } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+      const querySnapshot = await getDocs(collection(db, 'bookings'));
+      const bookings = {};
+      querySnapshot.forEach((doc) => {
+        bookings[doc.id] = doc.data();
+      });
+      localStorage.setItem('portfolio_bookings', JSON.stringify(bookings));
+      return bookings;
+    } catch (err) {
+      console.warn('Firestore bookings fetch failed, falling back to local storage cache:', err);
+    }
+  }
+  return getLocalBookings();
+}
+
+export async function saveBooking(id, data) {
+  // Update local storage first
+  const bookings = getLocalBookings();
+  bookings[id] = { id, ...data };
+  localStorage.setItem('portfolio_bookings', JSON.stringify(bookings));
+
+  // Sync to Firestore if active
+  const db = await getFirestoreDb();
+  if (db) {
+    try {
+      const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+      await setDoc(doc(db, 'bookings', id), { id, ...data });
+    } catch (err) {
+      console.error(`Firestore booking save failed for ${id}:`, err);
+      throw err;
+    }
+  }
+}
+
+export async function deleteBooking(id) {
+  // Delete from local storage
+  const bookings = getLocalBookings();
+  if (bookings[id]) {
+    delete bookings[id];
+    localStorage.setItem('portfolio_bookings', JSON.stringify(bookings));
+  }
+
+  // Sync delete to Firestore if active
+  const db = await getFirestoreDb();
+  if (db) {
+    try {
+      const { doc, deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+      await deleteDoc(doc(db, 'bookings', id));
+    } catch (err) {
+      console.error(`Firestore booking delete failed for ${id}:`, err);
+      throw err;
+    }
   }
 }

@@ -2,29 +2,6 @@
   box-sizing: border-box;
 }
 
-/* =============================================
-   CURSOR OVERRIDE
-   style.css sets cursor:none for the custom cursor system.
-   Admin pages don't use the custom cursor — restore default.
-   ============================================= */
-@media (hover: hover) and (pointer: fine) {
-  body, a, button, input, textarea, select {
-    cursor: auto !important;
-  }
-
-  button, a, .toggle-password, .btn-login, .login-footer a {
-    cursor: pointer !important;
-  }
-
-  input[type="password"], input[type="text"], input[type="email"] {
-    cursor: text !important;
-  }
-
-  button:disabled, .btn-login:disabled {
-    cursor: not-allowed !important;
-  }
-}
-
 body {
   background-color: #0d0b0b;
   color: #FFFFFF;

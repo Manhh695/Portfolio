@@ -428,8 +428,7 @@
         </div>
 
         <!-- Contact Form — Bootstrap 5 form components -->
-        <form class="contact-form" id="contact-form"
-          onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã gửi yêu cầu!');">
+        <form class="contact-form" id="contact-form">
           <div class="mb-3">
             <input type="text" id="form-name" name="name" class="form-control contact-input" placeholder="Name" required
               data-i18n="form_name">
@@ -542,7 +541,7 @@
 
   <!-- Dynamic Marquee Render Script & Multimedia Thumbnails -->
   <script type="module">
-    import { getAllMarqueeCards, getAllProjects, getAboutData } from './dist/js/db.js';
+    import { getAllMarqueeCards, getAllProjects, getAboutData, saveBooking } from './dist/js/db.js';
     import { getField, translate } from './dist/js/i18n.js';
 
     // 0. RENDER ABOUT ME & TIMELINE
@@ -799,6 +798,49 @@
 
       if (typeof window.initAboutScroll === 'function') {
         window.initAboutScroll();
+      }
+
+      // Handle contact form submission
+      const contactForm = document.getElementById('contact-form');
+      if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const submitBtn = contactForm.querySelector('.btn-submit');
+          const originalText = submitBtn.innerText;
+          submitBtn.disabled = true;
+          submitBtn.innerText = 'Sending...';
+
+          const name = document.getElementById('form-name').value;
+          const business = document.getElementById('form-business').value;
+          const email = document.getElementById('form-email').value;
+          const phone = document.getElementById('form-phone').value;
+          const request = document.getElementById('form-request').value;
+
+          const bookingId = 'booking_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          const bookingData = {
+            id: bookingId,
+            name: name,
+            business: business,
+            email: email,
+            phone: phone,
+            request: request,
+            createdAt: new Date().toISOString(),
+            status: 'unread'
+          };
+
+          try {
+            await saveBooking(bookingId, bookingData);
+            alert('Cảm ơn bạn đã gửi yêu cầu! Lịch hẹn của bạn đã được ghi nhận.');
+            contactForm.reset();
+          } catch (err) {
+            console.error('Lỗi khi gửi yêu cầu:', err);
+            alert('Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại sau.');
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = originalText;
+          }
+        });
       }
     });
 
