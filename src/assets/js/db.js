@@ -272,11 +272,41 @@ export function getDbSettings() {
 }
 
 // Saves DB config settings
-export function saveDbSettings(settings) {
+export async function saveDbSettings(settings) {
   localStorage.setItem('portfolio_db_settings', JSON.stringify(settings));
   // Reset Firebase instance variables to force re-initialization next call
   firebaseApp = null;
   firestoreDb = null;
+
+  // Sync to Firestore if active
+  const db = await getFirestoreDb();
+  if (db) {
+    try {
+      const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+      await setDoc(doc(db, 'settings', 'db_settings'), settings);
+    } catch (err) {
+      console.error('Firestore saveDbSettings failed:', err);
+    }
+  }
+}
+
+// Retrieves settings from Firestore if active, falls back to local storage and caches locally
+export async function getRemoteSettings() {
+  const db = await getFirestoreDb();
+  if (db) {
+    try {
+      const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+      const docSnap = await getDoc(doc(db, 'settings', 'db_settings'));
+      if (docSnap.exists()) {
+        const settings = docSnap.data();
+        localStorage.setItem('portfolio_db_settings', JSON.stringify(settings));
+        return settings;
+      }
+    } catch (err) {
+      console.warn('Firestore fetch settings failed, using cached settings:', err);
+    }
+  }
+  return getDbSettings();
 }
 
 // Dynamically imports Firebase SDK and returns active Firestore instance
@@ -445,7 +475,11 @@ export async function syncLocalToFirebase() {
     return setDoc(doc(db, 'bookings', key), bookings[key]);
   });
 
-  await Promise.all([...projectPromises, ...marqueePromises, ...bookingPromises]);
+  // 4. Sync db_settings
+  const settings = getDbSettings();
+  const settingsPromise = setDoc(doc(db, 'settings', 'db_settings'), settings);
+
+  await Promise.all([...projectPromises, ...marqueePromises, ...bookingPromises, settingsPromise]);
 }
 
 // --- MARQUEE DATABASE MANAGER ---
@@ -828,7 +862,7 @@ export async function deleteBooking(id) {
 // --- EMAIL NOTIFICATION SYSTEM ---
 
 export async function sendEmailNotification(bookingData) {
-  const settings = getDbSettings();
+  const settings = await getRemoteSettings();
   if (!settings.emailNotifyEnabled || settings.emailService === 'none') {
     return;
   }

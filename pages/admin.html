@@ -1133,7 +1133,7 @@
         await loadProjectsGrid();
         await loadMarqueeGrid();
         await updateBookingsUnreadBadge();
-        loadSettings();
+        await loadSettings();
       } catch (err) {
         console.error('CMS Dashboard initialization error:', err);
       } finally {
@@ -1609,8 +1609,15 @@
     });
 
     // 4. SETTINGS & SYNCHRONIZATION
-    function loadSettings() {
-      const settings = db.getDbSettings();
+    async function loadSettings() {
+      let settings = db.getDbSettings();
+      if (settings.firebaseEnabled) {
+        try {
+          settings = await db.getRemoteSettings();
+        } catch (e) {
+          console.warn('Failed to load remote settings, using local settings:', e);
+        }
+      }
       fbSyncToggle.checked = settings.firebaseEnabled;
 
       if (settings.firebaseEnabled) {
@@ -1678,7 +1685,7 @@
       }
     }
 
-    fbSyncToggle.addEventListener('change', () => {
+    fbSyncToggle.addEventListener('change', async () => {
       if (fbSyncToggle.checked) {
         fbConfigFields.style.display = 'block';
       } else {
@@ -1687,7 +1694,7 @@
 
         const settings = db.getDbSettings();
         settings.firebaseEnabled = false;
-        db.saveDbSettings(settings);
+        await db.saveDbSettings(settings);
 
         fbStatusMessage.innerText = 'Đồng bộ Firebase đã tắt. Hệ thống chuyển về sử dụng LocalStorage.';
         fbStatusMessage.className = 'status-msg info';
@@ -1760,7 +1767,7 @@
     }
 
     if (saveEmailSettingsBtn) {
-      saveEmailSettingsBtn.addEventListener('click', () => {
+      saveEmailSettingsBtn.addEventListener('click', async () => {
         const settings = db.getDbSettings();
         settings.emailNotifyEnabled = emailNotifyToggle.checked;
         settings.emailService = emailServiceSelect.value;
@@ -1785,9 +1792,14 @@
           return;
         }
 
-        db.saveDbSettings(settings);
-        emailSettingsStatus.innerText = '✅ Thiết lập Email đã được lưu thành công!';
-        emailSettingsStatus.className = 'status-msg success';
+        try {
+          await db.saveDbSettings(settings);
+          emailSettingsStatus.innerText = '✅ Thiết lập Email đã được lưu thành công!';
+          emailSettingsStatus.className = 'status-msg success';
+        } catch (err) {
+          emailSettingsStatus.innerText = `❌ Lỗi khi lưu: ${err.message}`;
+          emailSettingsStatus.className = 'status-msg error';
+        }
         setTimeout(() => {
           emailSettingsStatus.innerText = '';
         }, 3000);
@@ -1914,7 +1926,7 @@
           firebaseConfig: config
         };
 
-        db.saveDbSettings(settings);
+        await db.saveDbSettings(settings);
 
         // Re-initialize database to verify connection
         const testData = await db.getAllProjects();
