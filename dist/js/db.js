@@ -263,7 +263,11 @@ export function getDbSettings() {
   // Default: use built-in config with Firebase enabled
   return {
     firebaseEnabled: true,
-    firebaseConfig: BUILT_IN_FIREBASE_CONFIG
+    firebaseConfig: BUILT_IN_FIREBASE_CONFIG,
+    emailNotifyEnabled: false,
+    emailService: 'none',
+    web3formsKey: '',
+    formspreeUrl: ''
   };
 }
 
@@ -817,6 +821,83 @@ export async function deleteBooking(id) {
     } catch (err) {
       console.error(`Firestore booking delete failed for ${id}:`, err);
       throw err;
+    }
+  }
+}
+
+// --- EMAIL NOTIFICATION SYSTEM ---
+
+export async function sendEmailNotification(bookingData) {
+  const settings = getDbSettings();
+  if (!settings.emailNotifyEnabled || settings.emailService === 'none') {
+    return;
+  }
+
+  const { name, business, email, phone, request } = bookingData;
+  const subject = `[Portfolio] Lịch đặt hẹn mới từ ${name}`;
+  const message = `Bạn nhận được yêu cầu đặt lịch hẹn mới từ Portfolio:
+
+Họ và tên: ${name}
+Doanh nghiệp: ${business || 'N/A'}
+Email: ${email}
+Số điện thoại: ${phone || 'N/A'}
+
+Nội dung yêu cầu:
+${request}
+
+Trạng thái: Chưa đọc
+Hãy đăng nhập vào trang CMS để theo dõi và cập nhật trạng thái lịch đặt này.`;
+
+  if (settings.emailService === 'web3forms' && settings.web3formsKey) {
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: settings.web3formsKey,
+          subject: subject,
+          from_name: 'Portfolio Bookings',
+          name: name,
+          email: email,
+          phone: phone,
+          message: message
+        })
+      });
+      const result = await response.json();
+      if (!result.success) {
+        console.error('Web3Forms notification error:', result);
+      } else {
+        console.log('Web3Forms email sent successfully.');
+      }
+    } catch (err) {
+      console.error('Failed to send Web3Forms notification:', err);
+    }
+  } else if (settings.emailService === 'formspree' && settings.formspreeUrl) {
+    try {
+      const response = await fetch(settings.formspreeUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: subject,
+          name: name,
+          email: email,
+          phone: phone,
+          message: message
+        })
+      });
+      if (!response.ok) {
+        console.error('Formspree notification error:', response.statusText);
+      } else {
+        console.log('Formspree email sent successfully.');
+      }
+    } catch (err) {
+      console.error('Failed to send Formspree notification:', err);
     }
   }
 }

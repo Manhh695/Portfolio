@@ -541,7 +541,7 @@
 
   <!-- Dynamic Marquee Render Script & Multimedia Thumbnails -->
   <script type="module">
-    import { getAllMarqueeCards, getAllProjects, getAboutData, saveBooking } from './dist/js/db.js';
+    import { getAllMarqueeCards, getAllProjects, getAboutData, saveBooking, sendEmailNotification } from './dist/js/db.js';
     import { getField, translate } from './dist/js/i18n.js';
 
     // 0. RENDER ABOUT ME & TIMELINE
@@ -831,6 +831,7 @@
 
           try {
             await saveBooking(bookingId, bookingData);
+            sendEmailNotification(bookingData);
             alert('Cảm ơn bạn đã gửi yêu cầu! Lịch hẹn của bạn đã được ghi nhận.');
             contactForm.reset();
           } catch (err) {

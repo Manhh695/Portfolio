@@ -262,6 +262,58 @@
             </div>
           </div>
 
+          <!-- Email Notification Settings -->
+          <div class="settings-card">
+            <h3>Email Notifications</h3>
+            <p class="settings-desc">Tự động gửi thông báo qua email khi có khách hàng gửi yêu cầu đặt lịch mới.</p>
+
+            <div class="form-toggle">
+              <label class="switch">
+                <input type="checkbox" id="email-notify-toggle">
+                <span class="slider round"></span>
+              </label>
+              <span>Kích hoạt thông báo email</span>
+            </div>
+
+            <div id="email-config-fields" style="display: none; margin-top: 1.8rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.5rem;">
+              <div class="form-group">
+                <label>Chọn dịch vụ gửi email</label>
+                <select id="email-service-select" class="form-select bg-dark text-white border-secondary" style="border-radius: 8px;">
+                  <option value="none">-- Chọn dịch vụ --</option>
+                  <option value="web3forms">Web3Forms (Miễn phí &amp; khuyên dùng)</option>
+                  <option value="formspree">Formspree</option>
+                </select>
+              </div>
+
+              <!-- Web3Forms specific fields -->
+              <div id="web3forms-fields" class="email-service-fields" style="display: none; margin-top: 1.2rem;">
+                <div class="form-group">
+                  <label>Web3Forms Access Key</label>
+                  <input type="text" id="web3forms-key-input" placeholder="Nhập Access Key của bạn...">
+                  <span class="field-help" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem; display: block;">
+                    Lấy Access Key miễn phí tại <a href="https://web3forms.com" target="_blank" style="color: #ef9311; text-decoration: underline;">web3forms.com</a> (nhập email để nhận key qua hộp thư).
+                  </span>
+                </div>
+              </div>
+
+              <!-- Formspree specific fields -->
+              <div id="formspree-fields" class="email-service-fields" style="display: none; margin-top: 1.2rem;">
+                <div class="form-group">
+                  <label>Formspree Endpoint URL</label>
+                  <input type="url" id="formspree-url-input" placeholder="https://formspree.io/f/your_form_id">
+                  <span class="field-help" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem; display: block;">
+                    Tạo Form trên <a href="https://formspree.io" target="_blank" style="color: #ef9311; text-decoration: underline;">formspree.io</a> và dán link endpoint vào đây.
+                  </span>
+                </div>
+              </div>
+
+              <div style="margin-top: 1.5rem;">
+                <button class="btn-primary" id="save-email-settings-btn" style="max-width: 240px;">Lưu thiết lập Email</button>
+              </div>
+              <p id="email-settings-status" class="status-msg" style="margin-top: 0.8rem;"></p>
+            </div>
+          </div>
+
           <!-- Change Admin Password -->
           <div class="settings-card">
             <h3>Change Admin Password</h3>
@@ -1606,6 +1658,24 @@
       imgMaxDimension.value = optSettings.maxDimension || 1920;
       imgCompressQuality.value = optSettings.quality !== undefined ? optSettings.quality : 0.8;
       imgQualityVal.innerText = `${Math.round(imgCompressQuality.value * 100)}%`;
+
+      // Load Email Settings
+      const emailNotifyToggle2 = document.getElementById('email-notify-toggle');
+      const emailServiceSelect2 = document.getElementById('email-service-select');
+      const web3formsKeyInput2 = document.getElementById('web3forms-key-input');
+      const formspreeUrlInput2 = document.getElementById('formspree-url-input');
+      const emailConfigFields2 = document.getElementById('email-config-fields');
+      
+      if (emailNotifyToggle2 && emailServiceSelect2 && web3formsKeyInput2 && formspreeUrlInput2 && emailConfigFields2) {
+        emailNotifyToggle2.checked = !!settings.emailNotifyEnabled;
+        emailConfigFields2.style.display = settings.emailNotifyEnabled ? 'block' : 'none';
+        
+        emailServiceSelect2.value = settings.emailService || 'none';
+        web3formsKeyInput2.value = settings.web3formsKey || '';
+        formspreeUrlInput2.value = settings.formspreeUrl || '';
+        
+        toggleEmailServiceFields(settings.emailService || 'none');
+      }
     }
 
     fbSyncToggle.addEventListener('change', () => {
@@ -1658,6 +1728,71 @@
         imgSettingsStatus.innerText = '';
       }, 3000);
     });
+
+    // 4.3 EMAIL NOTIFICATION SETTINGS HANDLERS
+    const emailNotifyToggle = document.getElementById('email-notify-toggle');
+    const emailConfigFields = document.getElementById('email-config-fields');
+    const emailServiceSelect = document.getElementById('email-service-select');
+    const web3formsFields = document.getElementById('web3forms-fields');
+    const formspreeFields = document.getElementById('formspree-fields');
+    const web3formsKeyInput = document.getElementById('web3forms-key-input');
+    const formspreeUrlInput = document.getElementById('formspree-url-input');
+    const saveEmailSettingsBtn = document.getElementById('save-email-settings-btn');
+    const emailSettingsStatus = document.getElementById('email-settings-status');
+
+    function toggleEmailServiceFields(service) {
+      if (web3formsFields && formspreeFields) {
+        web3formsFields.style.display = service === 'web3forms' ? 'block' : 'none';
+        formspreeFields.style.display = service === 'formspree' ? 'block' : 'none';
+      }
+    }
+
+    if (emailNotifyToggle) {
+      emailNotifyToggle.addEventListener('change', () => {
+        emailConfigFields.style.display = emailNotifyToggle.checked ? 'block' : 'none';
+      });
+    }
+
+    if (emailServiceSelect) {
+      emailServiceSelect.addEventListener('change', () => {
+        toggleEmailServiceFields(emailServiceSelect.value);
+      });
+    }
+
+    if (saveEmailSettingsBtn) {
+      saveEmailSettingsBtn.addEventListener('click', () => {
+        const settings = db.getDbSettings();
+        settings.emailNotifyEnabled = emailNotifyToggle.checked;
+        settings.emailService = emailServiceSelect.value;
+        settings.web3formsKey = web3formsKeyInput.value.trim();
+        settings.formspreeUrl = formspreeUrlInput.value.trim();
+
+        if (settings.emailNotifyEnabled && settings.emailService === 'none') {
+          emailSettingsStatus.innerText = '❌ Vui lòng chọn một dịch vụ gửi email.';
+          emailSettingsStatus.className = 'status-msg error';
+          return;
+        }
+
+        if (settings.emailNotifyEnabled && settings.emailService === 'web3forms' && !settings.web3formsKey) {
+          emailSettingsStatus.innerText = '❌ Vui lòng nhập Web3Forms Access Key.';
+          emailSettingsStatus.className = 'status-msg error';
+          return;
+        }
+
+        if (settings.emailNotifyEnabled && settings.emailService === 'formspree' && !settings.formspreeUrl) {
+          emailSettingsStatus.innerText = '❌ Vui lòng nhập Formspree Endpoint URL.';
+          emailSettingsStatus.className = 'status-msg error';
+          return;
+        }
+
+        db.saveDbSettings(settings);
+        emailSettingsStatus.innerText = '✅ Thiết lập Email đã được lưu thành công!';
+        emailSettingsStatus.className = 'status-msg success';
+        setTimeout(() => {
+          emailSettingsStatus.innerText = '';
+        }, 3000);
+      });
+    }
 
     optimizeExistingImgBtn.addEventListener('click', async () => {
       if (!confirm('Bạn có chắc chắn muốn quét và tối ưu hóa TOÀN BỘ hình ảnh (chuyển đổi sang WebP/giảm dung lượng) trong Database không? Quá trình này có thể mất vài phút tuỳ thuộc vào số lượng ảnh.')) return;
