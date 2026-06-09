@@ -232,15 +232,7 @@ let firestoreDb = null;
 // BUILT-IN FIREBASE CONFIG (hardcoded)
 // Thay đổi nếu bạn muốn dùng project khác
 // =============================================
-const BUILT_IN_FIREBASE_CONFIG = {
-  apiKey: "AIzaSyBCYeVNjQSuL_1n31iJR6NCtmSBE5lS_aI",
-  authDomain: "portfolio-f4207.firebaseapp.com",
-  projectId: "portfolio-f4207",
-  storageBucket: "portfolio-f4207.firebasestorage.app",
-  messagingSenderId: "72710774066",
-  appId: "1:72710774066:web:5d02182da6e1961232cb2b",
-  measurementId: "G-M5512XBX60"
-};
+const BUILT_IN_FIREBASE_CONFIG = null; // Removed shared config to prevent data reset issue
 
 // Retrieves DB config settings from LocalStorage
 // Falls back to built-in config if not set
@@ -249,21 +241,16 @@ export function getDbSettings() {
   if (localSettings) {
     try {
       const parsed = JSON.parse(localSettings);
-      // If user has not explicitly disabled firebase, merge in the built-in config as fallback
-      if (!parsed.firebaseConfig) {
-        parsed.firebaseConfig = BUILT_IN_FIREBASE_CONFIG;
-        parsed.firebaseEnabled = true;
-      }
       return parsed;
     } catch (e) {
       console.error('Corrupted portfolio_db_settings JSON in localStorage, resetting:', e);
       localStorage.removeItem('portfolio_db_settings');
     }
   }
-  // Default: use built-in config with Firebase enabled
+  // Default: Disable Firebase until user inputs their own config
   return {
-    firebaseEnabled: true,
-    firebaseConfig: BUILT_IN_FIREBASE_CONFIG,
+    firebaseEnabled: false,
+    firebaseConfig: null,
     emailNotifyEnabled: false,
     emailService: 'none',
     web3formsKey: '',

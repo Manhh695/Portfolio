@@ -324,7 +324,7 @@ async function getFirestoreDb() {
   try {
     const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js');
     const { getFirestore } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
-    
+
     if (!firebaseApp) {
       // Reuse existing Firebase app if already initialized (avoids duplicate app error)
       const apps = getApps();
@@ -364,7 +364,7 @@ export async function getAllProjects() {
       querySnapshot.forEach((doc) => {
         projects[doc.id] = doc.data();
       });
-      
+
       if (querySnapshot.empty) {
         const defaultKeys = Object.keys(DEFAULT_PROJECTS);
         for (const key of defaultKeys) {
@@ -401,7 +401,7 @@ export async function getProject(id) {
       console.warn(`Firestore retrieve failed for ${id}, falling back to local storage cache:`, err);
     }
   }
-  
+
   const projects = getLocalProjects();
   return projects[id] || null;
 }
@@ -456,7 +456,7 @@ export async function syncLocalToFirebase() {
   }
 
   const { doc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
-  
+
   // 1. Sync projects
   const projects = getLocalProjects();
   const projectPromises = Object.keys(projects).map(key => {
@@ -519,7 +519,7 @@ export async function getAllMarqueeCards() {
       querySnapshot.forEach((doc) => {
         cards[doc.id] = doc.data();
       });
-      
+
       if (querySnapshot.empty) {
         const defaultKeys = Object.keys(DEFAULT_MARQUEE_CARDS);
         for (const key of defaultKeys) {
@@ -597,7 +597,7 @@ export async function getFirebaseStorage() {
   try {
     const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js');
     const { getStorage } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js');
-    
+
     if (!firebaseApp) {
       const apps = getApps();
       firebaseApp = apps.length > 0 ? getApp() : initializeApp(settings.firebaseConfig);
@@ -618,11 +618,11 @@ export async function uploadFileToFirebase(file, path) {
 
   try {
     const { ref, uploadBytes, getDownloadURL } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js');
-    
+
     // Generate unique slug name
     const cleanFileName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9.]/g, '_');
     const storageRef = ref(storage, `${path}/${cleanFileName}`);
-    
+
     const snapshot = await uploadBytes(storageRef, file);
     const downloadUrl = await getDownloadURL(snapshot.ref);
     return downloadUrl;
